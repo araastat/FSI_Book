@@ -29,6 +29,7 @@ The version of these notes you are reading now was built on
 
 ## Reproducibility {-}
 
+These notes are written with [`bookdown`](http://www.bookdown.org), a R package for writing books using [`rmarkdown`](http://rmarkdown.rstudio.com).
 All code in these notes were developed on `r R.version$version.string`, using
 the same packages pre-installed in your virtual machines. When you're on your
 own, you will need to install a recent version of R, and also install the
