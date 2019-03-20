@@ -1,0 +1,10 @@
+book_filename: "PS 312"
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapter "
+new_session: true
+output_dir: "docs"
+rmd_files: [
+  "index.Rmd"
+]
