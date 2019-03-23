@@ -6,10 +6,12 @@ bookdown::gitbook:
         <li><a href="./">PS 312</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    download: ["PS_312.pdf","PS_312.epub"]
+    download: ["PS_312.pdf"]
 bookdown::pdf_book:
-  includes:
-    in_header: preamble.tex
+  toc: no
+  #includes:
+    #in_header: preamble.tex
+    #include-before: doc-prefix.tex
   latex_engine: xelatex
   citation_package: natbib
   keep_tex: yes

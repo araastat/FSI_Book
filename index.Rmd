@@ -1,16 +1,23 @@
 --- 
-title: "Course notes for PS312"
-subtitle: "Programming with R"
+title: "PS 312: Programming with R"
+subtitle: Course Notes
 author: "Abhijit Dasgupta, PhD"
-date: "`r Sys.Date()`"
+date: "Last updated: `r format(Sys.Date(), '%B %d, %Y')`"
 knit: bookdown::render_book
 site: bookdown::bookdown_site
 documentclass: book
 #bibliography: 
 #biblio-style: apalike
 #link-citations: yes
+includes:
+  in_header: preamble.tex
+  before_body: doc-prefix.tex
+template: template.tex
+compact-title: yes
+fontsize: "12pt"
+mainfont: "Charter"
 monofont: "Source Code Pro"
-monofontoptions: "Scale=0.7"
+geometry: "margin=0.75in, letterpaper"
 github-repo: araastat/FSI_Book
 description: "These are course notes for the FSI course 'Programming with R' (PS 312) taught over 3 days"
 url: 'https\://www.araastat.com/FSI_Book'
@@ -29,7 +36,7 @@ The version of these notes you are reading now was built on
 
 ## Reproducibility {-}
 
-These notes are written with [`bookdown`](http://www.bookdown.org), a R package for writing books using [`rmarkdown`](http://rmarkdown.rstudio.com).
+These notes are written with [`bookdown`](https://bookdown.org), a R package for writing books using [`rmarkdown`](https://rmarkdown.rstudio.com).
 All code in these notes were developed on `r R.version$version.string`, using
 the same packages pre-installed in your virtual machines. When you're on your
 own, you will need to install a recent version of R, and also install the
@@ -45,5 +52,6 @@ browseURL("_book/index.html") # to view it
 ```
 
 ## License {-}
+
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">PS 312 Course Notes</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/araastat/FSI_Book" property="cc:attributionName" rel="cc:attributionURL">Abhijit Dasgupta</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
