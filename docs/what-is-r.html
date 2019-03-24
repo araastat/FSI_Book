@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>PS 312: Programming with R</title>
+  <title>Chapter 1 What is R? | PS_312.utf8</title>
   <meta name="description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="PS 312: Programming with R" />
+  <meta property="og:title" content="Chapter 1 What is R? | PS_312.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://www.araastat.com/FSI_Book" />
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="araastat/FSI_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="PS 312: Programming with R" />
+  <meta name="twitter:title" content="Chapter 1 What is R? | PS_312.utf8" />
   
   <meta name="twitter:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
   
@@ -31,10 +31,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="index.html">
-<link rel="next" href="an-introduction-to-r.html">
+<link rel="prev" href="reproducibility.html">
+<link rel="next" href="a-note-on-coding-and-programming.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -66,7 +67,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -129,11 +130,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a><ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducibility"><i class="fa fa-check"></i>Reproducibility</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i>Reproducibility</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="part-starting-up.html"><a href="part-starting-up.html"><i class="fa fa-check"></i><b>1</b> (PART) Starting up</a></li>
-<li class="chapter" data-level="2" data-path="an-introduction-to-r.html"><a href="an-introduction-to-r.html"><i class="fa fa-check"></i><b>2</b> An Introduction to R</a></li>
+<li class="part"><span><b>Starting up</b></span></li>
+<li class="chapter" data-level="1" data-path="what-is-r.html"><a href="what-is-r.html"><i class="fa fa-check"></i><b>1</b> What is R?</a><ul>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html"><i class="fa fa-check"></i>A note on coding and programming</a><ul>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html#coding"><i class="fa fa-check"></i>Coding</a></li>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html#r-the-language"><i class="fa fa-check"></i>R, the language</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="r-packages.html"><a href="r-packages.html"><i class="fa fa-check"></i>R Packages</a><ul>
+<li class="chapter" data-level="" data-path="r-packages.html"><a href="r-packages.html#installing-packages"><i class="fa fa-check"></i>Installing packages</a></li>
+<li class="chapter" data-level="" data-path="r-packages.html"><a href="r-packages.html#loading-packages-in-r"><i class="fa fa-check"></i>Loading packages in R</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="r-resources.html"><a href="r-resources.html"><i class="fa fa-check"></i>R Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="rstudio-your-development-environment-authoring-program.html"><a href="rstudio-your-development-environment-authoring-program.html"><i class="fa fa-check"></i><b>2</b> RStudio, your development environment (authoring program)</a><ul>
+<li class="chapter" data-level="" data-path="starting-rstudio.html"><a href="starting-rstudio.html"><i class="fa fa-check"></i>Starting RStudio</a></li>
+<li class="chapter" data-level="" data-path="other-panes.html"><a href="other-panes.html"><i class="fa fa-check"></i>Other panes</a></li>
+<li class="chapter" data-level="2.1" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>2.1</b> Rstudio workflow</a></li>
+<li class="chapter" data-level="2.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>2.2</b> RStudio Projects</a></li>
+</ul></li>
+<li class="part"><span><b>Using R to access data</b></span></li>
+<li class="chapter" data-level="3" data-path="loading-data-into-r.html"><a href="loading-data-into-r.html"><i class="fa fa-check"></i><b>3</b> Loading data into R</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -146,7 +164,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">PS 312: Programming with R</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><div class="line-block">PS 312: Programming with R<br />
+Course Notes</div></a>
           </h1>
         </div>
 
@@ -154,16 +173,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="part-starting-up" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> (PART) Starting up</h1>
+<div id="what-is-r" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> What is R?</h1>
+<p><a href="https://www.r-project.org" target="_blank">R</a> is the
+most popular<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> open source <em>statistical programming language</em> in the world. It
+allows you to</p>
+<ol style="list-style-type: decimal">
+<li>read datasets written in a wide variety of formats,</li>
+<li>clean and process the data,</li>
+<li>derive summaries,</li>
+<li>run analytics,</li>
+<li>visualize</li>
+<li>create automated reports, presentations, websites, dashboards and interactive applications</li>
+</ol>
+<p>R is not just a language, but an ecosystem comprising over 15,000 user- and corporation-developed
+<em>packages</em> or modules, all written in the R language for a variety of purposes. It is a very flexible and customizable language, which is why it is used by an estimated 2 million users worldwide for data analytics.
+The question R users often ask is not “Can it be done?” but rather “How can it be done?”. R is used
+in areas as varied as healthcare, economics, forestry, oceanography, pharmaceuticals, artificial
+intelligence and natural language processing.</p>
+<p>Why is R so widely used? Some reasons are:</p>
+<ul>
+<li>R is open source, so it is accessible to anyone with a computer</li>
+<li>Since the code in R and all its packages are open, the community of users can help debug it
+and make it more reliable and robust</li>
+<li>The R ecosystem is very rich in tools for doing data analytics in particular, so there is almost
+certainly something available for almost any task</li>
+<li>The community of R users worldwide is a very strong, well-connected group who are welcoming,
+ready to help, cooperative and inclusive. Many users find this community to be one of the most
+attractive things about R</li>
+<li>R produces really nice customizable visualizations with relatively little effort, which was one of the
+first reasons for popularity.</li>
+</ul> 
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p><a href="https://spectrum.ieee.org/static/interactive-the-top-programming-languages-2018" class="uri">https://spectrum.ieee.org/static/interactive-the-top-programming-languages-2018</a><a href="what-is-r.html#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="an-introduction-to-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="reproducibility.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="a-note-on-coding-and-programming.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -183,7 +237,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -196,10 +250,19 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": "PS_312.pdf",
+"history": {
+"link": null,
+"text": null
+},
+"download": ["PS_312.pdf"],
 "toc": {
 "collapse": "subsection"
-}
+},
+"toolbar": {
+"position": "static"
+},
+"search": true,
+"scroll_highlight": true
 });
 });
 </script>

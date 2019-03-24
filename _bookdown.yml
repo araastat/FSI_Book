@@ -1,4 +1,4 @@
-book_filename: "PS 312"
+book_filename: "PS_312"
 delete_merged_file: true
 language:
   ui:
@@ -8,9 +8,13 @@ output_dir: "docs"
 rmd_files:
   html: [
     "index.Rmd",
-    "01-intro.Rmd"
+    "01-intro.Rmd",
+    "RStudio.Rmd",
+    "02-DataIngestion.Rmd"
   ]
   latex: [
     "index1.Rmd",
-    "01-intro.Rmd"
+    "01-intro.Rmd",
+    "Rstudio.Rmd",
+    "02-DataIngestion.Rmd"
   ]

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>R Packages | PS_312.utf8</title>
+  <meta name="description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="R Packages | PS_312.utf8" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://www.araastat.com/FSI_Book" />
+  
+  <meta property="og:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
+  <meta name="github-repo" content="araastat/FSI_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="R Packages | PS_312.utf8" />
+  
+  <meta name="twitter:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
+  
+
+<meta name="author" content="Abhijit Dasgupta, PhD">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="a-note-on-coding-and-programming.html">
+<link rel="next" href="r-resources.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">PS 312</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a><ul>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i>Reproducibility</a></li>
+</ul></li>
+<li class="part"><span><b>Starting up</b></span></li>
+<li class="chapter" data-level="1" data-path="what-is-r.html"><a href="what-is-r.html"><i class="fa fa-check"></i><b>1</b> What is R?</a><ul>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html"><i class="fa fa-check"></i>A note on coding and programming</a><ul>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html#coding"><i class="fa fa-check"></i>Coding</a></li>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html#r-the-language"><i class="fa fa-check"></i>R, the language</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="r-packages.html"><a href="r-packages.html"><i class="fa fa-check"></i>R Packages</a><ul>
+<li class="chapter" data-level="" data-path="r-packages.html"><a href="r-packages.html#installing-packages"><i class="fa fa-check"></i>Installing packages</a></li>
+<li class="chapter" data-level="" data-path="r-packages.html"><a href="r-packages.html#loading-packages-in-r"><i class="fa fa-check"></i>Loading packages in R</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="r-resources.html"><a href="r-resources.html"><i class="fa fa-check"></i>R Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="rstudio-your-development-environment-authoring-program.html"><a href="rstudio-your-development-environment-authoring-program.html"><i class="fa fa-check"></i><b>2</b> RStudio, your development environment (authoring program)</a><ul>
+<li class="chapter" data-level="" data-path="starting-rstudio.html"><a href="starting-rstudio.html"><i class="fa fa-check"></i>Starting RStudio</a></li>
+<li class="chapter" data-level="" data-path="other-panes.html"><a href="other-panes.html"><i class="fa fa-check"></i>Other panes</a></li>
+<li class="chapter" data-level="2.1" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>2.1</b> Rstudio workflow</a></li>
+<li class="chapter" data-level="2.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>2.2</b> RStudio Projects</a></li>
+</ul></li>
+<li class="part"><span><b>Using R to access data</b></span></li>
+<li class="chapter" data-level="3" data-path="loading-data-into-r.html"><a href="loading-data-into-r.html"><i class="fa fa-check"></i><b>3</b> Loading data into R</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><div class="line-block">PS 312: Programming with R<br />
+Course Notes</div></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="r-packages" class="section level2 unnumbered">
+<h2>R Packages</h2>
+<p>Packages are modules of R code that enhance the capabilities of R. Many packages are well established and curated, and have to go through a strict software compatibility review before allowed on <a href="https://cran.rstudio.com">CRAN</a>.</p>
+<div id="installing-packages" class="section level3 unnumbered">
+<h3>Installing packages</h3>
+<p>Installing packages on your computer can be done from the RStudio menu (<code>Tools &gt; Install Packages</code>),
+or by running the command <code>install.packages(&lt;package name&gt;, repos = &quot;https://cran.rstudio.com&quot;)</code>. For example, to install the <code>readxl</code> package, which we will use shortly, we would run the code</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;readxl&quot;</span>, <span class="dt">repos=</span><span class="st">&quot;https://cran.rstudio.com&quot;</span>)</code></pre>
+<blockquote>
+<p>You can set the default repository in RStudio, in <code>Tools &gt; Global Options</code>.</p>
+</blockquote>
+<blockquote>
+<p>Be aware that everything here is case-sensitive</p>
+</blockquote>
+<p>Another way to install packages is to go to the <code>Packages</code> pane in RStudio, use the search bar there to
+find the package you want to install, and then click the checkbox beside the name. This is convenient,
+but not very reproducible if you have to move to a different computer, so it’s generally discouraged.</p>
+<p>How do you find packages? Glad you asked. The easiest way to find packages on CRAN is actually through the RStudio <code>Packages</code> pane, where the entire set of available packages are listed with a brief, top-line description. You can click on the package name to see a much more detailed overview of the packages, and many packages do have vignettes which give more information. However, once you’ve found the package you want, you should really code it up with <code>install.packages</code>, so that you can save the script for later when you might need to remember it again.</p>
+</div>
+<div id="loading-packages-in-r" class="section level3 unnumbered">
+<h3>Loading packages in R</h3>
+<p>We will use several packages to enhance our experience and get going faster. However, to use a package, you must first load it into R. To load a package into R, you use the function <code>library</code> (ironically).</p>
+<p>The first package we will load is the <code>tidyverse</code> package. This is actually a meta-package, which in turn loads a bunch of other packages. These form a core group of useful packages that are widely used, including</p>
+<ul>
+<li>readr (reading data from text files)</li>
+<li>tidyr (Manipulation, pivoting)</li>
+<li>dplyr (summarize, aggregate, filter)</li>
+<li>ggplot2 (visualization)</li>
+<li>purrr (functions applied across data structures, meta-programming)</li>
+<li>stringr (string manipulation)</li>
+<li>forcats (categorical data)</li>
+</ul>
+<p>In addition, we’ll load the <code>readxl</code> package for reading Excel files.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(readxl)</code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="a-note-on-coding-and-programming.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="r-resources.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["PS_312.pdf"],
+"toc": {
+"collapse": "subsection"
+},
+"toolbar": {
+"position": "static"
+},
+"search": true,
+"scroll_highlight": true
+});
+});
+</script>
+
+</body>
+
+</html>
