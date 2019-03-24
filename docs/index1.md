@@ -7,18 +7,23 @@ date: "Last updated: March 23, 2019"
 knit: bookdown::render_book
 site: bookdown::bookdown_site
 documentclass: book
+  #  papersize: letterpaper
+  #  classoption: twosided
 #bibliography: 
 #biblio-style: apalike
 #link-citations: yes
 includes:
   in_header: preamble.tex
   before_body: doc-prefix.tex
-template: template.tex
 compact-title: yes
 fontsize: "12pt"
+classoption: "openany"
+papersize: "letterpaper"
 mainfont: "Charter"
 monofont: "Source Code Pro"
 geometry: "margin=0.75in, letterpaper"
+colorlinks: true
+graphics: true
 github-repo: araastat/FSI_Book
 description: "These are course notes for the FSI course 'Programming with R' (PS 312) taught over 3 days"
 url: 'https\://www.araastat.com/FSI_Book'
@@ -32,8 +37,7 @@ This course is an introduction to the statistical programming language
 [R](http://www.r-project.org) and various applications. We will cover the entire data analytics pipeline from data ingestion to data wrangling, summarizing, modeling, visualizing and reporting, all using tools found within the R ecosystem. 
 
 The version of these notes you are reading now was built on 
-2019-03-23. To raise an issue about the note's content (e.g., code not running) or to make a feature request, check out the 
-[issue tracker](https://github.com/araastat/FSI_Book/issues).
+2019-03-23. 
 
 ## Reproducibility {-}
 

@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>PS_312.utf8</title>
+  <title>PS 312: Programming with R</title>
   <meta name="description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days">
   <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
-  <meta property="og:title" content="PS_312.utf8" />
+  <meta property="og:title" content="PS 312: Programming with R" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://www.araastat.com/FSI_Book" />
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="araastat/FSI_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="PS_312.utf8" />
+  <meta name="twitter:title" content="PS 312: Programming with R" />
   
   <meta name="twitter:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
+<link rel="prev" href="index.html">
 
-<link rel="next" href="an-introduction-to-r.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -130,11 +130,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a><ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducibility"><i class="fa fa-check"></i>Reproducibility</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 </ul></li>
-<li class="part"><span><b>Starting up</b></span></li>
-<li class="chapter" data-level="1" data-path="an-introduction-to-r.html"><a href="an-introduction-to-r.html"><i class="fa fa-check"></i><b>1</b> An Introduction to R</a><ul>
-<li class="chapter" data-level="" data-path="an-introduction-to-r.html"><a href="an-introduction-to-r.html#a-note-on-coding-and-programming"><i class="fa fa-check"></i>A note on coding and programming</a></li>
-</ul></li>
+<li class="chapter" data-level="1" data-path="section.html"><a href="section.html"><i class="fa fa-check"></i><b>1</b> </a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -147,8 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><div class="line-block">PS 312: Programming with R<br />
-Course Notes</div></a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">PS 312: Programming with R</a>
           </h1>
         </div>
 
@@ -156,44 +153,17 @@ Course Notes</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title"><div class="line-block">PS 312: Programming with R<br />
-Course Notes</div></h1>
-<h4 class="author"><em>Abhijit Dasgupta, PhD</em></h4>
-<h4 class="date"><em>Last updated: March 23, 2019</em></h4>
-</div>
-<div id="welcome" class="section level1 unnumbered">
-<h1>Welcome</h1>
-<p>This course is an introduction to the statistical programming language
-<a href="http://www.r-project.org">R</a> and various applications. We will cover the entire data analytics pipeline from data ingestion to data wrangling, summarizing, modeling, visualizing and reporting, all using tools found within the R ecosystem.</p>
-<p>The version of these notes you are reading now was built on
-2019-03-23. To raise an issue about the note’s content (e.g., code not running) or to make a feature request, check out the
-<a href="https://github.com/araastat/FSI_Book/issues">issue tracker</a>.</p>
-<div id="reproducibility" class="section level2 unnumbered">
-<h2>Reproducibility</h2>
-<p>These notes are written with <a href="https://bookdown.org"><code>bookdown</code></a>, a R package for writing books using <a href="https://rmarkdown.rstudio.com"><code>rmarkdown</code></a>.
-All code in these notes were developed on R version 3.5.0 (2018-04-23), using
-the same packages pre-installed in your virtual machines. When you’re on your
-own, you will need to install a recent version of R, and also install the
-corresponding packages, on your computer, for all the code to work. A listing of
-all the packages used in this course will be available as an appendix.</p>
-<p>To build these notes locally, clone or <a href="https://github.com/araastat/FSI_Book/archive/master.zip">download</a> the
-<a href="https://github.com/araastat/FSI_Book">Github repo</a> hosting these notes, unzip it if necessary, and double-click on <code>FSI_Book.Rproj</code>. Assuming you have RStudio installed, this will open this project (more on <em>RStudio Projects</em> later). You can then go to the console and enter the following code:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">bookdown<span class="op">::</span><span class="kw">render_book</span>(<span class="st">&quot;index.Rmd&quot;</span>) <span class="co"># to build these notes</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">browseURL</span>(<span class="st">&quot;_book/index.html&quot;</span>) <span class="co"># to view it</span></a></code></pre></div>
+<div id="section" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> </h1>
 
 </div>
-</div>
-
-
-
             </section>
 
           </div>
         </div>
       </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="an-introduction-to-r.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

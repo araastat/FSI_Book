@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
+<link rel="prev" href="index.html">
 
-<link rel="next" href="an-introduction-to-r.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -156,44 +156,59 @@ Course Notes</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title"><div class="line-block">PS 312: Programming with R<br />
-Course Notes</div></h1>
-<h4 class="author"><em>Abhijit Dasgupta, PhD</em></h4>
-<h4 class="date"><em>Last updated: March 23, 2019</em></h4>
-</div>
-<div id="welcome" class="section level1 unnumbered">
-<h1>Welcome</h1>
-<p>This course is an introduction to the statistical programming language
-<a href="http://www.r-project.org">R</a> and various applications. We will cover the entire data analytics pipeline from data ingestion to data wrangling, summarizing, modeling, visualizing and reporting, all using tools found within the R ecosystem.</p>
-<p>The version of these notes you are reading now was built on
-2019-03-23. To raise an issue about the note’s content (e.g., code not running) or to make a feature request, check out the
-<a href="https://github.com/araastat/FSI_Book/issues">issue tracker</a>.</p>
-<div id="reproducibility" class="section level2 unnumbered">
-<h2>Reproducibility</h2>
-<p>These notes are written with <a href="https://bookdown.org"><code>bookdown</code></a>, a R package for writing books using <a href="https://rmarkdown.rstudio.com"><code>rmarkdown</code></a>.
-All code in these notes were developed on R version 3.5.0 (2018-04-23), using
-the same packages pre-installed in your virtual machines. When you’re on your
-own, you will need to install a recent version of R, and also install the
-corresponding packages, on your computer, for all the code to work. A listing of
-all the packages used in this course will be available as an appendix.</p>
-<p>To build these notes locally, clone or <a href="https://github.com/araastat/FSI_Book/archive/master.zip">download</a> the
-<a href="https://github.com/araastat/FSI_Book">Github repo</a> hosting these notes, unzip it if necessary, and double-click on <code>FSI_Book.Rproj</code>. Assuming you have RStudio installed, this will open this project (more on <em>RStudio Projects</em> later). You can then go to the console and enter the following code:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">bookdown<span class="op">::</span><span class="kw">render_book</span>(<span class="st">&quot;index.Rmd&quot;</span>) <span class="co"># to build these notes</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">browseURL</span>(<span class="st">&quot;_book/index.html&quot;</span>) <span class="co"># to view it</span></a></code></pre></div>
+<div id="an-introduction-to-r" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> An Introduction to R</h1>
+<p><a href="https://www.r-project.org" target="_blank">R</a> is the
+most popular<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> open source <em>statistical programming language</em> in the world. It
+allows you to</p>
+<ol style="list-style-type: decimal">
+<li>read datasets written in a wide variety of formats,</li>
+<li>clean and process the data,</li>
+<li>derive summaries,</li>
+<li>run analytics,</li>
+<li>visualize</li>
+<li>create automated reports, presentations, websites, dashboards and interactive applications</li>
+</ol>
+<p>R is not just a language, but an ecosystem comprising over 15,000 user- and corporation-developed
+<em>packages</em> or modules, all written in the R language for a variety of purposes. It is a very flexible and customizable language, which is why it is used by an estimated 2 million users worldwide for data analytics.
+The question R users often ask is not “Can it be done?” but rather “How can it be done?”. R is used
+in areas as varied as healthcare, economics, forestry, oceanography, pharmaceuticals, artificial
+intelligence and natural language processing.</p>
+<div id="a-note-on-coding-and-programming" class="section level2 unnumbered">
+<h2>A note on coding and programming</h2>
+<p>R does not have a <em>point-and-click</em> interface that you are probably more familiar with
+from Excel, Word or other computer applications. It requires you to <em>code</em>, i.e. write
+instructions for the computer to, in the case of R, read, analyze, graph and report on datasets.</p>
+<p>R is first and foremost a <strong>language</strong>. So, instead of thinking that this is some
+geeky thing that “programmers” and “IT people” do, think of it as learning a language.
+You will see that, like any language, it has nouns, verbs, adjectives and adverbs,
+and you can create “sentences” that start with data and end in something useful like a
+table, graph or document. With a traditional spoken and written language like French, Arabic, Farsi or Japanese, you learn it to
+be able to interact with people at different posts around the world. With a programming language
+like R, you will be able to interact with <strong>data</strong>, to make sense of it, to describe it,
+and to present it.</p>
 
 </div>
 </div>
 
 
 
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p><a href="https://spectrum.ieee.org/static/interactive-the-top-programming-languages-2018" class="uri">https://spectrum.ieee.org/static/interactive-the-top-programming-languages-2018</a><a href="an-introduction-to-r.html#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
             </section>
 
           </div>
         </div>
       </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="an-introduction-to-r.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
