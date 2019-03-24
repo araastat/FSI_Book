@@ -2,3 +2,4 @@
 _bookdown_files/*
 .Rproj.user
 data/classlist.xlsx
+data/*
