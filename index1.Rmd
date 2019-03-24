@@ -14,7 +14,7 @@ documentclass: book
 #link-citations: yes
 includes:
   in_header: preamble.tex
-  before_body: doc-prefix.tex
+  before_body: doc-before.tex
 compact-title: yes
 fontsize: "12pt"
 classoption: "openany"

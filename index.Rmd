@@ -1,6 +1,7 @@
 --- 
-title: "PS 312: Programming with R"
-subtitle: Course Notes
+title: |
+  | PS 312: Programming with R
+  | Course Notes
 author: "Abhijit Dasgupta, PhD"
 date: "Last updated: `r format(Sys.Date(), '%B %d, %Y')`"
 knit: bookdown::render_book
@@ -28,7 +29,7 @@ twitterhandle: webbedfeet
 # Welcome {-}
 
 This course is an introduction to the statistical programming language 
-[R](http://www.r-project.org) and various applications. We will cover the entire data analytics pipeline from data ingestion to data wrangling, summarizing, modeling, visualizing and reporting, all using tools found within the R ecosystem
+[R](http://www.r-project.org) and various applications. We will cover the entire data analytics pipeline from data ingestion to data wrangling, summarizing, modeling, visualizing and reporting, all using tools found within the R ecosystem. 
 
 The version of these notes you are reading now was built on 
 `r Sys.Date()`. To raise an issue about the note's content (e.g., code not running) or to make a feature request, check out the 
@@ -51,7 +52,3 @@ bookdown::render_book("index.Rmd") # to build these notes
 browseURL("_book/index.html") # to view it
 ```
 
-## License {-}
-
-
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">PS 312 Course Notes</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/araastat/FSI_Book" property="cc:attributionName" rel="cc:attributionURL">Abhijit Dasgupta</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.

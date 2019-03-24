@@ -5,7 +5,12 @@ language:
     chapter_name: "Chapter "
 new_session: true
 output_dir: "docs"
-rmd_files: [
-  "index.Rmd",
-  "01-intro.Rmd"
-]
+rmd_files:
+  html: [
+    "index.Rmd",
+    "01-intro.Rmd"
+  ]
+  latex: [
+    "index1.Rmd",
+    "01-intro.Rmd"
+  ]

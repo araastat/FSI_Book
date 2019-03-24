@@ -1,0 +1,7 @@
+\definecolor{block-gray}{gray}{0.85}
+
+\newenvironment{myblock}
+{\small \addtolength{\leftskip}{10mm} \addtolength{\rightskip}{10mm} \colorbox{block-gray} }
+{\normalsize \addtolength{\leftskip}{0mm} \addtolength{\rightskip}{0mm}}
+
+\renewcommand{\quote}{\myblock}
