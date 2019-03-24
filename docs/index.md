@@ -3,18 +3,9 @@ title: |
   | PS 312: Programming with R
   | Course Notes
 author: "Abhijit Dasgupta, PhD"
-date: "Last updated: March 23, 2019"
+date: "Last updated: March 24, 2019"
 knit: bookdown::render_book
 site: bookdown::bookdown_site
-documentclass: book
-#bibliography: 
-#biblio-style: apalike
-#link-citations: yes
-includes:
-  in_header: preamble.tex
-  before_body: doc-prefix.tex
-template: template.tex
-compact-title: yes
 fontsize: "12pt"
 mainfont: "Charter"
 monofont: "Source Code Pro"
@@ -26,13 +17,15 @@ twitterhandle: webbedfeet
 
 ---
 
+
+
 # Welcome {-}
 
 This course is an introduction to the statistical programming language 
 [R](http://www.r-project.org) and various applications. We will cover the entire data analytics pipeline from data ingestion to data wrangling, summarizing, modeling, visualizing and reporting, all using tools found within the R ecosystem. 
 
 The version of these notes you are reading now was built on 
-2019-03-23. To raise an issue about the note's content (e.g., code not running) or to make a feature request, check out the 
+2019-03-24. To raise an issue about the note's content (e.g., code not running) or to make a feature request, check out the 
 [issue tracker](https://github.com/araastat/FSI_Book/issues).
 
 ## Reproducibility {-}
@@ -45,11 +38,7 @@ corresponding packages, on your computer, for all the code to work. A listing of
 all the packages used in this course will be available as an appendix.
 
 To build these notes locally, clone or [download](https://github.com/araastat/FSI_Book/archive/master.zip) the 
-[Github repo](https://github.com/araastat/FSI_Book) hosting these notes, unzip it if necessary, and double-click on `FSI_Book.Rproj`. Assuming you have RStudio installed, this will open this project (more on _RStudio Projects_ later). You can then go to the console and enter the following code:
-
-
-```r
+[Github repo](https://github.com/araastat/FSI_Book) hosting these notes, unzip it if necessary, and double-click on `FSI_Book.Rproj`. Assuming you have RStudio installed, this will open this project (more on _RStudio Projects_ later). You can then go to the console and enter the following code:```{r, eval = F}
 bookdown::render_book("index.Rmd") # to build these notes
 browseURL("_book/index.html") # to view it
 ```
-

@@ -3,7 +3,7 @@ title: |
   | PS 312: Programming with R
   | Course Notes
 author: "Abhijit Dasgupta, PhD"
-date: "Last updated: March 23, 2019"
+date: "Last updated: March 24, 2019"
 knit: bookdown::render_book
 site: bookdown::bookdown_site
 documentclass: book
@@ -14,7 +14,7 @@ documentclass: book
 #link-citations: yes
 includes:
   in_header: preamble.tex
-  before_body: doc-prefix.tex
+  before_body: doc-before.tex
 compact-title: yes
 fontsize: "12pt"
 classoption: "openany"
@@ -37,7 +37,7 @@ This course is an introduction to the statistical programming language
 [R](http://www.r-project.org) and various applications. We will cover the entire data analytics pipeline from data ingestion to data wrangling, summarizing, modeling, visualizing and reporting, all using tools found within the R ecosystem. 
 
 The version of these notes you are reading now was built on 
-2019-03-23. 
+2019-03-24. 
 
 ## Reproducibility {-}
 

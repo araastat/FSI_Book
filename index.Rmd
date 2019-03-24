@@ -6,15 +6,6 @@ author: "Abhijit Dasgupta, PhD"
 date: "Last updated: `r format(Sys.Date(), '%B %d, %Y')`"
 knit: bookdown::render_book
 site: bookdown::bookdown_site
-documentclass: book
-#bibliography: 
-#biblio-style: apalike
-#link-citations: yes
-includes:
-  in_header: preamble.tex
-  before_body: doc-prefix.tex
-template: template.tex
-compact-title: yes
 fontsize: "12pt"
 mainfont: "Charter"
 monofont: "Source Code Pro"
@@ -25,6 +16,11 @@ url: 'https\://www.araastat.com/FSI_Book'
 twitterhandle: webbedfeet
 
 ---
+
+```{r setup, include = F}
+knitr::opts_chunk$set(warning=F, message = F)
+
+``` 
 
 # Welcome {-}
 
@@ -45,10 +41,7 @@ corresponding packages, on your computer, for all the code to work. A listing of
 all the packages used in this course will be available as an appendix.
 
 To build these notes locally, clone or [download](https://github.com/araastat/FSI_Book/archive/master.zip) the 
-[Github repo](https://github.com/araastat/FSI_Book) hosting these notes, unzip it if necessary, and double-click on `FSI_Book.Rproj`. Assuming you have RStudio installed, this will open this project (more on _RStudio Projects_ later). You can then go to the console and enter the following code:
-
-```{r, eval = F}
+[Github repo](https://github.com/araastat/FSI_Book) hosting these notes, unzip it if necessary, and double-click on `FSI_Book.Rproj`. Assuming you have RStudio installed, this will open this project (more on _RStudio Projects_ later). You can then go to the console and enter the following code:```{r, eval = F}
 bookdown::render_book("index.Rmd") # to build these notes
 browseURL("_book/index.html") # to view it
 ```
-
