@@ -46,12 +46,6 @@ Now, if you type `hr_data` in the console, you will see the data you imported.
 head(hr_data) # This just displays the first 10 lines of the data
 ```
 
->  You have to name all the objects you create in R if you want to see them again. Try and pick a 
-naming system that is simple yet descriptive, rather than `data1`. Two typical conventions that are used
-are CamelCase and pothole_case. So you could name a dataset of operational budgets for January, 2019 as
-`operations_budget_2019_jan` or `OperationsBudget2019Jan` or really anything you want, as long as it's
-clear to you and doesn't include some forbidden characters like `-`, `@`,`$` which are reserved for 
-other purposes, or doesn't start with a number. 
 
 Seeing the data like this is certainly a bit awkward, especially for large datasets. 
 In RStudio, you can see the data somewhat like a spreadsheet with the following command:
@@ -86,7 +80,55 @@ either from the `Help` pane, or by typing `?import` or `help(import)` in the con
 
 ## Finer control of Excel imports
 
+You can specify sheet names or sheet positions for import from an Excel file. If you 
+know the sheet name, you can specify it using the `which` option:
 
+```{r}
+dos_data <- import('data/simulatedDOS.xlsx', which='Staffing_by_Bureau')
+```
+
+You can also grab the same sheet by position:
+
+```{r, eval = F}
+dos_data <- import('data/simulatedDOS.xlsx', which = 2)
+```
+
+We'll talk about how to grab multiple sheets together into a list in the data munging section\@ref(sec:data-munging). 
+
+## Importing data from databases
+
+If you have data in an Access database, you can read it in pretty easily using 
+the `RODBC` package. To import one particular table from Access, you can use
+
+```{r, eval = F}
+library(RODBC) # activate package, case-sensitive
+channel <- odbcConnectAccess('C:/Documents/Name_of_Access_Database') # change to your
+mydata <- sqlQuery(channel, paste("select * from Name_of_table_in_database"))
+```
+
+For other databases, the connection can be made using the `odbc` package. You can connnect 
+to a MySQL database, for example,  using 
+
+```{r, eval = F}
+library(odbc)
+con <- dbConnect(odbc(),
+                 Driver   = "[your driver's name]",
+                 Server   = "[your server's path]",
+                 Database = "[your database's name]",
+                 UID      = rstudioapi::askForPassword("Database user"),
+                 PWD      = rstudioapi::askForPassword("Database password"),
+                 Port     = 1433)
+```
+
+and you can load a table into R using
+
+```{r, eval = F}
+dat <- dbGetQuery(con, 'select * from <table name>')
+```
+
+You'll notice that it is a bit more complicated to call data from databases, though
+once it's set up, it works beautifully. For more details about this process for different
+databases, see [RStudio's tutorial](https://db.rstudio.com/){target=_blank}.
 
 
 
