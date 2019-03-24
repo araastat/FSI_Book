@@ -3,18 +3,22 @@ delete_merged_file: true
 language:
   ui:
     chapter_name: "Chapter "
-new_session: true
+new_session: false
 output_dir: "docs"
 rmd_files:
   html: [
     "index.Rmd",
     "01-intro.Rmd",
     "RStudio.Rmd",
-    "02-DataIngestion.Rmd"
+    "02-DataIngestion.Rmd",
+    "03-DataMunging.Rmd",
+    "CleaningExcel.Rmd"
   ]
   latex: [
     "index1.Rmd",
     "01-intro.Rmd",
     "Rstudio.Rmd",
-    "02-DataIngestion.Rmd"
+    "02-DataIngestion.Rmd",
+    "03-DataMunging.Rmd",
+    "CleaningExcel.Rmd"
   ]

@@ -1,3 +1,277 @@
-# 
+# Data Munging {#sec:data-munging} 
+
+
+Data munging refers to the work of transforming data to make it usable for a computer. 
+Data unfortunately comes in all shapes and sizes, with all sorts of issues, so this 
+process can take a while. Often a rule of thumb is that making a data set ready for
+analysis takes about 80% of the time of a project. 
+
+## Tidy data
+
+There is a principle of making data "tidy", promoted by Dr. Hadley Wickham. This
+tidying of data makes computer programs happy, since these data can be most
+easily digested. A dataset can be messy or tidy depending on how the rows, columns and tables you're
+using align with observations, variables and types. 
+
+The properties of a tidy dataset are:
+
+1. Each variable forms a column
+1. Each observation forms a row
+1. Each type of observational unit forms a table. 
+
+This forms a standardized way to structure a dataset, and so makes it easy for the 
+analyst to develop standard pipelines. 
+
+A dataset can be messy in many many ways. Many of the more common issues are listed below:
+
+- Column names contain values, not just variable names
+- Multiple variables are stored in one column
+- Variables are stored in both rows and columns
+- Multiple types of observational types are stored in the same table
+- A single observational unit is stored in multiple tables
+
+Sometimes the messier format is better for data entry, but bad for data analyses. 
+
+We'll show a few examples here, but a more detailed discussion is available [online](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html). 
+
+The workhorse for this tidying activity is the `tidyr` package, part of the `tidyverse`
+meta-package. We'll tend to start every analysis by loading the `tidyverse` package, 
+so we are covered. 
+
+### Variable in column names
+
+```{r}
+library(tidyverse)
+pew <- import('data/pew.csv')
+head(pew)
+```
+
+This dataset has actual data in the column headers, rather than variable names. This
+information needs to be captured into a column. We should ideally have 3 columns in this
+dataset: religion, income and frequency. We can achieve this using a function called `gather` which
+takes a wide dataset and makes it tall. We will do this by forming a pipeline (think of this as a sentence),
+starting with the dataset.
+
+```{r}
+pew %>% 
+  gather(income, frequency, -religion)
+```
+
+Let's parse this out. First we see this new operator ` %>% `, which you can think of as the word "then". 
+So we start with the dataset `pew`, "then" we gather its columns into two columns, `income` and `frequency`. 
+We don't want the `religion` column to be part of this operation, so we "minus" it out, which says, don't do this
+`gather` operation on the `religion` column, but use everything else. The `religion` column gets repeated as needed. 
+
+> The ` %>% ` operator can be easily typed in RStudio using the shortcut Ctrl-Shift-M (Cmd-Shift-M on a Mac)
+
+This is now a tidy dataset, since each column is a single variable, each row is a single observation
+
+### Multiple variables in column names
+
+```{r}
+tb <- import('data/tb.csv') %>% as_tibble()
+head(tb)
+```
+
+Notice that the column names contain both sex and age group data. First we'll `gather`
+the sex/age columns, as before. Note that there are many missing values in this dataset. These
+are denoted in R by `NA`.
+
+```{r}
+tb %>% 
+  gather(sex_age, n, -iso2, -year, -fu)
+```
+
+Since there are a lot of missing values here, we can drop them in the above step by adding an option.
+
+```{r}
+tb %>% gather(sex_age, n, -iso2, -year, -fu, na.rm=T)
+```
+
+We can now use the function `separate` to separate the data in the `sex_age` column into sex and age. In this
+case we have have the data in a fixed width format (the 1st element is the sex data), so we can use that:
+
+```{r}
+tb %>% 
+  gather(sex_age, n, -iso2, -year, -fu, na.rm=T) %>% 
+  separate(sex_age, c("sex","age"), sep=1)
+```
+
+If the data was separated by a symbol, like `_`, we would use `sep = "_"` instead.
+
+### Variables stored in rows and columns
+
+```{r}
+weather <- import('data/weather.csv') %>% as_tibble()
+weather
+```
+
+Here, for each year and month, the data for each day of the month is stored in columns. For each
+day, two values are noted -- the max (`tmax`) and min (`tmin`) temperature that day, stored as rows. 
+
+We start by gathering the extra columns as before:
+
+```{r}
+weather %>% 
+  gather(day, temp, d1:d31)
+```
+
+> Here's a new notation -- `d1:d31`. This means all columns starting at `d1` and ending at `d31`. This notation
+is originally from creating sequences of numbers. See what happens if you type `1:30` in the console.
+
+Now, for each date, we have two _rows_ of data. These need to be two _columns_ of data. So we need to do the
+reverse operation from `gather`. This is called `spread`. 
+
+```{r}
+weather %>% 
+  gather(date, temp, d1:d31) %>% 
+  spread(element, temp)
+```
+
+We tell `spread` which column should form column names and which should provide the data for the columns. 
+
+## Data cleaning
+
+The weather data set shows that we still need to do a bit more cleaning to this data to make it workable. 
+Mainly, we need to fix the `dat` column to make it numeric. Note the odd ordering, where `d1` is followed by `d10`. This 
+is an _alphabetical_ ordering rather  than a _numeric_ ordering. We'll now add to our pipeline (sentence) to make this 
+happen:
+
+```{r}
+weather %>% 
+  gather(date, temp, d1:d31) %>% 
+  spread(element, temp) %>% 
+  mutate(date = parse_number(date))
+```
+
+Here we introduce another "verb", `mutate`. This function changes a column, either in-place as we did here, 
+or by creating a new variable. 
+
+The data is still not quite in the right format, since the date column is in a weird order. We can add
+another verb to this pipe to fix that: `arrange`.
+
+```{r}
+weather %>% 
+  gather(date, temp, d1:d31) %>% 
+  spread(element, temp) %>% 
+  mutate(date = parse_number(date)) %>% 
+  arrange(date)
+```
+
+Not quite, right? We're not used to seeing all the 1st of the months together, and so forth. We want all the daes for month 1, then all the dates for month two, and so on. This can be done by modifying the `arrange` command, by sorting first by month and then by date (essentially within month).
+
+```{r}
+weather %>% 
+  gather(date, temp, d1:d31) %>% 
+  spread(element, temp) %>% 
+  mutate(date = parse_number(date)) %>% 
+  arrange(month, date)
+```
+
+Finally, if we want to save this, we need to assign this final product a name.
+
+```{r}
+weather2 <- weather %>% 
+  gather(date, temp, d1:d31) %>% 
+  spread(element, temp) %>% 
+  mutate(date = parse_number(date)) %>% 
+  arrange(month, date)
+```
+
+### Exercise {-}
+
+The file `data/mbta.xlsx` contains monthly data on number of commuter trips by different modalities on the MBTA system n Boston. It
+is in a messy format. It also has an additional quirk in that it has a title on the first line that 
+isn't even data. You can avoid loading that in by using the option `skip=1` (i.e. skip the first line) when you
+import. Work through this process to clean this dataset into tidy form. I'll also note that you can "minus" columns by 
+position as well as name, so `gather(date, avg_trips, -1, -mode)` is valid to not involve the first column and the `mode` column. 
+
+## Cleaning up data types and values
+
+After you have tidied your data, lets call that tidy dataset `mbta2`. 
+
+```{r, echo = F, message=F}
+mbta <- import('data/mbta.xlsx', skip = 1) %>% as_tibble()
+mbta2 <- mbta %>% 
+  gather(date, avg_trips, -1, -mode) %>% 
+  separate(date, c("year", "month"), sep = '-')
+```
+
+```{r}
+mbta2
+```
+
+We see that there's still some issues. If you look at the top of the dataset, you'll see
+that year, month and avg_trips are all _character_ variables and not _numeric_ variables. (You can see
+this if you converted to a tibble using `as_tibble`. Otherwise, type `str(mbta2)` at the console). Also, there
+is this odd column with the name `..1` that is just an index of rows. Lastly, the row marked `TOTAL` is 
+not necessary since it's a derived row, and the `All Modes by Qtr` row is missing in many times, and appears inconsistent
+with `TOTAL`. 
+
+First, let's deal with the type issue.
+
+```{r}
+mbta2 %>% 
+  mutate(
+    year = parse_number(year),
+    month = parse_number(month),
+    avg_trips = parse_number(avg_trips)
+  )
+```
+
+> A more advanced version of this operation would be 
+```
+mbta2 %>% 
+  mutate_at(vars(year, month, avg_trips), parse_number)
+```
+
+Next we want to get rid of that first column. The verb we'll use here is `select`. 
+
+```{r}
+mbta2 %>% 
+  mutate(
+    year = parse_number(year),
+    month = parse_number(month),
+    avg_trips = parse_number(avg_trips)
+  ) %>% 
+  select(-1) # Get rid of 1st column
+```
+
+Lastly, we want to get rid of rows where mode equals TOTAL or "All Modes by Qtr". Our verb here is `filter`.
+
+```{r}
+mbta3 <- mbta2 %>% 
+  mutate(
+    year = parse_number(year),
+    month = parse_number(month),
+    avg_trips = parse_number(avg_trips)
+  ) %>% 
+  select(-1) %>% 
+  filter(mode != 'TOTAL', mode != "All Modes by Qtr")
+
+```
+
+Note that the strings in quotes have to be exact matches to what you want to look for. The `!=` means "not equals". 
+
+We're assigning this to a new variable, mbta3, which is our clean dataset.
+
+> In R, filtering refers to keeping or removing _rows_ that meet some criterion; selecting refers to 
+keeping or removing _columns_. The corresponding "verbs" to put into your pipeline are `filter` and `select`.
+
+## Other types of cleaning
+
+There are different functions that you can apply to a dataset for different cleaning purposes. A selection
+are given below:
+
+1. `distinct()` keeps the unique (non-duplicate) rows of a dataset. Usage: `dataset %>% distinct()`
+1. If you want to keep only rows with complete data, you can invoke `drop_na`. Usage: `dataset %>% drop_na()`. You 
+can modify `drop_na` by specifying variables from which you want to drop the missing values. 
+1. If you want to convert a value to missing (commonly 99 is used for missing data), then you can use `replace_na` within `mutate` to change to missing values on a column-by-column basis. Usage: `dataset %>% mutate(var1 = na_if(var1, 99))`
+
+## Cleaning from Excel files
+
+Excel, being omnipresent, creates its own sets of difficulties. Excel, on top of being a data entry and 
+analysis platform, is also a visual platform, so tables are often created to look good rather than be tidy. Things
+we commonly find in Excel files include colored rows and columns, multiple lines of headers, multiple rows with variables, typos resulting in numeric data becoming string data, and many others.
 
 

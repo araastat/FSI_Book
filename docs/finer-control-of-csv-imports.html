@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>1.2 R Packages | PS_312.utf8</title>
+  <title>3.1 Finer control of CSV imports | PS_312.utf8</title>
   <meta name="description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="1.2 R Packages | PS_312.utf8" />
+  <meta property="og:title" content="3.1 Finer control of CSV imports | PS_312.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://www.araastat.com/FSI_Book" />
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="araastat/FSI_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1.2 R Packages | PS_312.utf8" />
+  <meta name="twitter:title" content="3.1 Finer control of CSV imports | PS_312.utf8" />
   
   <meta name="twitter:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="a-short-introduction-to-r-objects.html">
-<link rel="next" href="r-resources.html">
+<link rel="prev" href="loading-data-into-r.html">
+<link rel="next" href="finer-control-of-excel-imports.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -196,50 +196,25 @@ Course Notes</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="r-packages" class="section level2">
-<h2><span class="header-section-number">1.2</span> R Packages</h2>
-<p>Packages are modules of R code that enhance the capabilities of R. Many packages are well established and curated, and have to go through a strict software compatibility review before allowed on <a href="https://cran.rstudio.com">CRAN</a>.</p>
-<div id="installing-packages" class="section level3 unnumbered">
-<h3>Installing packages</h3>
-<p>Installing packages on your computer can be done from the RStudio menu (<code>Tools &gt; Install Packages</code>),
-or by running the command <code>install.packages(&lt;package name&gt;, repos = &quot;https://cran.rstudio.com&quot;)</code>. For example, to install the <code>readxl</code> package, which we will use shortly, we would run the code</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;readxl&quot;</span>, <span class="dt">repos=</span><span class="st">&quot;https://cran.rstudio.com&quot;</span>)</code></pre>
-<blockquote>
-<p>You can set the default repository in RStudio, in <code>Tools &gt; Global Options</code>.</p>
-</blockquote>
-<blockquote>
-<p>Be aware that everything here is case-sensitive</p>
-</blockquote>
-<p>Another way to install packages is to go to the <code>Packages</code> pane in RStudio, use the search bar there to
-find the package you want to install, and then click the checkbox beside the name. This is convenient,
-but not very reproducible if you have to move to a different computer, so it’s generally discouraged.</p>
-<p>How do you find packages? Glad you asked. The easiest way to find packages on CRAN is actually through the RStudio <code>Packages</code> pane, where the entire set of available packages are listed with a brief, top-line description. You can click on the package name to see a much more detailed overview of the packages, and many packages do have vignettes which give more information. However, once you’ve found the package you want, you should really code it up with <code>install.packages</code>, so that you can save the script for later when you might need to remember it again.</p>
-</div>
-<div id="loading-packages-in-r" class="section level3">
-<h3><span class="header-section-number">1.2.1</span> Loading packages in R</h3>
-<p>We will use several packages to enhance our experience and get going faster. However, to use a package, you must first load it into R. To load a package into R, you use the function <code>library</code> (ironically).</p>
-<p>The first package we will load is the <code>tidyverse</code> package. This is actually a meta-package, which in turn loads a bunch of other packages. These form a core group of useful packages that are widely used, including</p>
-<ul>
-<li>readr (reading data from text files)</li>
-<li>tidyr (Manipulation, pivoting)</li>
-<li>dplyr (summarize, aggregate, filter)</li>
-<li>ggplot2 (visualization)</li>
-<li>purrr (functions applied across data structures, meta-programming)</li>
-<li>stringr (string manipulation)</li>
-<li>forcats (categorical data)</li>
-</ul>
-<p>In addition, we’ll load the <code>readxl</code> package for reading Excel files.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(readxl)</code></pre>
-</div>
+<div id="finer-control-of-csv-imports" class="section level2">
+<h2><span class="header-section-number">3.1</span> Finer control of CSV imports</h2>
+<p>We can provide finer control over importing text files using additional options (“adverbs”) to
+the <code>import</code> function (“verb”). For example, it might be good to check if all the column
+names are unique, and to make them not have spaces (which are awkward in terms of typing and functionality). You can add the option <code>check.names = TRUE</code> to the command:</p>
+<pre class="sourceCode r"><code class="sourceCode r">hr_data &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="st">&#39;data/HR_Data.csv&#39;</span>, <span class="dt">check.names =</span> <span class="ot">TRUE</span>)</code></pre>
+<p>Similarly, if you’re using European data, where the decimal point is denoted by a comma, you can
+add the following option:</p>
+<pre class="sourceCode r"><code class="sourceCode r">hr_data &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="st">&#39;data/HR_Data.csv&#39;</span>, <span class="dt">check.names =</span> <span class="ot">TRUE</span>, <span class="dt">dec =</span> <span class="st">&#39;,&#39;</span>)</code></pre>
+<p>You can see most of the options in the help file for import, which you can access
+either from the <code>Help</code> pane, or by typing <code>?import</code> or <code>help(import)</code> in the console</p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="a-short-introduction-to-r-objects.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="r-resources.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="loading-data-into-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="finer-control-of-excel-imports.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

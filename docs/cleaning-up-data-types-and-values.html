@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>1.2 R Packages | PS_312.utf8</title>
+  <title>4.3 Cleaning up data types and values | PS_312.utf8</title>
   <meta name="description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="1.2 R Packages | PS_312.utf8" />
+  <meta property="og:title" content="4.3 Cleaning up data types and values | PS_312.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://www.araastat.com/FSI_Book" />
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="araastat/FSI_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1.2 R Packages | PS_312.utf8" />
+  <meta name="twitter:title" content="4.3 Cleaning up data types and values | PS_312.utf8" />
   
   <meta name="twitter:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="a-short-introduction-to-r-objects.html">
-<link rel="next" href="r-resources.html">
+<link rel="prev" href="data-cleaning.html">
+<link rel="next" href="other-types-of-cleaning.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -196,50 +196,101 @@ Course Notes</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="r-packages" class="section level2">
-<h2><span class="header-section-number">1.2</span> R Packages</h2>
-<p>Packages are modules of R code that enhance the capabilities of R. Many packages are well established and curated, and have to go through a strict software compatibility review before allowed on <a href="https://cran.rstudio.com">CRAN</a>.</p>
-<div id="installing-packages" class="section level3 unnumbered">
-<h3>Installing packages</h3>
-<p>Installing packages on your computer can be done from the RStudio menu (<code>Tools &gt; Install Packages</code>),
-or by running the command <code>install.packages(&lt;package name&gt;, repos = &quot;https://cran.rstudio.com&quot;)</code>. For example, to install the <code>readxl</code> package, which we will use shortly, we would run the code</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;readxl&quot;</span>, <span class="dt">repos=</span><span class="st">&quot;https://cran.rstudio.com&quot;</span>)</code></pre>
+<div id="cleaning-up-data-types-and-values" class="section level2">
+<h2><span class="header-section-number">4.3</span> Cleaning up data types and values</h2>
+<p>After you have tidied your data, lets call that tidy dataset <code>mbta2</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mbta2</code></pre>
+<pre><code>## # A tibble: 638 x 5
+##      ..1 mode              year  month avg_trips
+##    &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;    
+##  1     1 All Modes by Qtr  2007  01    NA       
+##  2     2 Boat              2007  01    4        
+##  3     3 Bus               2007  01    335.819  
+##  4     4 Commuter Rail     2007  01    142.2    
+##  5     5 Heavy Rail        2007  01    435.294  
+##  6     6 Light Rail        2007  01    227.231  
+##  7     7 Pct Chg / Yr      2007  01    0.02     
+##  8     8 Private Bus       2007  01    4.772    
+##  9     9 RIDE              2007  01    4.9      
+## 10    10 Trackless Trolley 2007  01    12.757   
+## # … with 628 more rows</code></pre>
+<p>We see that there’s still some issues. If you look at the top of the dataset, you’ll see
+that year, month and avg_trips are all <em>character</em> variables and not <em>numeric</em> variables. (You can see
+this if you converted to a tibble using <code>as_tibble</code>. Otherwise, type <code>str(mbta2)</code> at the console). Also, there
+is this odd column with the name <code>..1</code> that is just an index of rows. Lastly, the row marked <code>TOTAL</code> is
+not necessary since it’s a derived row, and the <code>All Modes by Qtr</code> row is missing in many times, and appears inconsistent
+with <code>TOTAL</code>.</p>
+<p>First, let’s deal with the type issue.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mbta2 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="dt">year =</span> <span class="kw">parse_number</span>(year),
+    <span class="dt">month =</span> <span class="kw">parse_number</span>(month),
+    <span class="dt">avg_trips =</span> <span class="kw">parse_number</span>(avg_trips)
+  )</code></pre>
+<pre><code>## # A tibble: 638 x 5
+##      ..1 mode               year month avg_trips
+##    &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+##  1     1 All Modes by Qtr   2007     1     NA   
+##  2     2 Boat               2007     1      4   
+##  3     3 Bus                2007     1    336.  
+##  4     4 Commuter Rail      2007     1    142.  
+##  5     5 Heavy Rail         2007     1    435.  
+##  6     6 Light Rail         2007     1    227.  
+##  7     7 Pct Chg / Yr       2007     1      0.02
+##  8     8 Private Bus        2007     1      4.77
+##  9     9 RIDE               2007     1      4.9 
+## 10    10 Trackless Trolley  2007     1     12.8 
+## # … with 628 more rows</code></pre>
 <blockquote>
-<p>You can set the default repository in RStudio, in <code>Tools &gt; Global Options</code>.</p>
+<p>A more advanced version of this operation would be</p>
 </blockquote>
+<pre><code>mbta2 %&gt;% 
+  mutate_at(vars(year, month, avg_trips), parse_number)</code></pre>
+<p>Next we want to get rid of that first column. The verb we’ll use here is <code>select</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mbta2 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="dt">year =</span> <span class="kw">parse_number</span>(year),
+    <span class="dt">month =</span> <span class="kw">parse_number</span>(month),
+    <span class="dt">avg_trips =</span> <span class="kw">parse_number</span>(avg_trips)
+  ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="dv">1</span>) <span class="co"># Get rid of 1st column</span></code></pre>
+<pre><code>## # A tibble: 638 x 4
+##    mode               year month avg_trips
+##    &lt;chr&gt;             &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+##  1 All Modes by Qtr   2007     1     NA   
+##  2 Boat               2007     1      4   
+##  3 Bus                2007     1    336.  
+##  4 Commuter Rail      2007     1    142.  
+##  5 Heavy Rail         2007     1    435.  
+##  6 Light Rail         2007     1    227.  
+##  7 Pct Chg / Yr       2007     1      0.02
+##  8 Private Bus        2007     1      4.77
+##  9 RIDE               2007     1      4.9 
+## 10 Trackless Trolley  2007     1     12.8 
+## # … with 628 more rows</code></pre>
+<p>Lastly, we want to get rid of rows where mode equals TOTAL or “All Modes by Qtr”. Our verb here is <code>filter</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mbta3 &lt;-<span class="st"> </span>mbta2 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="dt">year =</span> <span class="kw">parse_number</span>(year),
+    <span class="dt">month =</span> <span class="kw">parse_number</span>(month),
+    <span class="dt">avg_trips =</span> <span class="kw">parse_number</span>(avg_trips)
+  ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(mode <span class="op">!=</span><span class="st"> &#39;TOTAL&#39;</span>, mode <span class="op">!=</span><span class="st"> &quot;All Modes by Qtr&quot;</span>)</code></pre>
+<p>Note that the strings in quotes have to be exact matches to what you want to look for. The <code>!=</code> means “not equals”.</p>
+<p>We’re assigning this to a new variable, mbta3, which is our clean dataset.</p>
 <blockquote>
-<p>Be aware that everything here is case-sensitive</p>
+<p>In R, filtering refers to keeping or removing <em>rows</em> that meet some criterion; selecting refers to
+keeping or removing <em>columns</em>. The corresponding “verbs” to put into your pipeline are <code>filter</code> and <code>select</code>.</p>
 </blockquote>
-<p>Another way to install packages is to go to the <code>Packages</code> pane in RStudio, use the search bar there to
-find the package you want to install, and then click the checkbox beside the name. This is convenient,
-but not very reproducible if you have to move to a different computer, so it’s generally discouraged.</p>
-<p>How do you find packages? Glad you asked. The easiest way to find packages on CRAN is actually through the RStudio <code>Packages</code> pane, where the entire set of available packages are listed with a brief, top-line description. You can click on the package name to see a much more detailed overview of the packages, and many packages do have vignettes which give more information. However, once you’ve found the package you want, you should really code it up with <code>install.packages</code>, so that you can save the script for later when you might need to remember it again.</p>
-</div>
-<div id="loading-packages-in-r" class="section level3">
-<h3><span class="header-section-number">1.2.1</span> Loading packages in R</h3>
-<p>We will use several packages to enhance our experience and get going faster. However, to use a package, you must first load it into R. To load a package into R, you use the function <code>library</code> (ironically).</p>
-<p>The first package we will load is the <code>tidyverse</code> package. This is actually a meta-package, which in turn loads a bunch of other packages. These form a core group of useful packages that are widely used, including</p>
-<ul>
-<li>readr (reading data from text files)</li>
-<li>tidyr (Manipulation, pivoting)</li>
-<li>dplyr (summarize, aggregate, filter)</li>
-<li>ggplot2 (visualization)</li>
-<li>purrr (functions applied across data structures, meta-programming)</li>
-<li>stringr (string manipulation)</li>
-<li>forcats (categorical data)</li>
-</ul>
-<p>In addition, we’ll load the <code>readxl</code> package for reading Excel files.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(readxl)</code></pre>
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="a-short-introduction-to-r-objects.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="r-resources.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="data-cleaning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="other-types-of-cleaning.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

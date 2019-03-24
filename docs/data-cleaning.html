@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>1.2 R Packages | PS_312.utf8</title>
+  <title>4.2 Data cleaning | PS_312.utf8</title>
   <meta name="description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="1.2 R Packages | PS_312.utf8" />
+  <meta property="og:title" content="4.2 Data cleaning | PS_312.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://www.araastat.com/FSI_Book" />
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="araastat/FSI_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1.2 R Packages | PS_312.utf8" />
+  <meta name="twitter:title" content="4.2 Data cleaning | PS_312.utf8" />
   
   <meta name="twitter:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="a-short-introduction-to-r-objects.html">
-<link rel="next" href="r-resources.html">
+<link rel="prev" href="tidy-data.html">
+<link rel="next" href="cleaning-up-data-types-and-values.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -196,41 +196,86 @@ Course Notes</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="r-packages" class="section level2">
-<h2><span class="header-section-number">1.2</span> R Packages</h2>
-<p>Packages are modules of R code that enhance the capabilities of R. Many packages are well established and curated, and have to go through a strict software compatibility review before allowed on <a href="https://cran.rstudio.com">CRAN</a>.</p>
-<div id="installing-packages" class="section level3 unnumbered">
-<h3>Installing packages</h3>
-<p>Installing packages on your computer can be done from the RStudio menu (<code>Tools &gt; Install Packages</code>),
-or by running the command <code>install.packages(&lt;package name&gt;, repos = &quot;https://cran.rstudio.com&quot;)</code>. For example, to install the <code>readxl</code> package, which we will use shortly, we would run the code</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;readxl&quot;</span>, <span class="dt">repos=</span><span class="st">&quot;https://cran.rstudio.com&quot;</span>)</code></pre>
-<blockquote>
-<p>You can set the default repository in RStudio, in <code>Tools &gt; Global Options</code>.</p>
-</blockquote>
-<blockquote>
-<p>Be aware that everything here is case-sensitive</p>
-</blockquote>
-<p>Another way to install packages is to go to the <code>Packages</code> pane in RStudio, use the search bar there to
-find the package you want to install, and then click the checkbox beside the name. This is convenient,
-but not very reproducible if you have to move to a different computer, so it’s generally discouraged.</p>
-<p>How do you find packages? Glad you asked. The easiest way to find packages on CRAN is actually through the RStudio <code>Packages</code> pane, where the entire set of available packages are listed with a brief, top-line description. You can click on the package name to see a much more detailed overview of the packages, and many packages do have vignettes which give more information. However, once you’ve found the package you want, you should really code it up with <code>install.packages</code>, so that you can save the script for later when you might need to remember it again.</p>
-</div>
-<div id="loading-packages-in-r" class="section level3">
-<h3><span class="header-section-number">1.2.1</span> Loading packages in R</h3>
-<p>We will use several packages to enhance our experience and get going faster. However, to use a package, you must first load it into R. To load a package into R, you use the function <code>library</code> (ironically).</p>
-<p>The first package we will load is the <code>tidyverse</code> package. This is actually a meta-package, which in turn loads a bunch of other packages. These form a core group of useful packages that are widely used, including</p>
-<ul>
-<li>readr (reading data from text files)</li>
-<li>tidyr (Manipulation, pivoting)</li>
-<li>dplyr (summarize, aggregate, filter)</li>
-<li>ggplot2 (visualization)</li>
-<li>purrr (functions applied across data structures, meta-programming)</li>
-<li>stringr (string manipulation)</li>
-<li>forcats (categorical data)</li>
-</ul>
-<p>In addition, we’ll load the <code>readxl</code> package for reading Excel files.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(readxl)</code></pre>
+<div id="data-cleaning" class="section level2">
+<h2><span class="header-section-number">4.2</span> Data cleaning</h2>
+<p>The weather data set shows that we still need to do a bit more cleaning to this data to make it workable.
+Mainly, we need to fix the <code>dat</code> column to make it numeric. Note the odd ordering, where <code>d1</code> is followed by <code>d10</code>. This
+is an <em>alphabetical</em> ordering rather than a <em>numeric</em> ordering. We’ll now add to our pipeline (sentence) to make this
+happen:</p>
+<pre class="sourceCode r"><code class="sourceCode r">weather <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(date, temp, d1<span class="op">:</span>d31) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">spread</span>(element, temp) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">date =</span> <span class="kw">parse_number</span>(date))</code></pre>
+<pre><code>## # A tibble: 341 x 6
+##    id       year month  date  tmax  tmin
+##    &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 MX17004  2010     1     1    NA    NA
+##  2 MX17004  2010     1    10    NA    NA
+##  3 MX17004  2010     1    11    NA    NA
+##  4 MX17004  2010     1    12    NA    NA
+##  5 MX17004  2010     1    13    NA    NA
+##  6 MX17004  2010     1    14    NA    NA
+##  7 MX17004  2010     1    15    NA    NA
+##  8 MX17004  2010     1    16    NA    NA
+##  9 MX17004  2010     1    17    NA    NA
+## 10 MX17004  2010     1    18    NA    NA
+## # … with 331 more rows</code></pre>
+<p>Here we introduce another “verb”, <code>mutate</code>. This function changes a column, either in-place as we did here,
+or by creating a new variable.</p>
+<p>The data is still not quite in the right format, since the date column is in a weird order. We can add
+another verb to this pipe to fix that: <code>arrange</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">weather <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(date, temp, d1<span class="op">:</span>d31) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">spread</span>(element, temp) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">date =</span> <span class="kw">parse_number</span>(date)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(date)</code></pre>
+<pre><code>## # A tibble: 341 x 6
+##    id       year month  date  tmax  tmin
+##    &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 MX17004  2010     1     1    NA    NA
+##  2 MX17004  2010     2     1    NA    NA
+##  3 MX17004  2010     3     1    NA    NA
+##  4 MX17004  2010     4     1    NA    NA
+##  5 MX17004  2010     5     1    NA    NA
+##  6 MX17004  2010     6     1    NA    NA
+##  7 MX17004  2010     7     1    NA    NA
+##  8 MX17004  2010     8     1    NA    NA
+##  9 MX17004  2010    10     1    NA    NA
+## 10 MX17004  2010    11     1    NA    NA
+## # … with 331 more rows</code></pre>
+<p>Not quite, right? We’re not used to seeing all the 1st of the months together, and so forth. We want all the daes for month 1, then all the dates for month two, and so on. This can be done by modifying the <code>arrange</code> command, by sorting first by month and then by date (essentially within month).</p>
+<pre class="sourceCode r"><code class="sourceCode r">weather <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(date, temp, d1<span class="op">:</span>d31) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">spread</span>(element, temp) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">date =</span> <span class="kw">parse_number</span>(date)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(month, date)</code></pre>
+<pre><code>## # A tibble: 341 x 6
+##    id       year month  date  tmax  tmin
+##    &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 MX17004  2010     1     1    NA    NA
+##  2 MX17004  2010     1     2    NA    NA
+##  3 MX17004  2010     1     3    NA    NA
+##  4 MX17004  2010     1     4    NA    NA
+##  5 MX17004  2010     1     5    NA    NA
+##  6 MX17004  2010     1     6    NA    NA
+##  7 MX17004  2010     1     7    NA    NA
+##  8 MX17004  2010     1     8    NA    NA
+##  9 MX17004  2010     1     9    NA    NA
+## 10 MX17004  2010     1    10    NA    NA
+## # … with 331 more rows</code></pre>
+<p>Finally, if we want to save this, we need to assign this final product a name.</p>
+<pre class="sourceCode r"><code class="sourceCode r">weather2 &lt;-<span class="st"> </span>weather <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(date, temp, d1<span class="op">:</span>d31) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">spread</span>(element, temp) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">date =</span> <span class="kw">parse_number</span>(date)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(month, date)</code></pre>
+<div id="exercise" class="section level3 unnumbered">
+<h3>Exercise</h3>
+<p>The file <code>data/mbta.xlsx</code> contains monthly data on number of commuter trips by different modalities on the MBTA system n Boston. It
+is in a messy format. It also has an additional quirk in that it has a title on the first line that
+isn’t even data. You can avoid loading that in by using the option <code>skip=1</code> (i.e. skip the first line) when you
+import. Work through this process to clean this dataset into tidy form. I’ll also note that you can “minus” columns by
+position as well as name, so <code>gather(date, avg_trips, -1, -mode)</code> is valid to not involve the first column and the <code>mode</code> column.</p>
 </div>
 </div>
             </section>
@@ -238,8 +283,8 @@ but not very reproducible if you have to move to a different computer, so it’s
           </div>
         </div>
       </div>
-<a href="a-short-introduction-to-r-objects.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="r-resources.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="tidy-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="cleaning-up-data-types-and-values.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
