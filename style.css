@@ -12,3 +12,7 @@ pre {
 pre code {
   white-space: inherit;
 }
+
+h1, h2, p {
+  font-family: Charter, serif;
+}
