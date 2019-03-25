@@ -268,10 +268,4 @@ are given below:
 can modify `drop_na` by specifying variables from which you want to drop the missing values. 
 1. If you want to convert a value to missing (commonly 99 is used for missing data), then you can use `replace_na` within `mutate` to change to missing values on a column-by-column basis. Usage: `dataset %>% mutate(var1 = na_if(var1, 99))`
 
-## Cleaning from Excel files
-
-Excel, being omnipresent, creates its own sets of difficulties. Excel, on top of being a data entry and 
-analysis platform, is also a visual platform, so tables are often created to look good rather than be tidy. Things
-we commonly find in Excel files include colored rows and columns, multiple lines of headers, multiple rows with variables, typos resulting in numeric data becoming string data, and many others.
-
 

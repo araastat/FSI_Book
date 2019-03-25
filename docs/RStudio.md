@@ -71,3 +71,6 @@ To make a new project, click `File > New Project`, then:
 ![](img/Project2.png)
 ![](img/Project3.png)
 ![](img/Project1.png)
+
+Note that I always create a git repository for version control. If you're not doing that, 
+untick the box in the window above. 

@@ -12,7 +12,8 @@ rmd_files:
     "RStudio.Rmd",
     "02-DataIngestion.Rmd",
     "03-DataMunging.Rmd",
-    "CleaningExcel.Rmd"
+    "CleaningExcel.Rmd",
+    "Data_Description.Rmd"
   ]
   latex: [
     "index1.Rmd",
@@ -20,5 +21,6 @@ rmd_files:
     "Rstudio.Rmd",
     "02-DataIngestion.Rmd",
     "03-DataMunging.Rmd",
-    "CleaningExcel.Rmd"
+    "CleaningExcel.Rmd",
+    "Data_Description.Rmd"
   ]

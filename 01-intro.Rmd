@@ -1,4 +1,4 @@
-# (PART\*) Starting up {-}
+# (PART\*) Day One: Starting Up {-}
 
 # What is R?
 

@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Chapter 3 Loading data into R | PS_312.utf8</title>
+  <title>Chapter 5 Describing data | PS_312.utf8</title>
   <meta name="description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Chapter 3 Loading data into R | PS_312.utf8" />
+  <meta property="og:title" content="Chapter 5 Describing data | PS_312.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://www.araastat.com/FSI_Book" />
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="araastat/FSI_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Loading data into R | PS_312.utf8" />
+  <meta name="twitter:title" content="Chapter 5 Describing data | PS_312.utf8" />
   
   <meta name="twitter:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="rstudio-projects.html">
-<link rel="next" href="finer-control-of-csv-imports.html">
+<link rel="prev" href="cleaning-from-excel-files-1.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -197,72 +197,25 @@ Course Notes</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="loading-data-into-r" class="section level1">
-<h1><span class="header-section-number">Chapter 3</span> Loading data into R</h1>
-<p>R can access data files from a wide variety of sources. These include</p>
-<ol style="list-style-type: decimal">
-<li>Text files (csv, tsv, fixed-width)</li>
-<li>Microsoft Excel files</li>
-<li>Microsoft Access databases</li>
-<li>SQL-based databases (MySql, Postgresql, SQLite, Amazon Redshift)</li>
-<li>Enterprise databases (SAP, Oracle)</li>
-</ol>
-<p>The R package <code>rio</code> can help read and write to many file types that are single files,
-and the package <code>rodbc</code> can do the same for the databases.</p>
-<details>
-<p><summary> <strong>Exercise:</strong> Install the R package <code>rio</code> into your R installation</summary></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;rio&quot;</span>, <span class="dt">repos =</span> <span class="st">&quot;https://cran.rstudio.com&quot;</span>) <span class="co"># Note the quotes</span></code></pre>
-</details>
-<p>The <code>rio</code> package has a common way of reading data (using the <code>import</code> function).
-Importing the data will create an object called a data.frame, but if you
-just import data, it is not saved since it doesn’t yet have a name.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rio) <span class="co"># activate the package</span>
-<span class="kw">import</span>(<span class="st">&#39;data/HR_Data.csv&#39;</span>) <span class="co"># can use single or double quotes</span></code></pre>
-<p>So every time you import data, you have to name it. You do this using the <code>&lt;-</code> operator.</p>
-<pre class="sourceCode r"><code class="sourceCode r">hr_data &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="st">&#39;data/HR_Data.csv&#39;</span>)</code></pre>
-<p>Now, if you type <code>hr_data</code> in the console, you will see the data you imported.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(hr_data) <span class="co"># This just displays the first 10 lines of the data</span></code></pre>
-<pre><code>##                                                Bureau Gender Grade
-## 1    Comptroller and Global Financial Services (CGFS) female   N/A
-## 2                East Asian and Pacific Affairs (EAP) female   N/A
-## 3                 Overseas Buildings Operations (OBO)   male  FS-5
-## 4         Conflict and Stabilization Operations (CSO)   male   N/A
-## 5                               Consular Affairs (CA) female  FS-5
-## 6 Management Policy, Rightsizing and Innovation (PRI) female  FS-2
-##             Name
-## 1  Katrina Lilly
-## 2          Keene
-## 3 Garrett Murphy
-## 4     Jim Rhodes
-## 5    Anita Myers
-## 6 Vivian Einhorn
-##                                                                                           Skills
-## 1                                   Hydrology, Research, Design, human resources, Administration
-## 2                                                                           Sharepoint, Planning
-## 3                interagency, Portuguese, Management, Foreign Policy, Economics, Human Resources
-## 4                   education, seo, German, Finance, design, portuguese, disease response, Excel
-## 5 Healthcare, training, German, french, Sharepoint, Marketing, Data Analysis, Economics, spanish
-## 6                 data analysis, Web Development, Hydrology, IT, SEO, Disease Response, Japanese
-##   YearsService
-## 1           16
-## 2           21
-## 3            5
-## 4            4
-## 5           23
-## 6           19</code></pre>
-<p>Seeing the data like this is certainly a bit awkward, especially for large datasets.
-In RStudio, you can see the data somewhat like a spreadsheet with the following command:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">View</span>(hr_data)</code></pre>
-<p>This results in a new pane in RStudio.</p>
-<p><img src="img/Viewer.png" /></p> 
+<div id="sec:description" class="section level1">
+<h1><span class="header-section-number">Chapter 5</span> Describing data</h1>
+<p>Data cleaning and munging is important, yet tedious work. Now that we’re done
+with that, we can get to the fun part of exploring the data</p>
+
 </div>
+
+
+
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-<a href="rstudio-projects.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="finer-control-of-csv-imports.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="cleaning-from-excel-files-1.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
