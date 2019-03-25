@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>A note on coding and programming | PS_312.utf8</title>
+  <title>5.1 Split-apply-combine, a.k.a. MapReduce | PS_312.utf8</title>
   <meta name="description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="A note on coding and programming | PS_312.utf8" />
+  <meta property="og:title" content="5.1 Split-apply-combine, a.k.a. MapReduce | PS_312.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://www.araastat.com/FSI_Book" />
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="araastat/FSI_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A note on coding and programming | PS_312.utf8" />
+  <meta name="twitter:title" content="5.1 Split-apply-combine, a.k.a. MapReduce | PS_312.utf8" />
   
   <meta name="twitter:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="what-is-r.html">
-<link rel="next" href="a-short-introduction-to-r-objects.html">
+<link rel="prev" href="sec-description.html">
+<link rel="next" href="joins.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -200,63 +200,101 @@ Course Notes</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="a-note-on-coding-and-programming" class="section level2 unnumbered">
-<h2>A note on coding and programming</h2>
-<p>R does not have a <em>point-and-click</em> interface that you are probably more familiar with
-from Excel, Word or other computer applications. It requires you to <em>code</em>, i.e. write
-instructions for the computer to, in the case of R, read, analyze, graph and report on datasets.</p>
-<p>R is first and foremost a <strong>language</strong>. So, instead of thinking that this is some
-geeky thing that “programmers” and “IT people” do, think of it as learning a language.
-You will see that, like any language, it has nouns, verbs, adjectives and adverbs,
-and you can create “sentences” that start with data and end in something useful like a
-table, graph or document. With a traditional spoken and written language like French, Arabic, Farsi or Japanese, you learn it to
-be able to interact with people at different posts around the world. With a programming language
-like R, you will be able to interact with <strong>data</strong>, to make sense of it, to describe it,
-and to present it.</p>
-<div id="coding" class="section level3 unnumbered">
-<h3>Coding</h3>
-<p>Coding is writing explicit instructions to a very literal, and in some ways, stupid machine.
-The machine takes our code literally, and will do <strong>exactly</strong> what you tell it to do in the code. If
-you are getting unexpected results, it’s almost certainly your code that needs to be checked, not
-the machine.</p>
-</div>
-<div id="r-the-language" class="section level3 unnumbered">
-<h3>R, the language</h3>
-<p>As we will see, R has many elements of a language.</p>
-<ul>
-<li><strong>Objects</strong>: These are the <em>nouns</em>. We will act on objects to create new objects. Each object has a <em>name</em> which we will treat as the nouns in our code.</li>
-<li><strong>Functions</strong>: These are the <em>verbs</em>. Functions will act on objects to create new objects.</li>
-<li><strong>The <code>%&gt;%</code> operator</strong>: This acts like the conjunction “then” to create “sentences” called <em>pipes</em> or <em>chains</em>.</li>
-<li><strong>Optional function arguments</strong>: These are adverbs which modify the action of the function (verb).</li>
-</ul>
-<p>While writing code in R, we should be aware that R is <strong>case-sensitive</strong>, so <code>mydata</code> is a different object
-than <code>myData</code> which is also different from <code>Mydata</code> and <code>My_Data</code> and <code>MyData</code> and <code>my_data</code>, and <code>mean</code>, which is a function in R, is different from <code>Mean</code> which is not defined in R.</p>
-<blockquote>
-<p>You have to name all the objects you create in R if you want to see them again. Try and pick a
-naming system that is simple yet descriptive, rather than <code>data1</code>. Two typical conventions that are used
-are CamelCase and pothole_case. So you could name a dataset of operational budgets for January, 2019 as
-<code>operations_budget_2019_jan</code> or <code>OperationsBudget2019Jan</code> or really anything you want, as long as it’s
-clear to you and doesn’t include some forbidden characters like <code>-</code>, <code>@</code>,<code>$</code> which are reserved for
-other purposes, or doesn’t start with a number.</p>
-<p>Some people have a system where data objects (which are called <code>data.frame</code> or <code>tibble</code> or <code>vector</code> or <code>matrix</code>) should be
-capitalized, while function names should not. Data objects should probably be nouns and functions verbs, since that reminds us of their functions. There are different opinions. Some influential ones are
-<a href="http://adv-r.had.co.nz/Style.html">here</a> and <a href="https://google.github.io/styleguide/Rguide.xml">here</a>. As they say, finding a good name is hard, but often worth the effort.</p>
-</blockquote>
-<p>The ultimate goal for every script file is to create a “story” using the language of R,
-starting from data to create descriptions, understand patterns through visualization and modeling,
-and analyzing the data in general. Scripts make this story reproducible, and also transferable to different data sets.</p>
-<p>Of course, as with any beginner writer, your coding will be sloppy at first, will suffer many
-stops and starts and strike-throughs and modifications and throwing things into the proverbial trash. With practice, this will become easier and smoother and more effective and more expressive. This workshop is designed to give you an initial push towards that goal.</p>
-<p>So, let’s start this journey.</p>
-</div>
+<div id="split-apply-combine-a.k.a.-mapreduce" class="section level2">
+<h2><span class="header-section-number">5.1</span> Split-apply-combine, a.k.a. MapReduce</h2>
+<p>The split-apply-combine is a powerful paradigm for understanding subgroups within a dataset. The basic
+idea is that you split the data into pieces based on values of some variables, do something (the same thing) to
+each piece, and then stitch the results back together.</p>
+<p><img src="img/split-apply-combine.png" /></p>
+<p>For example, in the mtcars data, we might want to know what the average mpg is by the number of cylinders. The
+way to do this is:</p>
+<pre class="sourceCode r"><code class="sourceCode r">mtcars1 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mpg_mean =</span> <span class="kw">mean</span>(mpg))</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   cyl   mpg_mean
+##   &lt;fct&gt;    &lt;dbl&gt;
+## 1 4         26.7
+## 2 6         19.7
+## 3 8         15.1</code></pre>
+<p>Once again, the scoped versions of <code>summarize</code> will also work in this pipe</p>
+<pre class="sourceCode r"><code class="sourceCode r">mtcars1 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize_if</span>(is.numeric, mean)</code></pre>
+<pre><code>## # A tibble: 3 x 7
+##   cyl     mpg  disp    hp  drat    wt  qsec
+##   &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 4      26.7  105.  82.6  4.07  2.29  19.1
+## 2 6      19.7  183. 122.   3.59  3.12  18.0
+## 3 8      15.1  353. 209.   3.23  4.00  16.8</code></pre>
+<p>Let’s go a bit further and compute the medians as well.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mtcars1 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize_if</span>(is.numeric, <span class="kw">list</span>(<span class="st">&#39;mean&#39;</span>=<span class="st"> </span>mean, <span class="st">&#39;median&#39;</span> =<span class="st"> </span>median))</code></pre>
+<pre><code>## # A tibble: 3 x 13
+##   cyl   mpg_mean disp_mean hp_mean drat_mean wt_mean qsec_mean mpg_median
+##   &lt;fct&gt;    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+## 1 4         26.7      105.    82.6      4.07    2.29      19.1       26  
+## 2 6         19.7      183.   122.       3.59    3.12      18.0       19.7
+## 3 8         15.1      353.   209.       3.23    4.00      16.8       15.2
+## # … with 5 more variables: disp_median &lt;dbl&gt;, hp_median &lt;dbl&gt;,
+## #   drat_median &lt;dbl&gt;, wt_median &lt;dbl&gt;, qsec_median &lt;dbl&gt;</code></pre>
+<p>We can look at a second dataset showing individual violent incidents in Western Afrika
+between 2000 and 2017. We can get the number of incidents per country and year very easily using this paradigm.</p>
+<pre class="sourceCode r"><code class="sourceCode r">west_africa &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="st">&#39;data/2000-01-01-2019-01-01-Western_Africa.csv&#39;</span>)
+west_africa <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(country, year) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tally</span>()</code></pre>
+<pre><code>## # A tibble: 290 x 3
+## # Groups:   country [15]
+##    country  year     n
+##    &lt;chr&gt;   &lt;int&gt; &lt;int&gt;
+##  1 Benin    2000     1
+##  2 Benin    2001     3
+##  3 Benin    2002     1
+##  4 Benin    2003     2
+##  5 Benin    2004     2
+##  6 Benin    2005     2
+##  7 Benin    2006     1
+##  8 Benin    2007     3
+##  9 Benin    2008     1
+## 10 Benin    2009     2
+## # … with 280 more rows</code></pre>
+<p>For display, we can make this a wide dataset</p>
+<pre class="sourceCode r"><code class="sourceCode r">west_africa <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(country, year) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tally</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">spread</span>(year, n)</code></pre>
+<pre><code>## # A tibble: 15 x 21
+## # Groups:   country [15]
+##    country `2000` `2001` `2002` `2003` `2004` `2005` `2006` `2007` `2008`
+##    &lt;chr&gt;    &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+##  1 Benin        1      3      1      2      2      2      1      3      1
+##  2 Burkin…     22      6      6      1      4      6      8      1     12
+##  3 Gambia       8     14     13     11      5      4      6      2      4
+##  4 Ghana       10      8      7     17      7      3      3      5     11
+##  5 Guinea     180     70     14     10     11     15      7     46     15
+##  6 Guinea…      9      2      3      5      4     13     21      2      2
+##  7 Ivory …    133     34    135    177    101     45     30      6     24
+##  8 Liberia     87    171    148    242     22     26     22      9     17
+##  9 Mali         4      5      2      3      3      2     10     11     21
+## 10 Maurit…      4      1      3     13      2      9      3      5     16
+## 11 Niger       11      9     42      6     17      9      8     31     28
+## 12 Nigeria    168    118    160    207    277    198    120    200    208
+## 13 Senegal     86     61     40     18     11     11     29     24     20
+## 14 Sierra…    495    224      5     18     14      5      1      6     15
+## 15 Togo         4      4      3      4      3     25      1      1      1
+## # … with 11 more variables: `2009` &lt;int&gt;, `2010` &lt;int&gt;, `2011` &lt;int&gt;,
+## #   `2012` &lt;int&gt;, `2013` &lt;int&gt;, `2014` &lt;int&gt;, `2015` &lt;int&gt;, `2016` &lt;int&gt;,
+## #   `2017` &lt;int&gt;, `2018` &lt;int&gt;, `2019` &lt;int&gt;</code></pre>
+<p>We’ll save this dataset for visualization later.</p>
+<pre class="sourceCode r"><code class="sourceCode r">west_africa <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(country, year) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tally</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">spread</span>(year, n) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">saveRDS</span>(<span class="st">&#39;data/west_africa.rds&#39;</span>)</code></pre>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="what-is-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="a-short-introduction-to-r-objects.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="sec-description.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="joins.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

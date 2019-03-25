@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>A note on coding and programming | PS_312.utf8</title>
+  <title>5.2 Joins | PS_312.utf8</title>
   <meta name="description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="A note on coding and programming | PS_312.utf8" />
+  <meta property="og:title" content="5.2 Joins | PS_312.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://www.araastat.com/FSI_Book" />
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="araastat/FSI_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A note on coding and programming | PS_312.utf8" />
+  <meta name="twitter:title" content="5.2 Joins | PS_312.utf8" />
   
   <meta name="twitter:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="what-is-r.html">
-<link rel="next" href="a-short-introduction-to-r-objects.html">
+<link rel="prev" href="split-apply-combine-a-k-a-mapreduce.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -200,63 +200,88 @@ Course Notes</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="a-note-on-coding-and-programming" class="section level2 unnumbered">
-<h2>A note on coding and programming</h2>
-<p>R does not have a <em>point-and-click</em> interface that you are probably more familiar with
-from Excel, Word or other computer applications. It requires you to <em>code</em>, i.e. write
-instructions for the computer to, in the case of R, read, analyze, graph and report on datasets.</p>
-<p>R is first and foremost a <strong>language</strong>. So, instead of thinking that this is some
-geeky thing that “programmers” and “IT people” do, think of it as learning a language.
-You will see that, like any language, it has nouns, verbs, adjectives and adverbs,
-and you can create “sentences” that start with data and end in something useful like a
-table, graph or document. With a traditional spoken and written language like French, Arabic, Farsi or Japanese, you learn it to
-be able to interact with people at different posts around the world. With a programming language
-like R, you will be able to interact with <strong>data</strong>, to make sense of it, to describe it,
-and to present it.</p>
-<div id="coding" class="section level3 unnumbered">
-<h3>Coding</h3>
-<p>Coding is writing explicit instructions to a very literal, and in some ways, stupid machine.
-The machine takes our code literally, and will do <strong>exactly</strong> what you tell it to do in the code. If
-you are getting unexpected results, it’s almost certainly your code that needs to be checked, not
-the machine.</p>
+<div id="joins" class="section level2">
+<h2><span class="header-section-number">5.2</span> Joins</h2>
+<p>We mentioned earlier that there are several kinds of ways we can join data. The
+different kinds of joins are described below.</p>
+<p><img src="img/joins.png" /></p>
+<p>Let’s look at these joins with an example. We have two simulated datasets looking at
+DOS real estate allocation and staffing. We will look at how much area on average each
+bureau has given the number of employees</p>
+<pre class="sourceCode r"><code class="sourceCode r">staffing_data &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="st">&#39;data/Staffing_by_Bureau.csv&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tibble</span>()
+real_estate &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="st">&#39;data/DoS_Real_Estate_Allocation.csv&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tibble</span>()
+real_estate</code></pre>
+<pre><code>## # A tibble: 666 x 4
+##    Building Bureau               Location  Size
+##    &lt;chr&gt;    &lt;chr&gt;                   &lt;int&gt; &lt;int&gt;
+##  1 HST      Administration (A)       4779   640
+##  2 SA2      Administration (A)       4801  1090
+##  3 HST      Administration (A)       5109  1040
+##  4 HST      Administration (A)       3717  1620
+##  5 SA4      Administration (A)       3940  1390
+##  6 HST      Administration (A)       3661  1480
+##  7 HST      Administration (A)       3374  1770
+##  8 HST      Administration (A)       3387  1940
+##  9 SA10     African Affairs (AF)     2605   640
+## 10 HST      African Affairs (AF)     3573   720
+## # … with 656 more rows</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">staffing_data</code></pre>
+<pre><code>## # A tibble: 10,000 x 6
+##    Bureau                      Gender Grade Title    Name      YearsService
+##    &lt;chr&gt;                       &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;            &lt;int&gt;
+##  1 Protocol (S/CPR)            female FS1   Manager  Cathy Ca…           13
+##  2 Administration (A)          male   GS-9  Team Me… Jeffery …           13
+##  3 Intelligence and Research … male   FS-6  Analyst  Max Green           11
+##  4 Mission to the United Nati… male   FS-3  Manager  Donald A…            7
+##  5 Foreign Missions (OFM)      male   FS-6  Team Me… Thomas L…           22
+##  6 International Narcotics an… male   GS-8  Team Me… Joseph A…           12
+##  7 Administration (A)          male   GS-12 Analyst  Michael …            6
+##  8 Intelligence and Research … male   FS-5  Team Me… Jesus Sh…            2
+##  9 Science &amp; Technology Advis… male   N/A   Manager  Lawrence…           19
+## 10 Administration (A)          female FS-8  Team Me… Jennie C…           17
+## # … with 9,990 more rows</code></pre>
+<p>The strategy is going to be to do a grouped summary of the staffing data to see how
+many people are in each Bureau, and then join that with the real estate data to
+compute the average area per employee by Bureau.</p>
+<pre class="sourceCode r"><code class="sourceCode r">staff_summary &lt;-<span class="st"> </span>staffing_data <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(Bureau) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tally</span>(<span class="dt">name =</span> <span class="st">&#39;Pop&#39;</span>)
+realestate_summary &lt;-<span class="st"> </span>real_estate <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(Bureau) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">Size =</span> <span class="kw">sum</span>(Size))
+realestate_summary <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">left_join</span>(staff_summary) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">unit_area =</span> Size<span class="op">/</span>Pop) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(unit_area)</code></pre>
+<pre><code>## Joining, by = &quot;Bureau&quot;</code></pre>
+<pre><code>## # A tibble: 54 x 4
+##    Bureau                                              Size   Pop unit_area
+##    &lt;chr&gt;                                              &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;
+##  1 Global Youth Issues (GYI)                           2090   345      6.06
+##  2 Policy Planning Staff (S/P)                         2420   240     10.1 
+##  3 Science &amp; Technology Adviser (STAS)                 4240   305     13.9 
+##  4 Foreign Missions (OFM)                              4420   311     14.2 
+##  5 Trafficking in Persons (TIP)                        5150   247     20.9 
+##  6 Medical Services (MED)                              6760   308     21.9 
+##  7 Protocol (S/CPR)                                    7730   327     23.6 
+##  8 Administration (A)                                 10970   454     24.2 
+##  9 Oceans and International Environmental and Scient…  8420   330     25.5 
+## 10 Energy Resources (ENR)                             10890   369     29.5 
+## # … with 44 more rows</code></pre>
+
 </div>
-<div id="r-the-language" class="section level3 unnumbered">
-<h3>R, the language</h3>
-<p>As we will see, R has many elements of a language.</p>
-<ul>
-<li><strong>Objects</strong>: These are the <em>nouns</em>. We will act on objects to create new objects. Each object has a <em>name</em> which we will treat as the nouns in our code.</li>
-<li><strong>Functions</strong>: These are the <em>verbs</em>. Functions will act on objects to create new objects.</li>
-<li><strong>The <code>%&gt;%</code> operator</strong>: This acts like the conjunction “then” to create “sentences” called <em>pipes</em> or <em>chains</em>.</li>
-<li><strong>Optional function arguments</strong>: These are adverbs which modify the action of the function (verb).</li>
-</ul>
-<p>While writing code in R, we should be aware that R is <strong>case-sensitive</strong>, so <code>mydata</code> is a different object
-than <code>myData</code> which is also different from <code>Mydata</code> and <code>My_Data</code> and <code>MyData</code> and <code>my_data</code>, and <code>mean</code>, which is a function in R, is different from <code>Mean</code> which is not defined in R.</p>
-<blockquote>
-<p>You have to name all the objects you create in R if you want to see them again. Try and pick a
-naming system that is simple yet descriptive, rather than <code>data1</code>. Two typical conventions that are used
-are CamelCase and pothole_case. So you could name a dataset of operational budgets for January, 2019 as
-<code>operations_budget_2019_jan</code> or <code>OperationsBudget2019Jan</code> or really anything you want, as long as it’s
-clear to you and doesn’t include some forbidden characters like <code>-</code>, <code>@</code>,<code>$</code> which are reserved for
-other purposes, or doesn’t start with a number.</p>
-<p>Some people have a system where data objects (which are called <code>data.frame</code> or <code>tibble</code> or <code>vector</code> or <code>matrix</code>) should be
-capitalized, while function names should not. Data objects should probably be nouns and functions verbs, since that reminds us of their functions. There are different opinions. Some influential ones are
-<a href="http://adv-r.had.co.nz/Style.html">here</a> and <a href="https://google.github.io/styleguide/Rguide.xml">here</a>. As they say, finding a good name is hard, but often worth the effort.</p>
-</blockquote>
-<p>The ultimate goal for every script file is to create a “story” using the language of R,
-starting from data to create descriptions, understand patterns through visualization and modeling,
-and analyzing the data in general. Scripts make this story reproducible, and also transferable to different data sets.</p>
-<p>Of course, as with any beginner writer, your coding will be sloppy at first, will suffer many
-stops and starts and strike-throughs and modifications and throwing things into the proverbial trash. With practice, this will become easier and smoother and more effective and more expressive. This workshop is designed to give you an initial push towards that goal.</p>
-<p>So, let’s start this journey.</p>
-</div>
-</div>
+<!-- </div> -->
+
+
+
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-<a href="what-is-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="a-short-introduction-to-r-objects.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="split-apply-combine-a-k-a-mapreduce.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

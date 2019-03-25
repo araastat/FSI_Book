@@ -7,7 +7,7 @@ bookdown::gitbook:
     search: yes
     toc:
       before: |
-        <li><a href="./">PS 312</a></li>
+        <li><a href="http://www.araastat.com/FSI_Workshop">PS 312</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
     scroll_highlight: yes

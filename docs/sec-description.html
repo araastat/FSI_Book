@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="cleaning-from-excel-files-1.html">
-
+<link rel="prev" href="cleaning-from-excel-files.html">
+<link rel="next" href="split-apply-combine-a-k-a-mapreduce.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -126,13 +126,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">PS 312</a></li>
+<li><a href="http://www.araastat.com/FSI_Workshop">PS 312</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a><ul>
 <li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i>Reproducibility</a></li>
 </ul></li>
-<li class="part"><span><b>Starting up</b></span></li>
+<li class="part"><span><b>Day One: Starting Up</b></span></li>
 <li class="chapter" data-level="1" data-path="what-is-r.html"><a href="what-is-r.html"><i class="fa fa-check"></i><b>1</b> What is R?</a><ul>
 <li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html"><i class="fa fa-check"></i>A note on coding and programming</a><ul>
 <li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html#coding"><i class="fa fa-check"></i>Coding</a></li>
@@ -170,12 +170,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="cleaning-up-data-types-and-values.html"><a href="cleaning-up-data-types-and-values.html"><i class="fa fa-check"></i><b>4.3</b> Cleaning up data types and values</a></li>
 <li class="chapter" data-level="4.4" data-path="other-types-of-cleaning.html"><a href="other-types-of-cleaning.html"><i class="fa fa-check"></i><b>4.4</b> Other types of cleaning</a></li>
-<li class="chapter" data-level="4.5" data-path="cleaning-from-excel-files.html"><a href="cleaning-from-excel-files.html"><i class="fa fa-check"></i><b>4.5</b> Cleaning from Excel files</a></li>
-<li class="chapter" data-level="4.6" data-path="cleaning-from-excel-files-1.html"><a href="cleaning-from-excel-files-1.html"><i class="fa fa-check"></i><b>4.6</b> Cleaning from Excel files</a><ul>
-<li class="chapter" data-level="" data-path="cleaning-from-excel-files-1.html"><a href="cleaning-from-excel-files-1.html#dealing-with-visual-formating-colors"><i class="fa fa-check"></i>Dealing with visual formating (colors)</a></li>
+<li class="chapter" data-level="4.5" data-path="cleaning-from-excel-files.html"><a href="cleaning-from-excel-files.html"><i class="fa fa-check"></i><b>4.5</b> Cleaning from Excel files</a><ul>
+<li class="chapter" data-level="" data-path="cleaning-from-excel-files.html"><a href="cleaning-from-excel-files.html#dealing-with-visual-formating-colors"><i class="fa fa-check"></i>Dealing with visual formating (colors)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="sec-description.html"><a href="sec-description.html"><i class="fa fa-check"></i><b>5</b> Describing data</a></li>
+<li class="chapter" data-level="5" data-path="sec-description.html"><a href="sec-description.html"><i class="fa fa-check"></i><b>5</b> Describing data</a><ul>
+<li class="chapter" data-level="" data-path="sec-description.html"><a href="sec-description.html#factors-or-categorical-variables"><i class="fa fa-check"></i>Factors or categorical variables</a></li>
+<li class="chapter" data-level="5.1" data-path="split-apply-combine-a-k-a-mapreduce.html"><a href="split-apply-combine-a-k-a-mapreduce.html"><i class="fa fa-check"></i><b>5.1</b> Split-apply-combine, a.k.a. MapReduce</a></li>
+<li class="chapter" data-level="5.2" data-path="joins.html"><a href="joins.html"><i class="fa fa-check"></i><b>5.2</b> Joins</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -200,22 +203,155 @@ Course Notes</div></a>
 <div id="sec:description" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> Describing data</h1>
 <p>Data cleaning and munging is important, yet tedious work. Now that we’re done
-with that, we can get to the fun part of exploring the data</p>
-
+with that, we can get to the fun part of exploring the data.</p>
+<p>Our workhorse for this will be the <code>dplyr</code> package, part of the <code>tidyverse</code>. This
+package provides 5 basic verbs:</p>
+<ul>
+<li><code>filter</code>: filter a dataset by rows</li>
+<li><code>select</code>: select columns of a dataset</li>
+<li><code>arrange</code>: arrange rows of a dataset by values of some variables</li>
+<li><code>group_by</code>: split a dataset by values of some variables, so that we can apply verbs to each split</li>
+<li><code>summarize</code>: compute various summaries from the data</li>
+</ul>
+<p><code>dplyr</code> also has verbs to let stitch datasets together, which are <code>left_join</code>,
+<code>right_join</code>, <code>inner_join</code>, <code>outer_join</code>, <code>semi_join</code>, <code>anti_join</code>, <code>bind_rows</code> and
+<code>bind_cols</code>.</p>
+<p>I’ll be using the latest <code>dplyr</code>, version 0.8.0.9009. If you have
+an older version, most but not all things will work.</p>
+<p>We’ll start with the in-build <code>mtcars</code> dataset.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+mtcars1 &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rownames_to_column</span>(<span class="st">&#39;cars&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tibble</span>()
+mtcars1</code></pre>
+<pre><code>## # A tibble: 32 x 12
+##    cars     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+##    &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Mazda…  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+##  2 Mazda…  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+##  3 Datsu…  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+##  4 Horne…  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+##  5 Horne…  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+##  6 Valia…  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+##  7 Duste…  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+##  8 Merc …  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+##  9 Merc …  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+## 10 Merc …  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+## # … with 22 more rows</code></pre>
+<p>Let’s get some summary statistics from this dataset. First, let’s compute the average
+mpg, displacement, and horsepower of these cars.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mtcars1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">mpg =</span> <span class="kw">mean</span>(mpg, <span class="dt">na.rm=</span>T), <span class="dt">disp =</span> <span class="kw">mean</span>(disp, <span class="dt">na.rm=</span>T), <span class="dt">hp =</span> <span class="kw">mean</span>(hp, <span class="dt">na.rm=</span>T))</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##     mpg  disp    hp
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1  20.1  231.  147.</code></pre>
+<blockquote>
+<p>I’m adding the option <code>na.rm=T</code> to remove any missing values; if there is even a single missing value, the mean will be computed as <code>NA</code></p>
+</blockquote>
+<p>Most <code>dplyr</code> verbs also have scoped versions <code>*_all</code>, <code>*_at</code>, <code>*_if</code>, which can be useful. The <code>*_any</code> versions act
+upon all the columns, the <code>*_at</code> versions on specified columns (same way columns are specified in <code>select</code>) and the
+<code>*_if</code> versions on columns with particular properties. So the above code could be written as</p>
+<pre class="sourceCode r"><code class="sourceCode r">mtcars1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize_at</span>(<span class="kw">vars</span>(mpg, disp, hp), mean, <span class="dt">na.rm =</span> T)</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##     mpg  disp    hp
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1  20.1  231.  147.</code></pre>
+<div id="factors-or-categorical-variables" class="section level3 unnumbered">
+<h3>Factors or categorical variables</h3>
+<p>R has a data type called a <code>factor</code>, which is meant for categorical or discrete variables; things like sex, race, and,
+in this data, <code>cyl</code>. We need to transform the column to this data type first.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mtcars1 &lt;-<span class="st"> </span>mtcars1 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cyl =</span> <span class="kw">as.factor</span>(cyl))</code></pre>
+<p>There are a few others that might need this treatment.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mtcars1 &lt;-<span class="st"> </span>mtcars1 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(cyl, vs, am, gear, carb), as.factor)</code></pre>
+<p>Let’s see what we’ve done.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(mtcars1)</code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    32 obs. of  12 variables:
+##  $ cars: chr  &quot;Mazda RX4&quot; &quot;Mazda RX4 Wag&quot; &quot;Datsun 710&quot; &quot;Hornet 4 Drive&quot; ...
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : Factor w/ 3 levels &quot;4&quot;,&quot;6&quot;,&quot;8&quot;: 2 2 1 2 3 2 3 1 1 2 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 2 2 1 2 1 2 2 2 ...
+##  $ am  : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 2 2 2 1 1 1 1 1 1 1 ...
+##  $ gear: Factor w/ 3 levels &quot;3&quot;,&quot;4&quot;,&quot;5&quot;: 2 2 2 1 1 1 1 2 2 2 ...
+##  $ carb: Factor w/ 6 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+<p>Now, let’s compute averages of all the non-factor, or numeric, variables.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mtcars1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize_if</span>(is.numeric, mean)</code></pre>
+<pre><code>## # A tibble: 1 x 6
+##     mpg  disp    hp  drat    wt  qsec
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1  20.1  231.  147.  3.60  3.22  17.8</code></pre>
+<p>We can get a summary of all the variables using the function <code>summary</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(mtcars1)</code></pre>
+<pre><code>##      cars                mpg        cyl         disp             hp       
+##  Length:32          Min.   :10.40   4:11   Min.   : 71.1   Min.   : 52.0  
+##  Class :character   1st Qu.:15.43   6: 7   1st Qu.:120.8   1st Qu.: 96.5  
+##  Mode  :character   Median :19.20   8:14   Median :196.3   Median :123.0  
+##                     Mean   :20.09          Mean   :230.7   Mean   :146.7  
+##                     3rd Qu.:22.80          3rd Qu.:326.0   3rd Qu.:180.0  
+##                     Max.   :33.90          Max.   :472.0   Max.   :335.0  
+##       drat             wt             qsec       vs     am     gear  
+##  Min.   :2.760   Min.   :1.513   Min.   :14.50   0:18   0:19   3:15  
+##  1st Qu.:3.080   1st Qu.:2.581   1st Qu.:16.89   1:14   1:13   4:12  
+##  Median :3.695   Median :3.325   Median :17.71                 5: 5  
+##  Mean   :3.597   Mean   :3.217   Mean   :17.85                       
+##  3rd Qu.:3.920   3rd Qu.:3.610   3rd Qu.:18.90                       
+##  Max.   :4.930   Max.   :5.424   Max.   :22.90                       
+##  carb  
+##  1: 7  
+##  2:10  
+##  3: 3  
+##  4:10  
+##  6: 1  
+##  8: 1</code></pre>
+<p>However, this does not give us a tidy dataset. Some alternatives are the <code>skimr</code> package and
+the <code>ezsummary</code> package.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages(&#39;skimr&#39;)</span>
+<span class="kw">library</span>(skimr)
+<span class="kw">skim</span>(mtcars1)</code></pre>
+<pre><code>## Skim summary statistics
+##  n obs: 32 
+##  n variables: 12 
+## 
+## ── Variable type:character ───────────────────────────────────────────────────────────────
+##  variable missing complete  n min max empty n_unique
+##      cars       0       32 32   7  19     0       32
+## 
+## ── Variable type:factor ──────────────────────────────────────────────────────────────────
+##  variable missing complete  n n_unique                top_counts ordered
+##        am       0       32 32        2       0: 19, 1: 13, NA: 0   FALSE
+##      carb       0       32 32        6  2: 10, 4: 10, 1: 7, 3: 3   FALSE
+##       cyl       0       32 32        3 8: 14, 4: 11, 6: 7, NA: 0   FALSE
+##      gear       0       32 32        3 3: 15, 4: 12, 5: 5, NA: 0   FALSE
+##        vs       0       32 32        2       0: 18, 1: 14, NA: 0   FALSE
+## 
+## ── Variable type:numeric ─────────────────────────────────────────────────────────────────
+##  variable missing complete  n   mean     sd    p0    p25    p50    p75
+##      disp       0       32 32 230.72 123.94 71.1  120.83 196.3  326   
+##      drat       0       32 32   3.6    0.53  2.76   3.08   3.7    3.92
+##        hp       0       32 32 146.69  68.56 52     96.5  123    180   
+##       mpg       0       32 32  20.09   6.03 10.4   15.43  19.2   22.8 
+##      qsec       0       32 32  17.85   1.79 14.5   16.89  17.71  18.9 
+##        wt       0       32 32   3.22   0.98  1.51   2.58   3.33   3.61
+##    p100     hist
+##  472    ▇▆▁▂▅▃▁▂
+##    4.93 ▃▇▁▅▇▂▁▁
+##  335    ▃▇▃▅▂▃▁▁
+##   33.9  ▃▇▇▇▃▂▂▂
+##   22.9  ▃▂▇▆▃▃▁▁
+##    5.42 ▃▃▃▇▆▁▁▂</code></pre>
+</div> 
 </div>
-
-
-
-
-
-
             </section>
 
           </div>
         </div>
       </div>
-<a href="cleaning-from-excel-files-1.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="cleaning-from-excel-files.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="split-apply-combine-a-k-a-mapreduce.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

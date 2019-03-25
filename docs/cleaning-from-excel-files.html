@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="other-types-of-cleaning.html">
-<link rel="next" href="cleaning-from-excel-files-1.html">
+<link rel="next" href="sec-description.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -126,13 +126,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">PS 312</a></li>
+<li><a href="http://www.araastat.com/FSI_Workshop">PS 312</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a><ul>
 <li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i>Reproducibility</a></li>
 </ul></li>
-<li class="part"><span><b>Starting up</b></span></li>
+<li class="part"><span><b>Day One: Starting Up</b></span></li>
 <li class="chapter" data-level="1" data-path="what-is-r.html"><a href="what-is-r.html"><i class="fa fa-check"></i><b>1</b> What is R?</a><ul>
 <li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html"><i class="fa fa-check"></i>A note on coding and programming</a><ul>
 <li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html#coding"><i class="fa fa-check"></i>Coding</a></li>
@@ -170,12 +170,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="cleaning-up-data-types-and-values.html"><a href="cleaning-up-data-types-and-values.html"><i class="fa fa-check"></i><b>4.3</b> Cleaning up data types and values</a></li>
 <li class="chapter" data-level="4.4" data-path="other-types-of-cleaning.html"><a href="other-types-of-cleaning.html"><i class="fa fa-check"></i><b>4.4</b> Other types of cleaning</a></li>
-<li class="chapter" data-level="4.5" data-path="cleaning-from-excel-files.html"><a href="cleaning-from-excel-files.html"><i class="fa fa-check"></i><b>4.5</b> Cleaning from Excel files</a></li>
-<li class="chapter" data-level="4.6" data-path="cleaning-from-excel-files-1.html"><a href="cleaning-from-excel-files-1.html"><i class="fa fa-check"></i><b>4.6</b> Cleaning from Excel files</a><ul>
-<li class="chapter" data-level="" data-path="cleaning-from-excel-files-1.html"><a href="cleaning-from-excel-files-1.html#dealing-with-visual-formating-colors"><i class="fa fa-check"></i>Dealing with visual formating (colors)</a></li>
+<li class="chapter" data-level="4.5" data-path="cleaning-from-excel-files.html"><a href="cleaning-from-excel-files.html"><i class="fa fa-check"></i><b>4.5</b> Cleaning from Excel files</a><ul>
+<li class="chapter" data-level="" data-path="cleaning-from-excel-files.html"><a href="cleaning-from-excel-files.html#dealing-with-visual-formating-colors"><i class="fa fa-check"></i>Dealing with visual formating (colors)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="sec-description.html"><a href="sec-description.html"><i class="fa fa-check"></i><b>5</b> Describing data</a></li>
+<li class="chapter" data-level="5" data-path="sec-description.html"><a href="sec-description.html"><i class="fa fa-check"></i><b>5</b> Describing data</a><ul>
+<li class="chapter" data-level="" data-path="sec-description.html"><a href="sec-description.html#factors-or-categorical-variables"><i class="fa fa-check"></i>Factors or categorical variables</a></li>
+<li class="chapter" data-level="5.1" data-path="split-apply-combine-a-k-a-mapreduce.html"><a href="split-apply-combine-a-k-a-mapreduce.html"><i class="fa fa-check"></i><b>5.1</b> Split-apply-combine, a.k.a. MapReduce</a></li>
+<li class="chapter" data-level="5.2" data-path="joins.html"><a href="joins.html"><i class="fa fa-check"></i><b>5.2</b> Joins</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -202,15 +205,226 @@ Course Notes</div></a>
 <p>Excel, being omnipresent, creates its own sets of difficulties. Excel, on top of being a data entry and
 analysis platform, is also a visual platform, so tables are often created to look good rather than be tidy. Things
 we commonly find in Excel files include colored rows and columns, multiple lines of headers, multiple rows with variables, typos resulting in numeric data becoming string data, and many others.</p>
+<p>Let’s start with a data set that’s structured similarly to many government datasets around
+the world.</p>
+<p><img src="img/ExcelClean.png" /></p>
+<p>Notice that there are two levels of headers on top, each spanning multiple columns.
+Data is in paired columns, with the first column being the statistic and the second column
+being its standard error. The first row is a title, which we don’t need, and the
+4th row is also not needed.</p>
+<p>We’ll first tidy-fy this dataset, and then we’ll clean it up a bit. Let’s first
+think about the structure we want to get to for tidy-fication. The actual data lies in
+the statistics and the standard errors, and each of the column groupings represents different
+variables, so they should be in columns.</p>
+<p>You can try to load this data using <code>import</code>, but you’ll find it’s a big mess.
+There are two powerful packages (by the same group of developers), <code>tidyxl</code> and
+<code>unpivotr</code>, that are fantastic tools for “fixing” Excel files for analysis.</p>
+<p>Let’s start with <code>tidyxl</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyxl)
+dataset1 &lt;-<span class="st"> </span><span class="kw">xlsx_cells</span>(<span class="st">&#39;data/attendance.xlsx&#39;</span>)
+dataset1</code></pre>
+<pre><code>## # A tibble: 1,173 x 21
+##    sheet address   row   col is_blank data_type error logical numeric
+##    &lt;chr&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt; &lt;lgl&gt;     &lt;dbl&gt;
+##  1 Tabl… A1          1     1 FALSE    character &lt;NA&gt;  NA           NA
+##  2 Tabl… B1          1     2 TRUE     blank     &lt;NA&gt;  NA           NA
+##  3 Tabl… C1          1     3 TRUE     blank     &lt;NA&gt;  NA           NA
+##  4 Tabl… D1          1     4 TRUE     blank     &lt;NA&gt;  NA           NA
+##  5 Tabl… E1          1     5 TRUE     blank     &lt;NA&gt;  NA           NA
+##  6 Tabl… F1          1     6 TRUE     blank     &lt;NA&gt;  NA           NA
+##  7 Tabl… G1          1     7 TRUE     blank     &lt;NA&gt;  NA           NA
+##  8 Tabl… H1          1     8 TRUE     blank     &lt;NA&gt;  NA           NA
+##  9 Tabl… I1          1     9 TRUE     blank     &lt;NA&gt;  NA           NA
+## 10 Tabl… J1          1    10 TRUE     blank     &lt;NA&gt;  NA           NA
+## # … with 1,163 more rows, and 12 more variables: date &lt;dttm&gt;,
+## #   character &lt;chr&gt;, character_formatted &lt;list&gt;, formula &lt;chr&gt;,
+## #   is_array &lt;lgl&gt;, formula_ref &lt;chr&gt;, formula_group &lt;int&gt;, comment &lt;chr&gt;,
+## #   height &lt;dbl&gt;, width &lt;dbl&gt;, style_format &lt;chr&gt;, local_format_id &lt;int&gt;</code></pre>
+<p>Notice that this pulls in a lot of meta-data in a tidy form, including information
+about cell formatting. This will be really useful in many situations.</p>
+<p>First, lets get rid of the rows we don’t need.</p>
+<pre class="sourceCode r"><code class="sourceCode r">dataset1 &lt;-<span class="st"> </span>dataset1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(row <span class="op">!=</span><span class="st"> </span><span class="dv">1</span>, row <span class="op">!=</span><span class="st"> </span><span class="dv">4</span>, row <span class="op">&lt;</span><span class="st"> </span><span class="dv">65</span>)</code></pre>
+<p>Now we could manipulate this dataset using <code>tidyverse</code> tools, but <code>unpivotr</code> is much mor poweful.
+First, we are going to pull off the two headers. <code>unpivotr</code> does this using the function <code>behead</code> (suggestive?),
+with the first argument being the direction (‘N’, “S”, ‘E’,‘W’,etc) of the table that the header is present. We will
+also consider the first column, consisting of state names, as a header on the left.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(unpivotr)
+dataset1 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;N&#39;</span>, tophead) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;N&#39;</span>, head2) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;W&#39;</span>, State) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(row, col, data_type, numeric, tophead, head2, State)</code></pre>
+<pre><code>## # A tibble: 960 x 7
+##      row   col data_type  numeric tophead               head2     State    
+##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;     &lt;chr&gt;    
+##  1     5     2 numeric    9.31e+1 Total elementary, se… ADA as p… &quot;   Unit…
+##  2     5     3 numeric    2.19e-1 &lt;NA&gt;                  &lt;NA&gt;      &quot;   Unit…
+##  3     5     4 numeric    6.64e+0 &lt;NA&gt;                  Average … &quot;   Unit…
+##  4     5     5 numeric    1.76e-2 &lt;NA&gt;                  &lt;NA&gt;      &quot;   Unit…
+##  5     5     6 numeric    1.80e+2 &lt;NA&gt;                  Average … &quot;   Unit…
+##  6     5     7 numeric    1.43e-1 &lt;NA&gt;                  &lt;NA&gt;      &quot;   Unit…
+##  7     5     8 numeric    1.19e+3 &lt;NA&gt;                  Average … &quot;   Unit…
+##  8     5     9 numeric    3.09e+0 &lt;NA&gt;                  &lt;NA&gt;      &quot;   Unit…
+##  9     5    10 numeric    9.40e+1 Elementary schools    ADA as p… &quot;   Unit…
+## 10     5    11 numeric    2.69e-1 &lt;NA&gt;                  &lt;NA&gt;      &quot;   Unit…
+## # … with 950 more rows</code></pre>
+<p>We need to separate the statistics and the standard errors from consecutive columns, and
+also make them headers.</p>
+<pre class="sourceCode r"><code class="sourceCode r">dataset1 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;N&#39;</span>, tophead) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;N&#39;</span>, head2) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;W&#39;</span>, State) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(row, col, data_type, numeric, tophead, head2, State) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">header =</span> <span class="kw">ifelse</span>(col <span class="op">%%</span><span class="st"> </span><span class="dv">2</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, <span class="st">&#39;stats&#39;</span>,<span class="st">&#39;se&#39;</span>))</code></pre>
+<pre><code>## # A tibble: 960 x 8
+##      row   col data_type  numeric tophead          head2    State    header
+##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt; 
+##  1     5     2 numeric    9.31e+1 Total elementar… ADA as … &quot;   Uni… stats 
+##  2     5     3 numeric    2.19e-1 &lt;NA&gt;             &lt;NA&gt;     &quot;   Uni… se    
+##  3     5     4 numeric    6.64e+0 &lt;NA&gt;             Average… &quot;   Uni… stats 
+##  4     5     5 numeric    1.76e-2 &lt;NA&gt;             &lt;NA&gt;     &quot;   Uni… se    
+##  5     5     6 numeric    1.80e+2 &lt;NA&gt;             Average… &quot;   Uni… stats 
+##  6     5     7 numeric    1.43e-1 &lt;NA&gt;             &lt;NA&gt;     &quot;   Uni… se    
+##  7     5     8 numeric    1.19e+3 &lt;NA&gt;             Average… &quot;   Uni… stats 
+##  8     5     9 numeric    3.09e+0 &lt;NA&gt;             &lt;NA&gt;     &quot;   Uni… se    
+##  9     5    10 numeric    9.40e+1 Elementary scho… ADA as … &quot;   Uni… stats 
+## 10     5    11 numeric    2.69e-1 &lt;NA&gt;             &lt;NA&gt;     &quot;   Uni… se    
+## # … with 950 more rows</code></pre>
+<p>The <code>%%</code> operator computes the remainder if the left side is divided by the right side.
+So the criterion is asking which columns are even. The <code>ifelse</code> statement says,
+if the criterion is met, write “stats”, otherwise write “se”. This new variable
+is assigned to the dataset with the variable name “header”.</p>
+<p>Notice that we have actually tidy-fied this dataset, but there’s missing data here, since
+the column headers span several rows visually but are only credited to the first column it covers.
+So we need to fill in the entries for the remaining rows with the corresponding entry from the earliest column.
+There is a function <code>fill</code> in <code>tidyr</code> that does this general trick, using a method called <em>last value carried forward</em>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">dataset1 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;N&#39;</span>, tophead) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;N&#39;</span>, head2) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;W&#39;</span>, State) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(row, col, data_type, numeric, tophead, head2, State) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">fill</span>(tophead) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">fill</span>(head2)</code></pre>
+<pre><code>## # A tibble: 960 x 7
+##      row   col data_type  numeric tophead               head2     State    
+##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;     &lt;chr&gt;    
+##  1     5     2 numeric    9.31e+1 Total elementary, se… ADA as p… &quot;   Unit…
+##  2     5     3 numeric    2.19e-1 Total elementary, se… ADA as p… &quot;   Unit…
+##  3     5     4 numeric    6.64e+0 Total elementary, se… Average … &quot;   Unit…
+##  4     5     5 numeric    1.76e-2 Total elementary, se… Average … &quot;   Unit…
+##  5     5     6 numeric    1.80e+2 Total elementary, se… Average … &quot;   Unit…
+##  6     5     7 numeric    1.43e-1 Total elementary, se… Average … &quot;   Unit…
+##  7     5     8 numeric    1.19e+3 Total elementary, se… Average … &quot;   Unit…
+##  8     5     9 numeric    3.09e+0 Total elementary, se… Average … &quot;   Unit…
+##  9     5    10 numeric    9.40e+1 Elementary schools    ADA as p… &quot;   Unit…
+## 10     5    11 numeric    2.69e-1 Elementary schools    ADA as p… &quot;   Unit…
+## # … with 950 more rows</code></pre>
+<p>To make this really tidy, we need to make two columns titled <code>stats</code> and <code>se</code> from this.
+We’ve seen this using <code>spread</code>, but there is a slightly more robust method from <code>unpivotr</code> called
+<code>spatter</code> which is meant for this unique structure.</p>
+<pre class="sourceCode r"><code class="sourceCode r">tidy_dataset &lt;-<span class="st"> </span>dataset1 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;N&#39;</span>, tophead) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;N&#39;</span>, head2) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;W&#39;</span>, State) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(row, col, data_type, numeric, tophead, head2, State) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">header =</span> <span class="kw">ifelse</span>(col <span class="op">%%</span><span class="st"> </span><span class="dv">2</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, <span class="st">&#39;stats&#39;</span>,<span class="st">&#39;se&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">fill</span>(tophead) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">fill</span>(head2) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(row, numeric, tophead, head2, State, header) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">spatter</span>(header, numeric) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>row)
+tidy_dataset</code></pre>
+<pre><code>## # A tibble: 480 x 5
+##    tophead                        head2          State            se  stats
+##    &lt;chr&gt;                          &lt;chr&gt;          &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Elementary schools             ADA as percen… &quot;   United … 0.269  9.40e1
+##  2 Elementary schools             Average hours… &quot;   United … 0.0160 6.66e0
+##  3 Secondary schools              ADA as percen… &quot;   United … 0.432  9.11e1
+##  4 Secondary schools              Average hours… &quot;   United … 0.0403 6.59e0
+##  5 Total elementary, secondary, … ADA as percen… &quot;   United … 0.219  9.31e1
+##  6 Total elementary, secondary, … Average days … &quot;   United … 0.143  1.80e2
+##  7 Total elementary, secondary, … Average hours… &quot;   United … 0.0176 6.64e0
+##  8 Total elementary, secondary, … Average hours… &quot;   United … 3.09   1.19e3
+##  9 Elementary schools             ADA as percen… Alabama ...… 1.84   9.38e1
+## 10 Elementary schools             Average hours… Alabama ...… 0.0759 7.04e0
+## # … with 470 more rows</code></pre>
+<p>We have to clean the <code>State</code> variable. We’ll use the methods in the <code>stringr</code>
+package, which is already loaded with the <code>tidyverse</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">tidy_dataset &lt;-<span class="st"> </span>tidy_dataset <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">State =</span> <span class="kw">str_remove</span>(State, <span class="st">&#39;</span><span class="ch">\\</span><span class="st">.+&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">State =</span> <span class="kw">str_trim</span>(State))</code></pre>
+<p>The first verb removes all the <code>.</code> in the variable, using something called a regular expression.
+This particular expression means that we want to look for sequences of dots, and remove them.
+The <code>\\</code> before the <code>.</code> tells R that we really mean <code>.</code>, since the <code>.</code> has a different meaning in
+regular expressions.</p>
+<p>The second verb trims away blank spaces before and after each entry.</p>
+<p>We’ll hold on to this dataset for the visualization section. Just to be safe, let’s
+save it.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">saveRDS</span>(tidy_dataset, <span class="dt">file =</span> <span class="st">&#39;data/attendance.rds&#39;</span>)</code></pre>
+<p>This saves the data in an R-specific format that will allow us to load it quickly.</p>
+<blockquote>
+<p>The RDS format is an open standard and so it can be called from other programs if the
+appropriate programs are written.</p>
+</blockquote>
+<div id="dealing-with-visual-formating-colors" class="section level3 unnumbered">
+<h3>Dealing with visual formating (colors)</h3>
+<p>The dataset we’ll use for this has identifiable information, so I will not expose
+it publicly. It is available in your files as <code>data/classlist.xlsx</code>.</p>
+<p>Since we’re interested in background and font colors here, which are informative,
+we also need to load the format information into R.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyxl)
+<span class="kw">library</span>(unpivotr)
+
+dataset2 &lt;-<span class="st"> </span><span class="kw">xlsx_cells</span>(<span class="st">&#39;data/classlist.xlsx&#39;</span>)
+formats &lt;-<span class="st"> </span><span class="kw">xlsx_formats</span>(<span class="st">&#39;data/classlist.xlsx&#39;</span>)
+
+format_id &lt;-<span class="st"> </span>dataset2<span class="op">$</span>local_format_id
+dataset2<span class="op">$</span>font_color &lt;-<span class="st"> </span>formats<span class="op">$</span>local<span class="op">$</span>font<span class="op">$</span>color<span class="op">$</span>rgb[format_id]
+dataset2<span class="op">$</span>bg_color &lt;-<span class="st"> </span>formats<span class="op">$</span>local<span class="op">$</span>fill<span class="op">$</span>patternFill<span class="op">$</span>fgColor<span class="op">$</span>rgb[format_id]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">unique</span>(dataset2<span class="op">$</span>font_color)</code></pre>
+<pre><code>## [1] &quot;FF000000&quot; &quot;FF0563C1&quot; &quot;FFFF0000&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">unique</span>(dataset2<span class="op">$</span>bg_color)</code></pre>
+<pre><code>## [1] &quot;FFFFC000&quot; NA         &quot;FFE7E6E6&quot;</code></pre>
+<p>So we can filter rows based on these two colors if we want.</p>
+<p>To tidy-fy this dataset, we realize that there are really two interweaved datasets.
+The odd rows are one dataset and the even rows are another dataset.</p>
+<pre class="sourceCode r"><code class="sourceCode r">dat1 &lt;-<span class="st"> </span>dataset2 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>( row <span class="op">%%</span><span class="st"> </span><span class="dv">2</span> <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># odd rows</span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;N&#39;</span>, header) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">row =</span> (row<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span>) <span class="co"># make the row numbers sequential</span>
+
+dat2 &lt;-<span class="st"> </span>dataset2 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(row <span class="op">%%</span><span class="st"> </span><span class="dv">2</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># even rows</span>
+<span class="st">  </span><span class="kw">behead</span>(<span class="st">&#39;N&#39;</span>, header) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">row =</span> row<span class="op">/</span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># make row numbers sequential</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">col =</span> col<span class="op">+</span><span class="dv">4</span>) <span class="co"># These will be the last 4 cols of new data</span>
+
+tidy_dataset2 &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">rbind</span>(dat1, dat2) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Put datsets on top of each other</span>
+<span class="st">  </span><span class="kw">select</span>(row, data_type, numeric, character, header) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">spatter</span>(header) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>row, <span class="op">-</span>numeric)</code></pre>
+<p>We’ll do a couple of finesse things to finish. First, we’ll make the names with
+no spaces (they’re a pain to write otherwise) and put the student name on
+the first column.</p>
+<pre class="sourceCode r"><code class="sourceCode r">tidy_dataset2 &lt;-<span class="st"> </span>tidy_dataset2 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">set_names</span>(<span class="kw">make.names</span>(<span class="kw">names</span>(.))) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(Student.Name, <span class="kw">everything</span>())</code></pre>
+<p><code>make.names</code> changes a vector of names into “approved” space-free format, replacing
+the space with <code>.</code>. One shortcut I’ve used is using <code>.</code> as an argument to <code>names</code>, which
+means that the <code>.</code> is replaced by the “noun” that is being acted on by the “verbs”. You will
+notice that I can also do multiple verbs together to work sequentially.</p>
 
 </div>
+</div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
 <a href="other-types-of-cleaning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="cleaning-from-excel-files-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="sec-description.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

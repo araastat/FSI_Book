@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.5.22)  24 MAR 2019 20:33
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.5.22)  25 MAR 2019 02:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1216,17 +1216,15 @@ Chapter 4.
 [22
 
 ]
-Overfull \hbox (302.23656pt too wide) in paragraph at lines 922--922
+Overfull \hbox (95.35619pt too wide) in paragraph at lines 922--922
 []\EU1/SourceCodePro(0)/m/n/12 ## -- Attaching packages -----------------------
----------------------------------------------------------- tidyverse 1.2.1 --[]
- 
+-------------------------- tidyverse 1.2.1 --[] 
  []
 
 
-Overfull \hbox (302.23656pt too wide) in paragraph at lines 947--947
+Overfull \hbox (95.35619pt too wide) in paragraph at lines 947--947
 []\EU1/SourceCodePro(0)/m/n/12 ## -- Conflicts --------------------------------
----------------------------------------------------- tidyverse_conflicts() --[]
- 
+-------------------- tidyverse_conflicts() --[] 
  []
 
 [23]
@@ -1265,24 +1263,21 @@ Package hyperref Warning: Difference (2) between bookmark levels is greater
 (hyperref)                than one, level fixed on input line 2092.
 
 [43] [44]
-Overfull \hbox (302.23653pt too wide) in paragraph at lines 2247--2247
+Overfull \hbox (95.35616pt too wide) in paragraph at lines 2247--2247
 []\EU1/SourceCodePro(0)/m/n/12 ## -- Variable type:character ------------------
------------------------------------------------------------------------------[]
- 
+---------------------------------------------[] 
  []
 
 
-Overfull \hbox (302.23653pt too wide) in paragraph at lines 2247--2247
+Overfull \hbox (95.35616pt too wide) in paragraph at lines 2247--2247
 []\EU1/SourceCodePro(0)/m/n/12 ## -- Variable type:factor ---------------------
------------------------------------------------------------------------------[]
- 
+---------------------------------------------[] 
  []
 
 
-Overfull \hbox (302.23651pt too wide) in paragraph at lines 2247--2247
+Overfull \hbox (95.35614pt too wide) in paragraph at lines 2247--2247
 []\EU1/SourceCodePro(0)/m/n/12 ## -- Variable type:numeric --------------------
------------------------------------------------------------------------------[]
- 
+---------------------------------------------[] 
  []
 
 File: img/split-apply-combine.png Graphic file (type QTm)
