@@ -15,7 +15,7 @@ and the package `rodbc` can do the same for the databases.
 
 <details>
 <summary> __Exercise:__ Install the R package `rio` into your R installation</summary>
-```{r, warning=F, message = F, eval = F}
+```{r 02-DataIngestion-1, warning=F, message = F, eval = F}
 install.packages("rio", repos = "https://cran.rstudio.com") # Note the quotes
 ```
 </details>
@@ -25,24 +25,24 @@ The `rio` package has a common way of reading data (using the `import` function)
 Importing the data will create an object called a data.frame, but if you
 just import data, it is not saved since it doesn't yet have a name.
 
-```{r, eval = F}
+```{r 02-DataIngestion-2, eval = F}
 library(rio) # activate the package
 import('data/HR_Data.csv') # can use single or double quotes
 ```
 
 So every time you import data, you have to name it. You do this using the `<-` operator. 
 
-```{r, echo = F}
+```{r 02-DataIngestion-3, echo = F}
 library(rio)
 ```
 
-```{r}
+```{r 02-DataIngestion-4}
 hr_data <- import('data/HR_Data.csv')
 ```
 
 Now, if you type `hr_data` in the console, you will see the data you imported.
 
-```{r}
+```{r 02-DataIngestion-5}
 head(hr_data) # This just displays the first 10 lines of the data
 ```
 
@@ -50,7 +50,7 @@ head(hr_data) # This just displays the first 10 lines of the data
 Seeing the data like this is certainly a bit awkward, especially for large datasets. 
 In RStudio, you can see the data somewhat like a spreadsheet with the following command:
 
-```{r, eval = F}
+```{r 02-DataIngestion-6, eval = F}
 View(hr_data)
 ```
 
@@ -64,14 +64,14 @@ We can provide finer control over importing text files using additional options 
 the `import` function ("verb"). For example, it might be good to check if all the column
 names are unique, and to make them not have spaces (which are awkward in terms of typing and functionality). You can add the option `check.names = TRUE` to the command:
 
-```{r}
+```{r 02-DataIngestion-7}
 hr_data <- import('data/HR_Data.csv', check.names = TRUE)
 ```
 
 Similarly, if you're using European data, where the decimal point is denoted by a comma, you can
 add the following option:
 
-```{r, eval = F}
+```{r 02-DataIngestion-8, eval = F}
 hr_data <- import('data/HR_Data.csv', check.names = TRUE, dec = ',')
 ```
 
@@ -83,13 +83,13 @@ either from the `Help` pane, or by typing `?import` or `help(import)` in the con
 You can specify sheet names or sheet positions for import from an Excel file. If you 
 know the sheet name, you can specify it using the `which` option:
 
-```{r}
+```{r 02-DataIngestion-9}
 dos_data <- import('data/simulatedDOS.xlsx', which='Staffing_by_Bureau')
 ```
 
 You can also grab the same sheet by position:
 
-```{r, eval = F}
+```{r 02-DataIngestion-10, eval = F}
 dos_data <- import('data/simulatedDOS.xlsx', which = 2)
 ```
 
@@ -100,7 +100,7 @@ We'll talk about how to grab multiple sheets together into a list in the data mu
 If you have data in an Access database, you can read it in pretty easily using 
 the `RODBC` package. To import one particular table from Access, you can use
 
-```{r, eval = F}
+```{r 02-DataIngestion-11, eval = F}
 library(RODBC) # activate package, case-sensitive
 channel <- odbcConnectAccess('C:/Documents/Name_of_Access_Database') # change to your
 mydata <- sqlQuery(channel, paste("select * from Name_of_table_in_database"))
@@ -109,7 +109,7 @@ mydata <- sqlQuery(channel, paste("select * from Name_of_table_in_database"))
 For other databases, the connection can be made using the `odbc` package. You can connnect 
 to a MySQL database, for example,  using 
 
-```{r, eval = F}
+```{r 02-DataIngestion-12, eval = F}
 library(odbc)
 con <- dbConnect(odbc(),
                  Driver   = "[your driver's name]",
@@ -122,7 +122,7 @@ con <- dbConnect(odbc(),
 
 and you can load a table into R using
 
-```{r, eval = F}
+```{r 02-DataIngestion-13, eval = F}
 dat <- dbGetQuery(con, 'select * from <table name>')
 ```
 

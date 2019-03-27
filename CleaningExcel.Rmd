@@ -1,5 +1,11 @@
 ## Cleaning from Excel files
 
+```{r setup-excel, include=F}
+library(rio)
+library(tidyverse)
+```
+
+
 Excel, being omnipresent, creates its own sets of difficulties. Excel, on top of being a data entry and
 analysis platform, is also a visual platform, so tables are often created to look good rather than be tidy. Things
 we commonly find in Excel files include colored rows and columns, multiple lines of headers, multiple rows with variables, typos resulting in numeric data becoming string data, and many others.
@@ -26,7 +32,7 @@ There are two powerful packages (by the same group of developers), `tidyxl` and
 
 Let's start with `tidyxl`.
 
-```{r}
+```{r CleaningExcel-1}
 library(tidyxl)
 dataset1 <- xlsx_cells('data/attendance.xlsx')
 dataset1
@@ -36,7 +42,7 @@ Notice that this pulls in a lot of meta-data in a tidy form, including informati
 about cell formatting. This will be really useful in many situations. 
 
 First, lets get rid of the rows we don't need.
-```{r}
+```{r CleaningExcel-2}
 dataset1 <- dataset1 %>% filter(row != 1, row != 4, row < 65)
 ```
 
@@ -44,7 +50,7 @@ Now we could manipulate this dataset using `tidyverse` tools, but `unpivotr` is 
 First, we are going to pull off the two headers. `unpivotr` does this using the function `behead` (suggestive?), 
 with the first argument being the direction ('N', "S", 'E','W',etc) of the table that the header is present. We will 
 also consider the first column, consisting of state names, as a header on the left.
-```{r}
+```{r CleaningExcel-3}
 library(unpivotr)
 dataset1 %>% 
   behead('N', tophead) %>% 
@@ -55,7 +61,7 @@ dataset1 %>%
 
 We need to separate the statistics and the standard errors from consecutive columns, and 
 also make them headers.
-```{r}
+```{r CleaningExcel-4}
 dataset1 %>% 
   behead('N', tophead) %>% 
   behead('N', head2) %>% 
@@ -75,7 +81,7 @@ Notice that we have actually tidy-fied this dataset, but there's missing data he
 the column headers span several rows visually but are only credited to the first column it covers.
 So we need to fill in the entries for the remaining rows with the corresponding entry from the earliest column.
 There is a function `fill` in `tidyr` that does this general trick, using a method called _last value carried forward_. 
-```{r}
+```{r CleaningExcel-5}
 dataset1 %>% 
   behead('N', tophead) %>% 
   behead('N', head2) %>% 
@@ -89,7 +95,7 @@ dataset1 %>%
 To make this really tidy, we need to make two columns titled `stats` and `se` from this. 
 We've seen this using `spread`, but there is a slightly more robust method from `unpivotr` called
 `spatter` which is meant for this unique structure. 
-```{r}
+```{r CleaningExcel-6}
 tidy_dataset <- dataset1 %>% 
   behead('N', tophead) %>% 
   behead('N', head2) %>% 
@@ -107,7 +113,7 @@ tidy_dataset
 We have to clean the `State` variable. We'll use the methods in the `stringr` 
 package, which is already loaded with the `tidyverse`.
 
-```{r}
+```{r CleaningExcel-7}
 tidy_dataset <- tidy_dataset %>% 
   mutate(State = str_remove(State, '\\.+')) %>% 
   mutate(State = str_trim(State))
@@ -123,7 +129,7 @@ The second verb trims away blank spaces before and after each entry.
 We'll hold on to this dataset for the visualization section. Just to be safe, let's 
 save it. 
 
-```{r}
+```{r CleaningExcel-8}
 saveRDS(tidy_dataset, file = 'data/attendance.rds')
 ```
 
@@ -140,7 +146,7 @@ it publicly. It is available in your files as `data/classlist.xlsx`.
 Since we're interested in background and font colors here, which are informative,
 we also need to load the format information into R.
 
-```{r, eval = T, results='hide'}
+```{r CleaningExcel-9, eval = T, results='hide'}
 library(tidyxl)
 library(unpivotr)
 
@@ -152,7 +158,7 @@ dataset2$font_color <- formats$local$font$color$rgb[format_id]
 dataset2$bg_color <- formats$local$fill$patternFill$fgColor$rgb[format_id]
 ```
 
-```{r}
+```{r CleaningExcel-10}
 unique(dataset2$font_color)
 unique(dataset2$bg_color)
 ```
@@ -162,7 +168,7 @@ So we can filter rows based on these two colors if we want.
 To tidy-fy this dataset, we realize that there are really two interweaved datasets. 
 The odd rows are one dataset and the even rows are another dataset.
 
-```{r}
+```{r CleaningExcel-11}
 dat1 <- dataset2 %>% 
   filter( row %% 2 == 1) %>% # odd rows
   behead('N', header) %>% 
@@ -185,7 +191,7 @@ We'll do a couple of finesse things to finish. First, we'll make the names with
 no spaces (they're a pain to write otherwise) and put the student name on 
 the first column.
 
-```{r}
+```{r CleaningExcel-12}
 tidy_dataset2 <- tidy_dataset2 %>% 
   set_names(make.names(names(.))) %>% 
   select(Student.Name, everything())

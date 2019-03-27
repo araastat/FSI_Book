@@ -1,0 +1,245 @@
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+
+library(tidyverse)
+
+```
+```{r lecture-pubgraphics-1, echo = F, fig.width = 3, fig.height = 3}
+knitr::include_graphics('lecture_pubgraphics_data/preview.png')
+
+```
+```{r lecture-pubgraphics-2 }
+library(ggplot2, quietly = TRUE)
+svg(filename="myPlot.svg", width = 3, height=3, pointsize = 8)
+ggplot(cars, aes(x=speed)) + geom_density()
+dev.off()
+
+```
+```{r lecture-pubgraphics-3 }
+pdf(file = "test.pdf", width=3, height=3)
+ggplot(cars, aes(x=speed)) + geom_density()
+dev.off()
+png(filename = "test.png", width=3, height=3, units = "in",res = 100)
+ggplot(cars, aes(x=speed)) + geom_density()
+dev.off()
+
+```
+```{r lecture-pubgraphics-4 }
+sem <- function(x) sqrt(var(x, na.rm=T)/sum(!is.na(x)))
+cars %>% group_by(speed) %>% summarize(meanDist = mean(dist),
+                                       semDist = sem(dist))
+
+
+```
+```{r lecture-pubgraphics-5, warning=F, message=F, fig.height=5, fig.width=5}
+sem <- function(x) sqrt(var(x, na.rm=T)/sum(!is.na(x)))
+cars %>% group_by(speed) %>% summarize(meanDist = mean(dist),
+                                       semDist = sem(dist)) %>% 
+ggplot(aes(x=speed, y=meanDist)) + geom_bar(stat="identity") +
+  geom_errorbar(aes(ymin=meanDist - semDist, ymax= meanDist+semDist))
+
+```
+```{r lecture-pubgraphics-6, fig.height=4,fig.width=7}
+ggplot(chickwts, aes(x=feed, y=weight)) + geom_boxplot()
+
+```
+```{r lecture-pubgraphics-7, fig.height=4, fig.width=7}
+chickwts <- chickwts %>% 
+  mutate(feed = fct_reorder(feed, weight, mean))
+ggplot(chickwts, aes(x=feed, y=weight)) + geom_boxplot()
+
+```
+```{r lecture-pubgraphics-8, fig.height=4, fig.width=7}
+ggplot(chickwts, aes(x=feed, y=weight)) + geom_boxplot() + 
+  labs(x = 'Feed Type', y = 'Chick Weight')
+
+```
+```{r lecture-pubgraphics-9, fig.height=4, fig.width=7}
+ggplot(chickwts, aes(x=feed, y=weight)) + geom_boxplot() + 
+  scale_y_continuous("Chick Weight", limits=c(0,500)) +
+  scale_x_discrete("Feed Type")
+
+```
+```{r lecture-pubgraphics-10, fig.height=4, fig.width=7}
+ggplot(chickwts, aes(x=feed, y=weight)) + geom_boxplot() + 
+  scale_y_log10("Chick Weight", limits=c(10,500)) +
+  scale_x_discrete("Feed Type")
+
+```
+```{r lecture-pubgraphics-11, fig.height=4, fig.width=7}
+ggplot(chickwts, aes(x=weight, fill=feed)) + geom_density(alpha=0.5) + 
+  scale_x_continuous("Chick Weight", limits=c(0,500))+
+  labs(fill = 'Feed')
+
+```
+```{r lecture-pubgraphics-12, fig.height=4, fig.width=7}
+ggplot(chickwts, aes(x=weight, fill=feed)) + geom_density(alpha=0.5) + 
+  scale_x_continuous("Chick Weight", limits=c(0,500)) +
+  scale_fill_manual("Feed Type",values = c("red","orange","yellow","green","blue","violet"))
+
+```
+```{r lecture-pubgraphics-13, fig.height=4, fig.width=7}
+ggplot(chickwts, aes(x=weight, fill=feed)) + geom_density(alpha=0.5) + 
+  scale_x_continuous("Chick Weight", limits=c(0,500)) +
+  scale_fill_brewer("Feed Type")
+
+```
+```{r lecture-pubgraphics-14, fig.height=4, fig.width=7}
+ggplot(chickwts, aes(x=weight, fill=feed)) + geom_density(alpha=0.5) + 
+  scale_x_continuous("Chick Weight", limits=c(0,500)) +
+  scale_fill_grey("Feed Type")
+
+```
+```{r lecture-pubgraphics-15, fig.height=4, fig.width=7}
+ggplot(chickwts, aes(x=weight, fill=feed)) + geom_density(alpha=0.5) + 
+  scale_x_continuous("Chick Weight", limits=c(0,500)) +
+  scale_fill_discrete("Feed Type") + theme_bw()
+
+```
+```{r lecture-pubgraphics-16, fig.height=4, fig.width=7}
+ggplot(chickwts, aes(x=weight, fill=feed)) + geom_density(alpha=0.5) + 
+  scale_x_continuous("Chick Weight", limits=c(0,500)) +
+  scale_fill_discrete("Feed Type") + theme_minimal()
+
+```
+```{r lecture-pubgraphics-17, eval = F}
+## mytheme <- theme(axis.ticks = element_blank(),
+##                  axis.text = element_text(color = 'blue', family='Times New Roman'),
+##                  axis.title = element_text(color = 'red', family = 'Times New Roman',
+##                                            size = 20))
+## ggplot(chickwts, aes(x = weight, fill = feed))+geom_density(alpha = 0.5) +
+##   labs(x = 'Chick Weight', y = '', fill  = 'Feed Type') +
+##   mytheme
+
+```
+```{r lecture-pubgraphics-18, echo = F}
+mytheme <- theme(axis.ticks = element_blank(),
+                 axis.text = element_text(color = 'blue', family='Times New Roman'),
+                 axis.title = element_text(color = 'red', family = 'Times New Roman',
+                                           size = 20))
+ggplot(chickwts, aes(x = weight, fill = feed))+geom_density(alpha = 0.5) +
+  labs(x = 'Chick Weight', y = '', fill  = 'Feed Type') + 
+  mytheme
+
+```
+```{r lecture-pubgraphics-19, out.width = "700px", echo=FALSE}
+knitr::include_graphics("script.png")
+
+```
+```{r lecture-pubgraphics-20, echo = T, fig.align = 'center', eval = F}
+## # install.packages('cowplot')
+## library(cowplot)
+## p1 <- ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+##   geom_point() + facet_grid(. ~ Species) + stat_smooth(method = "lm") +
+##   background_grid(major = 'y', minor = "none") +
+##   panel_border() + theme(legend.position = "none")
+## 
+## # plot B
+## p2 <- ggplot(iris, aes(Sepal.Length, fill = Species)) +
+##   geom_density(alpha = .7) + theme(legend.justification = "top")
+## p2a <- p2 + theme(legend.position = "none")
+## 
+## # plot C
+## p3 <- ggplot(iris, aes(Sepal.Width, fill = Species)) +
+##   geom_density(alpha = .7) + theme(legend.position = "none")
+## 
+## # legend
+## legend <- get_legend(p2)
+## 
+## # align all plots vertically
+## plots <- align_plots(p1, p2a, p3, align = 'v', axis = 'l')
+## 
+## # put together bottom row and then everything
+## bottom_row <- plot_grid(plots[[2]], plots[[3]], legend, labels = c("B", "C"), rel_widths = c(1, 1, .3), nrow = 1)
+## plot_grid(plots[[1]], bottom_row, labels = c("A"), ncol = 1)
+## 
+
+```
+```{r lecture-pubgraphics-21, echo = F, fig.align = 'center', eval = T, message=F, warning=F}
+# install.packages('cowplot')
+library(cowplot)
+p1 <- ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) + 
+  geom_point() + facet_grid(. ~ Species) + stat_smooth(method = "lm") +
+  background_grid(major = 'y', minor = "none") + 
+  panel_border() + theme(legend.position = "none")
+
+# plot B
+p2 <- ggplot(iris, aes(Sepal.Length, fill = Species)) +
+  geom_density(alpha = .7) + theme(legend.justification = "top")
+p2a <- p2 + theme(legend.position = "none")
+
+# plot C
+p3 <- ggplot(iris, aes(Sepal.Width, fill = Species)) +
+  geom_density(alpha = .7) + theme(legend.position = "none")
+
+# legend
+legend <- get_legend(p2)
+
+# align all plots vertically
+plots <- align_plots(p1, p2a, p3, align = 'v', axis = 'l')
+
+# put together bottom row and then everything
+bottom_row <- plot_grid(plots[[2]], plots[[3]], legend, labels = c("B", "C"), rel_widths = c(1, 1, .3), nrow = 1)
+plot_grid(plots[[1]], bottom_row, labels = c("A"), ncol = 1)
+
+
+```
+```{r lecture-pubgraphics-22, eval = F, warning=F, message=F, echo = T}
+## library(ggpubr)
+## data("ToothGrowth")
+## df <- ToothGrowth
+## df$dose <- as.factor(df$dose)
+## 
+## # Create some plots
+## # ::::::::::::::::::::::::::::::::::::::::::::::::::
+## # Box plot
+## bxp <- ggboxplot(df, x = "dose", y = "len",
+##     color = "dose", palette = "jco")
+## # Dot plot
+## dp <- ggdotplot(df, x = "dose", y = "len",
+##     color = "dose", palette = "jco")
+## ggarrange(bxp, dp,  common.legend = TRUE)
+## 
+
+```
+```{r lecture-pubgraphics-23, echo = F, eval = T, warning=F, message=F}
+library(ggpubr)
+data("ToothGrowth")
+df <- ToothGrowth
+df$dose <- as.factor(df$dose)
+
+# Create some plots
+# ::::::::::::::::::::::::::::::::::::::::::::::::::
+# Box plot
+bxp <- ggboxplot(df, x = "dose", y = "len",
+    color = "dose", palette = "jco")
+# Dot plot
+dp <- ggdotplot(df, x = "dose", y = "len",
+    color = "dose", palette = "jco")
+ggarrange(bxp, dp,  common.legend = TRUE)
+
+
+```
+```{r lecture-pubgraphics-24, eval = F}
+## plt <- ggplot(bl, aes(x = estimate)) + geom_histogram(bins = 50)+#geom_density() +
+##   facet_grid(Event ~ Race, scales = 'free', switch = 'y', space = 'free_x') +
+##   geom_vline(xintercept = 1, linetype = 2) +
+##  geom_segment(data = bl2, aes(x = estimate, xend=estimate, yend = 5, y = hts),
+##                color='red', size = 1.5, arrow = arrow(length = unit(.2, 'cm')))+
+##   scale_x_continuous(breaks = c(1, seq(0.7, 1.8, by = 0.2)))+ # Unified the x-axis ticks
+##   labs(x = 'Adjusted HR, compared to Whites', y = '') +
+##   theme(strip.text = element_text(size = 14, face = 'bold'), #<<
+##         strip.text.y = element_text(angle = 180), # Rotate the y-axis labels #<<
+##         strip.background.x = element_rect(fill = 'white'), #<<
+##         strip.placement = 'outside', # Move labels outside the borders #<<
+##         axis.text.y = element_blank(), #<<
+##         axis.ticks.y = element_blank(), #<<
+##         axis.text.x = element_text(size = 8), #<<
+##         panel.spacing.x = unit(2, 'lines')) #<<
+
+```
+```{r lecture-pubgraphics-25, echo=F}
+knitr::include_graphics('lecture_pubgraphics_data/Figure2a.png')
+```
+

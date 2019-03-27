@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Chapter 6 Joins | PS_312.utf8</title>
+  <meta name="description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Chapter 6 Joins | PS_312.utf8" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://www.araastat.com/FSI_Book" />
+  
+  <meta property="og:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
+  <meta name="github-repo" content="araastat/FSI_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Joins | PS_312.utf8" />
+  
+  <meta name="twitter:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
+  
+
+<meta name="author" content="Abhijit Dasgupta, PhD">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="dates.html">
+<link rel="next" href="data-summaries.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="http://www.araastat.com/FSI_Workshop">PS 312</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a><ul>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i>Reproducibility</a></li>
+</ul></li>
+<li class="part"><span><b>Day One: Starting Up</b></span></li>
+<li class="chapter" data-level="1" data-path="what-is-r.html"><a href="what-is-r.html"><i class="fa fa-check"></i><b>1</b> What is R?</a><ul>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html"><i class="fa fa-check"></i>A note on coding and programming</a><ul>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html#coding"><i class="fa fa-check"></i>Coding</a></li>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html#r-the-language"><i class="fa fa-check"></i>R, the language</a></li>
+</ul></li>
+<li class="chapter" data-level="1.1" data-path="a-short-introduction-to-r-objects.html"><a href="a-short-introduction-to-r-objects.html"><i class="fa fa-check"></i><b>1.1</b> A short introduction to R objects</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="a-short-introduction-to-r-objects.html"><a href="a-short-introduction-to-r-objects.html#objects"><i class="fa fa-check"></i><b>1.1.1</b> Objects</a></li>
+<li class="chapter" data-level="1.1.2" data-path="a-short-introduction-to-r-objects.html"><a href="a-short-introduction-to-r-objects.html#extracting-elements-from-objects"><i class="fa fa-check"></i><b>1.1.2</b> Extracting elements from objects</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="r-packages.html"><a href="r-packages.html"><i class="fa fa-check"></i><b>1.2</b> R Packages</a><ul>
+<li class="chapter" data-level="" data-path="r-packages.html"><a href="r-packages.html#installing-packages"><i class="fa fa-check"></i>Installing packages</a></li>
+<li class="chapter" data-level="1.2.1" data-path="r-packages.html"><a href="r-packages.html#loading-packages-in-r"><i class="fa fa-check"></i><b>1.2.1</b> Loading packages in R</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="r-resources.html"><a href="r-resources.html"><i class="fa fa-check"></i><b>1.3</b> R Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="rstudio-your-development-environment-authoring-program.html"><a href="rstudio-your-development-environment-authoring-program.html"><i class="fa fa-check"></i><b>2</b> RStudio, your development environment (authoring program)</a><ul>
+<li class="chapter" data-level="" data-path="starting-rstudio.html"><a href="starting-rstudio.html"><i class="fa fa-check"></i>Starting RStudio</a></li>
+<li class="chapter" data-level="" data-path="other-panes.html"><a href="other-panes.html"><i class="fa fa-check"></i>Other panes</a></li>
+<li class="chapter" data-level="2.1" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>2.1</b> Rstudio workflow</a></li>
+<li class="chapter" data-level="2.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>2.2</b> RStudio Projects</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="loading-data-into-r.html"><a href="loading-data-into-r.html"><i class="fa fa-check"></i><b>3</b> Loading data into R</a><ul>
+<li class="chapter" data-level="3.1" data-path="finer-control-of-csv-imports.html"><a href="finer-control-of-csv-imports.html"><i class="fa fa-check"></i><b>3.1</b> Finer control of CSV imports</a></li>
+<li class="chapter" data-level="3.2" data-path="finer-control-of-excel-imports.html"><a href="finer-control-of-excel-imports.html"><i class="fa fa-check"></i><b>3.2</b> Finer control of Excel imports</a></li>
+<li class="chapter" data-level="3.3" data-path="importing-data-from-databases.html"><a href="importing-data-from-databases.html"><i class="fa fa-check"></i><b>3.3</b> Importing data from databases</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="sec-data-munging.html"><a href="sec-data-munging.html"><i class="fa fa-check"></i><b>4</b> Data Munging</a><ul>
+<li class="chapter" data-level="4.1" data-path="tidy-data.html"><a href="tidy-data.html"><i class="fa fa-check"></i><b>4.1</b> Tidy data</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="tidy-data.html"><a href="tidy-data.html#variable-in-column-names"><i class="fa fa-check"></i><b>4.1.1</b> Variable in column names</a></li>
+<li class="chapter" data-level="4.1.2" data-path="tidy-data.html"><a href="tidy-data.html#multiple-variables-in-column-names"><i class="fa fa-check"></i><b>4.1.2</b> Multiple variables in column names</a></li>
+<li class="chapter" data-level="4.1.3" data-path="tidy-data.html"><a href="tidy-data.html#variables-stored-in-rows-and-columns"><i class="fa fa-check"></i><b>4.1.3</b> Variables stored in rows and columns</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="data-cleaning.html"><a href="data-cleaning.html"><i class="fa fa-check"></i><b>4.2</b> Data cleaning</a><ul>
+<li class="chapter" data-level="" data-path="data-cleaning.html"><a href="data-cleaning.html#exercise"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="cleaning-up-data-types-and-values.html"><a href="cleaning-up-data-types-and-values.html"><i class="fa fa-check"></i><b>4.3</b> Cleaning up data types and values</a></li>
+<li class="chapter" data-level="4.4" data-path="other-types-of-cleaning.html"><a href="other-types-of-cleaning.html"><i class="fa fa-check"></i><b>4.4</b> Other types of cleaning</a></li>
+<li class="chapter" data-level="4.5" data-path="cleaning-from-excel-files.html"><a href="cleaning-from-excel-files.html"><i class="fa fa-check"></i><b>4.5</b> Cleaning from Excel files</a><ul>
+<li class="chapter" data-level="" data-path="cleaning-from-excel-files.html"><a href="cleaning-from-excel-files.html#dealing-with-visual-formating-colors"><i class="fa fa-check"></i>Dealing with visual formating (colors)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="sec-description.html"><a href="sec-description.html"><i class="fa fa-check"></i><b>5</b> Describing data</a><ul>
+<li class="chapter" data-level="" data-path="sec-description.html"><a href="sec-description.html#factors-or-categorical-variables"><i class="fa fa-check"></i>Factors or categorical variables</a></li>
+<li class="chapter" data-level="5.1" data-path="split-apply-combine-a-k-a-mapreduce.html"><a href="split-apply-combine-a-k-a-mapreduce.html"><i class="fa fa-check"></i><b>5.1</b> Split-apply-combine, a.k.a. MapReduce</a></li>
+<li class="chapter" data-level="5.2" data-path="joins.html"><a href="joins.html"><i class="fa fa-check"></i><b>5.2</b> Joins</a></li>
+<li class="chapter" data-level="5.3" data-path="the-select-function.html"><a href="the-select-function.html"><i class="fa fa-check"></i><b>5.3</b> The <code>select</code> function</a></li>
+<li class="chapter" data-level="5.4" data-path="dates.html"><a href="dates.html"><i class="fa fa-check"></i><b>5.4</b> Dates</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="joins-1.html"><a href="joins-1.html"><i class="fa fa-check"></i><b>6</b> Joins</a></li>
+<li class="chapter" data-level="7" data-path="data-summaries.html"><a href="data-summaries.html"><i class="fa fa-check"></i><b>7</b> Data summaries</a><ul>
+<li class="chapter" data-level="7.1" data-path="scoped-verbs.html"><a href="scoped-verbs.html"><i class="fa fa-check"></i><b>7.1</b> Scoped verbs</a></li>
+<li class="chapter" data-level="7.2" data-path="factors-categorical-variables.html"><a href="factors-categorical-variables.html"><i class="fa fa-check"></i><b>7.2</b> Factors (categorical variables)</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="split-apply-combine.html"><a href="split-apply-combine.html"><i class="fa fa-check"></i><b>8</b> Split-apply-combine</a></li>
+<li class="chapter" data-level="9" data-path="graphics.html"><a href="graphics.html"><i class="fa fa-check"></i><b>9</b> Data visualization</a><ul>
+<li class="chapter" data-level="9.1" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>9.1</b> ggplot2</a></li>
+<li class="chapter" data-level="9.2" data-path="single-continuous-variable.html"><a href="single-continuous-variable.html"><i class="fa fa-check"></i><b>9.2</b> Single continuous variable</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="single-continuous-variable.html"><a href="single-continuous-variable.html#histogram"><i class="fa fa-check"></i><b>9.2.1</b> Histogram</a></li>
+<li class="chapter" data-level="9.2.2" data-path="single-continuous-variable.html"><a href="single-continuous-variable.html#density-plot"><i class="fa fa-check"></i><b>9.2.2</b> Density plot</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="bar-plots.html"><a href="bar-plots.html"><i class="fa fa-check"></i><b>9.3</b> Bar plots</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="bar-plots.html"><a href="bar-plots.html#exercise-1"><i class="fa fa-check"></i><b>9.3.1</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="two-continuous-variables.html"><a href="two-continuous-variables.html"><i class="fa fa-check"></i><b>9.4</b> Two continuous variables</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="two-continuous-variables.html"><a href="two-continuous-variables.html#adding-a-best-fitting-straight-line"><i class="fa fa-check"></i><b>9.4.1</b> Adding a best fitting straight line</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="time-series.html"><a href="time-series.html"><i class="fa fa-check"></i><b>9.5</b> Time series</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="time-series.html"><a href="time-series.html#exercise-2"><i class="fa fa-check"></i><b>9.5.1</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="continuous-variable-with-discrete-variable.html"><a href="continuous-variable-with-discrete-variable.html"><i class="fa fa-check"></i><b>9.6</b> Continuous variable with discrete variable</a><ul>
+<li class="chapter" data-level="9.6.1" data-path="continuous-variable-with-discrete-variable.html"><a href="continuous-variable-with-discrete-variable.html#boxplot"><i class="fa fa-check"></i><b>9.6.1</b> Boxplot</a></li>
+<li class="chapter" data-level="9.6.2" data-path="continuous-variable-with-discrete-variable.html"><a href="continuous-variable-with-discrete-variable.html#violin-plot"><i class="fa fa-check"></i><b>9.6.2</b> Violin plot</a></li>
+<li class="chapter" data-level="9.6.3" data-path="continuous-variable-with-discrete-variable.html"><a href="continuous-variable-with-discrete-variable.html#exercise-3"><i class="fa fa-check"></i><b>9.6.3</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="9.7" data-path="grouped-visualizations.html"><a href="grouped-visualizations.html"><i class="fa fa-check"></i><b>9.7</b> Grouped visualizations</a></li>
+<li class="chapter" data-level="9.8" data-path="maps.html"><a href="maps.html"><i class="fa fa-check"></i><b>9.8</b> Maps</a></li>
+<li class="chapter" data-level="9.9" data-path="stitching-graphs-together-.html"><a href="stitching-graphs-together-.html"><i class="fa fa-check"></i><b>9.9</b> Stitching graphs together.</a></li>
+<li class="chapter" data-level="9.10" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i><b>9.10</b> Interactive graphics</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>10</b> Functions</a></li>
+<li class="chapter" data-level="11" data-path="modeling.html"><a href="modeling.html"><i class="fa fa-check"></i><b>11</b> Modeling</a><ul>
+<li class="chapter" data-level="11.1" data-path="model-selection.html"><a href="model-selection.html"><i class="fa fa-check"></i><b>11.1</b> Model selection</a></li>
+<li class="chapter" data-level="11.2" data-path="many-models.html"><a href="many-models.html"><i class="fa fa-check"></i><b>11.2</b> Many models</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="predictive-modeling.html"><a href="predictive-modeling.html"><i class="fa fa-check"></i><b>12</b> Predictive modeling</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><div class="line-block">PS 312: Programming with R<br />
+Course Notes</div></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="joins-1" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Joins</h1>
+<p>We are often in the situation that pieces of data are resident in different tables,
+and we need to put them together for analyses. Usually each table will have some type
+of identifier variable that identifies the unit with which each observation is
+associated. Joins use these identifiers to put datasets together while maintaining
+correspondence of the data with the actual units.</p>
+<p>There are 4 primary kinds of joins:</p>
+<p><img src="img/joins.png" /></p>
+<p>Let’s summarize what can happen with joins:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Type</th>
+<th align="left">Rows</th>
+<th align="left">Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">inner</td>
+<td align="left">same or decrease</td>
+<td align="left">increase</td>
+</tr>
+<tr class="even">
+<td align="left">left</td>
+<td align="left">same as left dataset</td>
+<td align="left">increase</td>
+</tr>
+<tr class="odd">
+<td align="left">right</td>
+<td align="left">same as right dataset</td>
+<td align="left">increase</td>
+</tr>
+<tr class="even">
+<td align="left">full</td>
+<td align="left">increase</td>
+<td align="left">increase</td>
+</tr>
+</tbody>
+</table>
+<p>We’ll play with two simulated datasets looking at staffing and real estate allocation at
+DOS. The question we’re asking is, what is the area avaiable per capita in each Bureau.</p>
+<pre class="sourceCode r"><code class="sourceCode r">staffing_data &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="st">&#39;data/Staffing_by_Bureau.csv&#39;</span>)
+real_estate &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="st">&#39;data/DoS_Real_Estate_Allocation.csv&#39;</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">staffing_data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tibble</span>()</code></pre>
+<pre><code># A tibble: 10,000 x 6
+   Bureau                      Gender Grade Title    Name      YearsService
+   &lt;chr&gt;                       &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;            &lt;int&gt;
+ 1 Protocol (S/CPR)            female FS1   Manager  Cathy Ca…           13
+ 2 Administration (A)          male   GS-9  Team Me… Jeffery …           13
+ 3 Intelligence and Research … male   FS-6  Analyst  Max Green           11
+ 4 Mission to the United Nati… male   FS-3  Manager  Donald A…            7
+ 5 Foreign Missions (OFM)      male   FS-6  Team Me… Thomas L…           22
+ 6 International Narcotics an… male   GS-8  Team Me… Joseph A…           12
+ 7 Administration (A)          male   GS-12 Analyst  Michael …            6
+ 8 Intelligence and Research … male   FS-5  Team Me… Jesus Sh…            2
+ 9 Science &amp; Technology Advis… male   N/A   Manager  Lawrence…           19
+10 Administration (A)          female FS-8  Team Me… Jennie C…           17
+# … with 9,990 more rows</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">real_estate <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tibble</span>()</code></pre>
+<pre><code># A tibble: 666 x 4
+   Building Bureau               Location  Size
+   &lt;chr&gt;    &lt;chr&gt;                   &lt;int&gt; &lt;int&gt;
+ 1 HST      Administration (A)       4779   640
+ 2 SA2      Administration (A)       4801  1090
+ 3 HST      Administration (A)       5109  1040
+ 4 HST      Administration (A)       3717  1620
+ 5 SA4      Administration (A)       3940  1390
+ 6 HST      Administration (A)       3661  1480
+ 7 HST      Administration (A)       3374  1770
+ 8 HST      Administration (A)       3387  1940
+ 9 SA10     African Affairs (AF)     2605   640
+10 HST      African Affairs (AF)     3573   720
+# … with 656 more rows</code></pre>
+<p>First we summarize the data by Bureau</p>
+<pre class="sourceCode r"><code class="sourceCode r">staff_summary &lt;-<span class="st"> </span>staffing_data <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(Bureau) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tally</span>(<span class="dt">name =</span> <span class="st">&#39;Pop&#39;</span>)
+realestate_summary &lt;-<span class="st"> </span>real_estate <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st"> </span><span class="kw">group_by</span>(Bureau) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">Size =</span> <span class="kw">sum</span>(Size))</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">staff_summary <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">4</span>)</code></pre>
+<pre><code># A tibble: 4 x 2
+  Bureau                                            Pop
+  &lt;chr&gt;                                           &lt;int&gt;
+1 Administration (A)                                454
+2 African Affairs (AF)                               42
+3 Allowances (A/OPR/ALS)                             90
+4 Arms Control, Verification and Compliance (AVC)    98</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">realestate_summary <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">4</span>)</code></pre>
+<pre><code># A tibble: 4 x 2
+  Bureau                                           Size
+  &lt;chr&gt;                                           &lt;int&gt;
+1 Administration (A)                              10970
+2 African Affairs (AF)                            26750
+3 Allowances (A/OPR/ALS)                           3010
+4 Arms Control, Verification and Compliance (AVC)  8410</code></pre>
+<p>Then we join the two datasets together. They will join based on the Bureau variable,
+which is common to both datasets.</p>
+<pre class="sourceCode r"><code class="sourceCode r">staff_summary <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">inner_join</span>(realestate_summary, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;Bureau&quot;</span> =<span class="st"> &quot;Bureau&quot;</span>))</code></pre>
+<pre><code># A tibble: 54 x 3
+   Bureau                                             Pop  Size
+   &lt;chr&gt;                                            &lt;int&gt; &lt;int&gt;
+ 1 Administration (A)                                 454 10970
+ 2 African Affairs (AF)                                42 26750
+ 3 Allowances (A/OPR/ALS)                              90  3010
+ 4 Arms Control, Verification and Compliance (AVC)     98  8410
+ 5 Budget and Planning (BP)                           168  7500
+ 6 Chief Information Officer (CIO)                    222 11390
+ 7 Comptroller and Global Financial Services (CGFS)   169 15700
+ 8 Conflict and Stabilization Operations (CSO)        392 14970
+ 9 Consular Affairs (CA)                              141 36610
+10 Counterterrorism (CT)                              324  9980
+# … with 44 more rows</code></pre>
+<p>Once we have joined the datasets, we can now create a variable that computes the area per capita, and then we sort the rows of the data in order of descending area per capita.</p>
+<pre class="sourceCode r"><code class="sourceCode r">staff_summary <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">inner_join</span>(realestate_summary, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;Bureau&quot;</span> =<span class="st"> &quot;Bureau&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">unit_area =</span> Size<span class="op">/</span>Pop) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(unit_area)</code></pre>
+<pre><code># A tibble: 54 x 4
+   Bureau                                               Pop  Size unit_area
+   &lt;chr&gt;                                              &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;
+ 1 Global Youth Issues (GYI)                            345  2090      6.06
+ 2 Policy Planning Staff (S/P)                          240  2420     10.1 
+ 3 Science &amp; Technology Adviser (STAS)                  305  4240     13.9 
+ 4 Foreign Missions (OFM)                               311  4420     14.2 
+ 5 Trafficking in Persons (TIP)                         247  5150     20.9 
+ 6 Medical Services (MED)                               308  6760     21.9 
+ 7 Protocol (S/CPR)                                     327  7730     23.6 
+ 8 Administration (A)                                   454 10970     24.2 
+ 9 Oceans and International Environmental and Scient…   330  8420     25.5 
+10 Energy Resources (ENR)                               369 10890     29.5 
+# … with 44 more rows</code></pre>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="dates.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-summaries.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["PS_312.pdf"],
+"toc": {
+"collapse": "subsection"
+},
+"toolbar": {
+"position": "static"
+},
+"search": true,
+"scroll_highlight": true
+});
+});
+</script>
+
+</body>
+
+</html>

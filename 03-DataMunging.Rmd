@@ -1,5 +1,11 @@
 # Data Munging {#sec:data-munging} 
 
+```{r setup-dm, include=F}
+library(rio)
+library(tidyverse)
+```
+
+
 
 Data munging refers to the work of transforming data to make it usable for a computer. 
 Data unfortunately comes in all shapes and sizes, with all sorts of issues, so this 
@@ -40,7 +46,7 @@ so we are covered.
 
 ### Variable in column names
 
-```{r}
+```{r 03-DataMunging-1}
 library(tidyverse)
 pew <- import('data/pew.csv')
 head(pew)
@@ -52,7 +58,7 @@ dataset: religion, income and frequency. We can achieve this using a function ca
 takes a wide dataset and makes it tall. We will do this by forming a pipeline (think of this as a sentence),
 starting with the dataset.
 
-```{r}
+```{r 03-DataMunging-2}
 pew %>% 
   gather(income, frequency, -religion)
 ```
@@ -68,7 +74,7 @@ This is now a tidy dataset, since each column is a single variable, each row is 
 
 ### Multiple variables in column names
 
-```{r}
+```{r 03-DataMunging-3}
 tb <- import('data/tb.csv') %>% as_tibble()
 head(tb)
 ```
@@ -77,21 +83,21 @@ Notice that the column names contain both sex and age group data. First we'll `g
 the sex/age columns, as before. Note that there are many missing values in this dataset. These
 are denoted in R by `NA`.
 
-```{r}
+```{r 03-DataMunging-4}
 tb %>% 
   gather(sex_age, n, -iso2, -year, -fu)
 ```
 
 Since there are a lot of missing values here, we can drop them in the above step by adding an option.
 
-```{r}
+```{r 03-DataMunging-5}
 tb %>% gather(sex_age, n, -iso2, -year, -fu, na.rm=T)
 ```
 
 We can now use the function `separate` to separate the data in the `sex_age` column into sex and age. In this
 case we have have the data in a fixed width format (the 1st element is the sex data), so we can use that:
 
-```{r}
+```{r 03-DataMunging-6}
 tb %>% 
   gather(sex_age, n, -iso2, -year, -fu, na.rm=T) %>% 
   separate(sex_age, c("sex","age"), sep=1)
@@ -101,7 +107,7 @@ If the data was separated by a symbol, like `_`, we would use `sep = "_"` instea
 
 ### Variables stored in rows and columns
 
-```{r}
+```{r 03-DataMunging-7}
 weather <- import('data/weather.csv') %>% as_tibble()
 weather
 ```
@@ -111,7 +117,7 @@ day, two values are noted -- the max (`tmax`) and min (`tmin`) temperature that 
 
 We start by gathering the extra columns as before:
 
-```{r}
+```{r 03-DataMunging-8}
 weather %>% 
   gather(day, temp, d1:d31)
 ```
@@ -122,7 +128,7 @@ is originally from creating sequences of numbers. See what happens if you type `
 Now, for each date, we have two _rows_ of data. These need to be two _columns_ of data. So we need to do the
 reverse operation from `gather`. This is called `spread`. 
 
-```{r}
+```{r 03-DataMunging-9}
 weather %>% 
   gather(date, temp, d1:d31) %>% 
   spread(element, temp)
@@ -137,7 +143,7 @@ Mainly, we need to fix the `dat` column to make it numeric. Note the odd orderin
 is an _alphabetical_ ordering rather  than a _numeric_ ordering. We'll now add to our pipeline (sentence) to make this 
 happen:
 
-```{r}
+```{r 03-DataMunging-10}
 weather %>% 
   gather(date, temp, d1:d31) %>% 
   spread(element, temp) %>% 
@@ -150,7 +156,7 @@ or by creating a new variable.
 The data is still not quite in the right format, since the date column is in a weird order. We can add
 another verb to this pipe to fix that: `arrange`.
 
-```{r}
+```{r 03-DataMunging-11}
 weather %>% 
   gather(date, temp, d1:d31) %>% 
   spread(element, temp) %>% 
@@ -160,7 +166,7 @@ weather %>%
 
 Not quite, right? We're not used to seeing all the 1st of the months together, and so forth. We want all the daes for month 1, then all the dates for month two, and so on. This can be done by modifying the `arrange` command, by sorting first by month and then by date (essentially within month).
 
-```{r}
+```{r 03-DataMunging-12}
 weather %>% 
   gather(date, temp, d1:d31) %>% 
   spread(element, temp) %>% 
@@ -170,7 +176,7 @@ weather %>%
 
 Finally, if we want to save this, we need to assign this final product a name.
 
-```{r}
+```{r 03-DataMunging-13}
 weather2 <- weather %>% 
   gather(date, temp, d1:d31) %>% 
   spread(element, temp) %>% 
@@ -190,14 +196,14 @@ position as well as name, so `gather(date, avg_trips, -1, -mode)` is valid to no
 
 After you have tidied your data, lets call that tidy dataset `mbta2`. 
 
-```{r, echo = F, message=F}
+```{r 03-DataMunging-14, echo = F, message=F}
 mbta <- import('data/mbta.xlsx', skip = 1) %>% as_tibble()
 mbta2 <- mbta %>% 
   gather(date, avg_trips, -1, -mode) %>% 
   separate(date, c("year", "month"), sep = '-')
 ```
 
-```{r}
+```{r 03-DataMunging-15}
 mbta2
 ```
 
@@ -210,14 +216,6 @@ with `TOTAL`.
 
 First, let's deal with the type issue.
 
-```{r}
-mbta2 %>% 
-  mutate(
-    year = parse_number(year),
-    month = parse_number(month),
-    avg_trips = parse_number(avg_trips)
-  )
-```
 
 > A more advanced version of this operation would be 
 ```
@@ -227,7 +225,7 @@ mbta2 %>%
 
 Next we want to get rid of that first column. The verb we'll use here is `select`. 
 
-```{r}
+```{r 03-DataMunging-16}
 mbta2 %>% 
   mutate(
     year = parse_number(year),
@@ -239,7 +237,7 @@ mbta2 %>%
 
 Lastly, we want to get rid of rows where mode equals TOTAL or "All Modes by Qtr". Our verb here is `filter`.
 
-```{r}
+```{r 03-DataMunging-17}
 mbta3 <- mbta2 %>% 
   mutate(
     year = parse_number(year),

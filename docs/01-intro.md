@@ -1,4 +1,4 @@
-# (PART\*) Starting up {-}
+# (PART\*) Day One: Starting Up {-}
 
 # What is R?
 
@@ -243,7 +243,7 @@ extract the 4th column, you could use either `mtcars[,4]` or `mtcars[[4]]`. To e
 you'd again use the matrix notation as `mtcars[2,]`. 
 
 If we want to extract the mpg, cyl and disp variables at once to create a new `data.frame`, you can 
-use either the matrix notation `mtcars[,c('mpg','cyl','disp')]` or the list notation `mtcars[[c('mpg','cyl','disp')]]`.  The `c()` function stands for _concatenate_ and is the function used to __create__ vectors. We'll actually see a much more user-friendly way of doing this in the data munging section\@ref(sec:data-munging). 
+use either the matrix notation `mtcars[,c('mpg','cyl','disp')]` or the list notation `mtcars[[c('mpg','cyl','disp')]]`.  The `c()` function stands for _concatenate_ and is the function used to __create__ vectors. We'll actually see a much more user-friendly way of doing this in the data munging section (Chapter \@ref(sec:data-munging)). 
 
 > __Advanced note:__ A `data.frame` object is really a `list` object where all the elements are vectors
 of the same length, and which happen to have names assigned to them. The object also looks like a matrix

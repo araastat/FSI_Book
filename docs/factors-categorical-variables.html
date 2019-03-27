@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>7.2 Factors (categorical variables) | PS_312.utf8</title>
+  <meta name="description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="7.2 Factors (categorical variables) | PS_312.utf8" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://www.araastat.com/FSI_Book" />
+  
+  <meta property="og:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
+  <meta name="github-repo" content="araastat/FSI_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7.2 Factors (categorical variables) | PS_312.utf8" />
+  
+  <meta name="twitter:description" content="These are course notes for the FSI course ‘Programming with R’ (PS 312) taught over 3 days" />
+  
+
+<meta name="author" content="Abhijit Dasgupta, PhD">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="scoped-verbs.html">
+<link rel="next" href="split-apply-combine.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="http://www.araastat.com/FSI_Workshop">PS 312</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a><ul>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i>Reproducibility</a></li>
+</ul></li>
+<li class="part"><span><b>Day One: Starting Up</b></span></li>
+<li class="chapter" data-level="1" data-path="what-is-r.html"><a href="what-is-r.html"><i class="fa fa-check"></i><b>1</b> What is R?</a><ul>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html"><i class="fa fa-check"></i>A note on coding and programming</a><ul>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html#coding"><i class="fa fa-check"></i>Coding</a></li>
+<li class="chapter" data-level="" data-path="a-note-on-coding-and-programming.html"><a href="a-note-on-coding-and-programming.html#r-the-language"><i class="fa fa-check"></i>R, the language</a></li>
+</ul></li>
+<li class="chapter" data-level="1.1" data-path="a-short-introduction-to-r-objects.html"><a href="a-short-introduction-to-r-objects.html"><i class="fa fa-check"></i><b>1.1</b> A short introduction to R objects</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="a-short-introduction-to-r-objects.html"><a href="a-short-introduction-to-r-objects.html#objects"><i class="fa fa-check"></i><b>1.1.1</b> Objects</a></li>
+<li class="chapter" data-level="1.1.2" data-path="a-short-introduction-to-r-objects.html"><a href="a-short-introduction-to-r-objects.html#extracting-elements-from-objects"><i class="fa fa-check"></i><b>1.1.2</b> Extracting elements from objects</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="r-packages.html"><a href="r-packages.html"><i class="fa fa-check"></i><b>1.2</b> R Packages</a><ul>
+<li class="chapter" data-level="" data-path="r-packages.html"><a href="r-packages.html#installing-packages"><i class="fa fa-check"></i>Installing packages</a></li>
+<li class="chapter" data-level="1.2.1" data-path="r-packages.html"><a href="r-packages.html#loading-packages-in-r"><i class="fa fa-check"></i><b>1.2.1</b> Loading packages in R</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="r-resources.html"><a href="r-resources.html"><i class="fa fa-check"></i><b>1.3</b> R Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="rstudio-your-development-environment-authoring-program.html"><a href="rstudio-your-development-environment-authoring-program.html"><i class="fa fa-check"></i><b>2</b> RStudio, your development environment (authoring program)</a><ul>
+<li class="chapter" data-level="" data-path="starting-rstudio.html"><a href="starting-rstudio.html"><i class="fa fa-check"></i>Starting RStudio</a></li>
+<li class="chapter" data-level="" data-path="other-panes.html"><a href="other-panes.html"><i class="fa fa-check"></i>Other panes</a></li>
+<li class="chapter" data-level="2.1" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>2.1</b> Rstudio workflow</a></li>
+<li class="chapter" data-level="2.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>2.2</b> RStudio Projects</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="loading-data-into-r.html"><a href="loading-data-into-r.html"><i class="fa fa-check"></i><b>3</b> Loading data into R</a><ul>
+<li class="chapter" data-level="3.1" data-path="finer-control-of-csv-imports.html"><a href="finer-control-of-csv-imports.html"><i class="fa fa-check"></i><b>3.1</b> Finer control of CSV imports</a></li>
+<li class="chapter" data-level="3.2" data-path="finer-control-of-excel-imports.html"><a href="finer-control-of-excel-imports.html"><i class="fa fa-check"></i><b>3.2</b> Finer control of Excel imports</a></li>
+<li class="chapter" data-level="3.3" data-path="importing-data-from-databases.html"><a href="importing-data-from-databases.html"><i class="fa fa-check"></i><b>3.3</b> Importing data from databases</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="sec-data-munging.html"><a href="sec-data-munging.html"><i class="fa fa-check"></i><b>4</b> Data Munging</a><ul>
+<li class="chapter" data-level="4.1" data-path="tidy-data.html"><a href="tidy-data.html"><i class="fa fa-check"></i><b>4.1</b> Tidy data</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="tidy-data.html"><a href="tidy-data.html#variable-in-column-names"><i class="fa fa-check"></i><b>4.1.1</b> Variable in column names</a></li>
+<li class="chapter" data-level="4.1.2" data-path="tidy-data.html"><a href="tidy-data.html#multiple-variables-in-column-names"><i class="fa fa-check"></i><b>4.1.2</b> Multiple variables in column names</a></li>
+<li class="chapter" data-level="4.1.3" data-path="tidy-data.html"><a href="tidy-data.html#variables-stored-in-rows-and-columns"><i class="fa fa-check"></i><b>4.1.3</b> Variables stored in rows and columns</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="data-cleaning.html"><a href="data-cleaning.html"><i class="fa fa-check"></i><b>4.2</b> Data cleaning</a><ul>
+<li class="chapter" data-level="" data-path="data-cleaning.html"><a href="data-cleaning.html#exercise"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="cleaning-up-data-types-and-values.html"><a href="cleaning-up-data-types-and-values.html"><i class="fa fa-check"></i><b>4.3</b> Cleaning up data types and values</a></li>
+<li class="chapter" data-level="4.4" data-path="other-types-of-cleaning.html"><a href="other-types-of-cleaning.html"><i class="fa fa-check"></i><b>4.4</b> Other types of cleaning</a></li>
+<li class="chapter" data-level="4.5" data-path="cleaning-from-excel-files.html"><a href="cleaning-from-excel-files.html"><i class="fa fa-check"></i><b>4.5</b> Cleaning from Excel files</a><ul>
+<li class="chapter" data-level="" data-path="cleaning-from-excel-files.html"><a href="cleaning-from-excel-files.html#dealing-with-visual-formating-colors"><i class="fa fa-check"></i>Dealing with visual formating (colors)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="sec-description.html"><a href="sec-description.html"><i class="fa fa-check"></i><b>5</b> Describing data</a><ul>
+<li class="chapter" data-level="" data-path="sec-description.html"><a href="sec-description.html#factors-or-categorical-variables"><i class="fa fa-check"></i>Factors or categorical variables</a></li>
+<li class="chapter" data-level="5.1" data-path="split-apply-combine-a-k-a-mapreduce.html"><a href="split-apply-combine-a-k-a-mapreduce.html"><i class="fa fa-check"></i><b>5.1</b> Split-apply-combine, a.k.a. MapReduce</a></li>
+<li class="chapter" data-level="5.2" data-path="joins.html"><a href="joins.html"><i class="fa fa-check"></i><b>5.2</b> Joins</a></li>
+<li class="chapter" data-level="5.3" data-path="the-select-function.html"><a href="the-select-function.html"><i class="fa fa-check"></i><b>5.3</b> The <code>select</code> function</a></li>
+<li class="chapter" data-level="5.4" data-path="dates.html"><a href="dates.html"><i class="fa fa-check"></i><b>5.4</b> Dates</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="joins-1.html"><a href="joins-1.html"><i class="fa fa-check"></i><b>6</b> Joins</a></li>
+<li class="chapter" data-level="7" data-path="data-summaries.html"><a href="data-summaries.html"><i class="fa fa-check"></i><b>7</b> Data summaries</a><ul>
+<li class="chapter" data-level="7.1" data-path="scoped-verbs.html"><a href="scoped-verbs.html"><i class="fa fa-check"></i><b>7.1</b> Scoped verbs</a></li>
+<li class="chapter" data-level="7.2" data-path="factors-categorical-variables.html"><a href="factors-categorical-variables.html"><i class="fa fa-check"></i><b>7.2</b> Factors (categorical variables)</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="split-apply-combine.html"><a href="split-apply-combine.html"><i class="fa fa-check"></i><b>8</b> Split-apply-combine</a></li>
+<li class="chapter" data-level="9" data-path="graphics.html"><a href="graphics.html"><i class="fa fa-check"></i><b>9</b> Data visualization</a><ul>
+<li class="chapter" data-level="9.1" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>9.1</b> ggplot2</a></li>
+<li class="chapter" data-level="9.2" data-path="single-continuous-variable.html"><a href="single-continuous-variable.html"><i class="fa fa-check"></i><b>9.2</b> Single continuous variable</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="single-continuous-variable.html"><a href="single-continuous-variable.html#histogram"><i class="fa fa-check"></i><b>9.2.1</b> Histogram</a></li>
+<li class="chapter" data-level="9.2.2" data-path="single-continuous-variable.html"><a href="single-continuous-variable.html#density-plot"><i class="fa fa-check"></i><b>9.2.2</b> Density plot</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="bar-plots.html"><a href="bar-plots.html"><i class="fa fa-check"></i><b>9.3</b> Bar plots</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="bar-plots.html"><a href="bar-plots.html#exercise-1"><i class="fa fa-check"></i><b>9.3.1</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="two-continuous-variables.html"><a href="two-continuous-variables.html"><i class="fa fa-check"></i><b>9.4</b> Two continuous variables</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="two-continuous-variables.html"><a href="two-continuous-variables.html#adding-a-best-fitting-straight-line"><i class="fa fa-check"></i><b>9.4.1</b> Adding a best fitting straight line</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="time-series.html"><a href="time-series.html"><i class="fa fa-check"></i><b>9.5</b> Time series</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="time-series.html"><a href="time-series.html#exercise-2"><i class="fa fa-check"></i><b>9.5.1</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="continuous-variable-with-discrete-variable.html"><a href="continuous-variable-with-discrete-variable.html"><i class="fa fa-check"></i><b>9.6</b> Continuous variable with discrete variable</a><ul>
+<li class="chapter" data-level="9.6.1" data-path="continuous-variable-with-discrete-variable.html"><a href="continuous-variable-with-discrete-variable.html#boxplot"><i class="fa fa-check"></i><b>9.6.1</b> Boxplot</a></li>
+<li class="chapter" data-level="9.6.2" data-path="continuous-variable-with-discrete-variable.html"><a href="continuous-variable-with-discrete-variable.html#violin-plot"><i class="fa fa-check"></i><b>9.6.2</b> Violin plot</a></li>
+<li class="chapter" data-level="9.6.3" data-path="continuous-variable-with-discrete-variable.html"><a href="continuous-variable-with-discrete-variable.html#exercise-3"><i class="fa fa-check"></i><b>9.6.3</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="9.7" data-path="grouped-visualizations.html"><a href="grouped-visualizations.html"><i class="fa fa-check"></i><b>9.7</b> Grouped visualizations</a></li>
+<li class="chapter" data-level="9.8" data-path="maps.html"><a href="maps.html"><i class="fa fa-check"></i><b>9.8</b> Maps</a></li>
+<li class="chapter" data-level="9.9" data-path="stitching-graphs-together-.html"><a href="stitching-graphs-together-.html"><i class="fa fa-check"></i><b>9.9</b> Stitching graphs together.</a></li>
+<li class="chapter" data-level="9.10" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i><b>9.10</b> Interactive graphics</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>10</b> Functions</a></li>
+<li class="chapter" data-level="11" data-path="modeling.html"><a href="modeling.html"><i class="fa fa-check"></i><b>11</b> Modeling</a><ul>
+<li class="chapter" data-level="11.1" data-path="model-selection.html"><a href="model-selection.html"><i class="fa fa-check"></i><b>11.1</b> Model selection</a></li>
+<li class="chapter" data-level="11.2" data-path="many-models.html"><a href="many-models.html"><i class="fa fa-check"></i><b>11.2</b> Many models</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="predictive-modeling.html"><a href="predictive-modeling.html"><i class="fa fa-check"></i><b>12</b> Predictive modeling</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><div class="line-block">PS 312: Programming with R<br />
+Course Notes</div></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="factors-categorical-variables" class="section level2">
+<h2><span class="header-section-number">7.2</span> Factors (categorical variables)</h2>
+<p><code>factor</code> types of variables are discrete or categorical variables, that only take
+a small set of values. Think number of cylinders in a car, race, sex.
+We can covert a variable to a factor using <code>as.factor</code>. (There are also
+<code>as.numeric</code> and <code>as.character</code>).</p>
+<pre class="sourceCode r"><code class="sourceCode r">dos <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">ends_with</span>(<span class="st">&quot;Date&quot;</span>)), as_date) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise_if</span>(is.Date, max)</code></pre>
+<pre><code># A tibble: 1 x 4
+  Award_Start_Date Award_End_Date Award_Transaction_Da… Data_Submission_Da…
+  &lt;date&gt;           &lt;date&gt;         &lt;date&gt;                &lt;date&gt;             
+1 NA               NA             2017-10-03            2018-02-15         </code></pre>
+<p>Here, we notice that a couple of the values are <code>NA</code>. We would like to add the
+<code>na.rm=T</code> option into the mean function. We can do that, as long as we put a <code>~</code> before
+it. The <code>.</code> is a place holder for each variable that will be interrogated here.</p>
+<pre class="sourceCode r"><code class="sourceCode r">dos <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">ends_with</span>(<span class="st">&quot;Date&quot;</span>)), as_date) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize_at</span>(<span class="kw">vars</span>(<span class="kw">ends_with</span>(<span class="st">&quot;Date&quot;</span>)), <span class="op">~</span><span class="kw">max</span>(., <span class="dt">na.rm=</span>T))</code></pre>
+<pre><code># A tibble: 1 x 4
+  Award_Start_Date Award_End_Date Award_Transaction_Da… Data_Submission_Da…
+  &lt;date&gt;           &lt;date&gt;         &lt;date&gt;                &lt;date&gt;             
+1 2018-09-30       2026-08-31     2017-10-03            2018-02-15         </code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mtcars1 &lt;-<span class="st"> </span>mtcars1 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(cyl, vs, am, gear, carb), as.factor)
+<span class="kw">str</span>(mtcars1)</code></pre>
+<pre><code>Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:   32 obs. of  12 variables:
+ $ cars: chr  &quot;Mazda RX4&quot; &quot;Mazda RX4 Wag&quot; &quot;Datsun 710&quot; &quot;Hornet 4 Drive&quot; ...
+ $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+ $ cyl : Factor w/ 3 levels &quot;4&quot;,&quot;6&quot;,&quot;8&quot;: 2 2 1 2 3 2 3 1 1 2 ...
+ $ disp: num  160 160 108 258 360 ...
+ $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+ $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+ $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+ $ qsec: num  16.5 17 18.6 19.4 17 ...
+ $ vs  : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 2 2 1 2 1 2 2 2 ...
+ $ am  : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 2 2 2 1 1 1 1 1 1 1 ...
+ $ gear: Factor w/ 3 levels &quot;3&quot;,&quot;4&quot;,&quot;5&quot;: 2 2 2 1 1 1 1 2 2 2 ...
+ $ carb: Factor w/ 6 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mtcars1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize_if</span>(is.numeric, mean)</code></pre>
+<pre><code># A tibble: 1 x 6
+    mpg  disp    hp  drat    wt  qsec
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1  20.1  231.  147.  3.60  3.22  17.8</code></pre>
+</div>
+<!-- </div> -->
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="scoped-verbs.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="split-apply-combine.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["PS_312.pdf"],
+"toc": {
+"collapse": "subsection"
+},
+"toolbar": {
+"position": "static"
+},
+"search": true,
+"scroll_highlight": true
+});
+});
+</script>
+
+</body>
+
+</html>

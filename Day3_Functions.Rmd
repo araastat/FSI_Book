@@ -1,0 +1,338 @@
+# Functions
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = "")
+
+```
+```{r }
+myDumbFunction <- function() 42
+myDumbFunction()
+
+```
+```{r }
+doubleIt <- function(x) {
+  myResult <- x * 2
+  myResult # or, explicitly, return(myResult)
+}
+doubleIt(5)
+
+```
+```{r }
+exists("myResult")
+myResult <- 1000
+doubleItOutput <- doubleIt(2)
+myResult
+
+```
+```{r }
+my_sum <- function(x){
+  s <- sum(x)
+  n <- length(x)
+  result <- s / n
+  return(result)
+}
+
+```
+```{r }
+my_sum(1:10)
+
+```
+```{r }
+answer <- my_sum(1:10)
+answer
+
+```
+```{r }
+my_sum <- function(x){
+  s <- sum(x)
+  n <- length(x)
+  results<- list(sum = s, length = n, answer = s / n)
+  return(results)
+}
+
+```
+```{r }
+my_sum(1:10) 
+
+```
+```{r }
+my_sum <- function(x){
+  s <- sum(x)
+  n <- length(x)
+  results<- list(sum = s, length = n, answer = s / n)
+  return(results)
+}
+
+```
+```{r }
+answer <- my_sum(1:10)
+answer$answer
+answer[['answer']]
+names(answer)
+
+```
+```{r }
+x <- 1:10
+x[3] <- NA
+my_sum(x)
+
+```
+```{r }
+my_sum <- function(x){
+  s <- sum(x, na.rm=T)
+  n <- length(!is.na(x))
+  results <- list("sum" = s, "length" = n, "answer" = s/n)
+}
+my_sum(x)
+
+```
+```{r }
+my_sum <- function(x){
+  s <- sum(x, na.rm = T)
+  n <- length(!is.na(x))
+  results <- list("sum" = s, "length" = n, "answer" = s/n)
+  return(results) #<<
+}
+my_sum(x)
+
+```
+```{r }
+my_sum <- function(x){
+  s <- sum(x, na.rm = T)
+  n <- length(!is.na(x)) 
+  results <- list("sum" = s, "length" = n, "answer" = s/n)
+  return(results) 
+}
+
+```
+```{r }
+my_sum <- function(x){
+  s <- sum(x, na.rm = T)
+{{  n <- sum(!is.na(x)) }}
+  results <- list("sum" = s, "length" = n, "answer" = s/n)
+  return(results) 
+}
+my_sum(x)
+
+```
+```{r }
+my_sum <- function(x){
+  s <- sum(x, na.rm = T)
+  n <- sum(!is.na(x)) 
+  results <- list("sum" = s, "length" = n, "answer" = s/n)
+  return(results) 
+}
+
+```
+```{r }
+my_sum <- function(x, remove_missing = TRUE){ #<<
+  s <- sum(x, na.rm = T)
+  n <- sum(!is.na(x)) 
+  results <- list("sum" = s, "length" = n, "answer" = s/n)
+  return(results) 
+}
+
+```
+```{r }
+my_sum <- function(x, remove_missing = TRUE){ 
+  {{if(remove_missing){
+    x <- x[!is.na(x)]
+  }
+  s <- sum(x)
+  n <- length(x)}}
+  results <- list("sum" = s, "length" = n, "answer" = s/n)
+  return(results) 
+}
+my_sum(x)
+
+```
+```{r }
+my_sum <- function(x, remove_missing = TRUE){ 
+  if(remove_missing){
+    x <- x[!is.na(x)]
+  }
+  s <- sum(x)
+  n <- length(x)
+  results <- list("sum" = s, "length" = n, "answer" = s/n, "nmiss" = sum(is.na(x)))
+  return(results) 
+}
+my_sum(x)
+
+```
+```{r }
+my_sum <- function(x, remove_missing = TRUE){ 
+  nmiss <- sum(is.na(x)) #<<
+  if(remove_missing){
+    x <- x[!is.na(x)]
+  }
+  s <- sum(x)
+  n <- length(x)
+  results <- list("sum" = s, "length" = n, "answer" = s/n, "nmiss" = sum(is.na(x)))
+  return(results) 
+}
+my_sum(x)
+
+```
+```{r }
+my_sum <- function(x, remove_missing = TRUE){ 
+  nmiss <- sum(is.na(x)) 
+  if(remove_missing){
+    x <- x[!is.na(x)]
+  }
+  s <- sum(x)
+  n <- length(x)
+  results <- list("sum" = s, "length" = n, "answer" = s/n, "nmiss" = nmiss) #<<
+  return(results) 
+}
+my_sum(x)
+
+```
+```{r }
+my_sum(x, remove_missing = F)
+
+```
+```{r }
+my_summary <- function(d){
+
+}
+
+```
+```{r }
+my_summary <- function(d){
+  require(tidyverse) #<
+}
+
+```
+```{r }
+my_summary <- function(d){
+  require(tidyverse)
+  summary_cts <- d %>% 
+    summarize_if(is.numeric, list("mean" = ~mean(x, na.rm=T),
+                                  "median" = ~median(x, na.rm=T),
+                                  'sd' = ~sd(x, na.rm=T),
+                                  'nmiss' = ~sum(is.na(x))))
+  return(list("cts" = summary_cts))
+}
+my_summary(iris)
+
+```
+```{r }
+my_summary <- function(d){
+  require(tidyverse)
+  summary_cts <- d %>% 
+    summarize_if(is.numeric, list("mean" = ~mean(x, na.rm=T),
+                                  "median" = ~median(x, na.rm=T),
+                                  'sd' = ~sd(x, na.rm=T),
+                                  'nmiss' = ~sum(is.na(x)))) %>% 
+    gather(variable, value) %>% 
+    separate(variable, c("variable","stat"), sep='_') %>% 
+    spread(stat, value)
+  return(list("cts" = summary_cts))
+}
+my_summary(iris)
+
+```
+```{r }
+my_summary <- function(d){
+  require(tidyverse)
+  summary_cts <- d %>% 
+    summarize_if(is.numeric, list("mean" = ~mean(x, na.rm=T), #<<
+                                  "median" = ~median(x, na.rm=T),#<<
+                                  'sd' = ~sd(x, na.rm=T),#<<
+                                  'nmiss' = ~sum(is.na(x)))) %>% #<<
+    gather(variable, value) %>% 
+    separate(variable, c("variable","stat"), sep='_') %>% 
+    spread(stat, value)
+  return(list("cts" = summary_cts))
+}
+my_summary(iris)
+
+```
+```{r }
+my_summary <- function(d){
+  require(tidyverse)
+  summary_cts <- d %>% 
+    summarize_if(is.numeric, list("mean" = ~mean(., na.rm=T),#<<
+                                  "median" = ~median(., na.rm=T),#<<
+                                  'sd' = ~sd(., na.rm=T),#<<
+                                  'nmiss' = ~sum(is.na(.)))) %>% #<<
+    gather(variable, value) %>% 
+    separate(variable, c("variable","stat"), sep='_') %>% 
+    spread(stat, value)
+  return(list("cts" = summary_cts))
+}
+my_summary(iris)
+
+```
+```{r }
+my_summary <- function(d){
+  require(tidyverse)
+  summary_cts <- d %>% 
+    summarize_if(is.numeric, list("mean" = ~mean(., na.rm=T),
+                                  "median" = ~median(., na.rm=T),
+                                  'sd' = ~sd(., na.rm=T),
+                                  'nmiss' = ~sum(is.na(.)))) %>% 
+    gather(variable, value) %>% 
+    separate(variable, c("variable","stat"), sep='_') %>% 
+    spread(stat, value) %>% 
+    select(variable, nmiss, everything()) #<<
+  return(list("cts" = summary_cts))
+}
+my_summary(iris)
+
+```
+```{r }
+my_summary <- function(d){
+  require(tidyverse)
+  summary_cts <- d %>% 
+    summarize_if(is.numeric, list("mean" = ~mean(., na.rm=T),
+                                  "median" = ~median(., na.rm=T),
+                                  'sd' = ~sd(., na.rm=T),
+                                  'nmiss' = ~sum(is.na(.)))) %>% 
+    gather(variable, value) %>% 
+    separate(variable, c("variable","stat"), sep='_') %>% 
+    spread(stat, value) %>% 
+    select(variable, nmiss, everything())
+  summary_cat <- d %>% #<<
+    summarise_if(is.factor, list('nmiss' = ~sum(is.na(.)),#<<
+                                 'ncat' = ~length(unique(.)),#<<
+                                 'categories' = ~paste(sort(unique(levels(.))), collapse=', ')) #<<
+                 )#<<
+  return(list("cts" = summary_cts,
+              "cat" = summary_cat))
+}
+my_summary(iris)
+
+```
+```{r eval=F}
+ my_summary <- function(d){
+   require(tidyverse)
+   if(!is.data.frame(d)){#<<
+     stop("Input must be a data.frame")#<<
+   }#<<
+   summary_cts <- d %>%
+     summarize_if(is.numeric, list("mean" = ~mean(., na.rm=T),
+                                   "median" = ~median(., na.rm=T),
+                                   'sd' = ~sd(., na.rm=T),
+                                   'nmiss' = ~sum(is.na(.)))) %>%
+     gather(variable, value) %>%
+     separate(variable, c("variable","stat"), sep='_') %>%
+     spread(stat, value) %>%
+     select(variable, nmiss, everything())
+   summary_cat <- d %>%
+     summarise_if(is.factor, list('nmiss' = ~sum(is.na(.)),
+                                  'ncat' = ~length(unique(.)),
+                                  'categories' = ~paste(sort(unique(levels(.))), collapse=', '))
+                  )
+   return(list("cts" = summary_cts,
+               "cat" = summary_cat))
+ }
+ my_summary(x)
+
+```
+```{r }
+datas <- list('cars' = mtcars, 'iris' = iris, 'diamonds'= diamonds)
+map(datas, my_summary)
+```
+

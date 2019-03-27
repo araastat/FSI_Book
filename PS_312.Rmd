@@ -1,0 +1,730 @@
+--- 
+title: |
+  | PS 312: Programming with R
+  | Course Notes
+author: "Abhijit Dasgupta, PhD"
+date: "Last updated: `r format(Sys.Date(), '%B %d, %Y')`"
+knit: bookdown::render_book
+site: bookdown::bookdown_site
+documentclass: book
+  #  papersize: letterpaper
+  #  classoption: twosided
+#bibliography: 
+#biblio-style: apalike
+#link-citations: yes
+includes:
+  in_header: preamble.tex
+  before_body: doc-before.tex
+compact-title: yes
+fontsize: "12pt"
+classoption: "openany"
+papersize: "letterpaper"
+mainfont: "Charter"
+monofont: "Source Code Pro"
+geometry: "margin=0.75in, letterpaper"
+colorlinks: true
+graphics: true
+github-repo: araastat/FSI_Book
+description: "These are course notes for the FSI course 'Programming with R' (PS 312) taught over 3 days"
+url: 'https\://www.araastat.com/FSI_Book'
+twitterhandle: webbedfeet
+
+---
+
+# Welcome {-}
+
+This course is an introduction to the statistical programming language 
+[R](http://www.r-project.org) and various applications. We will cover the entire data analytics pipeline from data ingestion to data wrangling, summarizing, modeling, visualizing and reporting, all using tools found within the R ecosystem. 
+
+The version of these notes you are reading now was built on 
+`r Sys.Date()`. 
+
+## Reproducibility {-}
+
+These notes are written with [`bookdown`](https://bookdown.org), a R package for writing books using [`rmarkdown`](https://rmarkdown.rstudio.com).
+All code in these notes were developed on `r R.version$version.string`, using
+the same packages pre-installed in your virtual machines. When you're on your
+own, you will need to install a recent version of R, and also install the
+corresponding packages, on your computer, for all the code to work. A listing of
+all the packages used in this course will be available as an appendix.
+
+To build these notes locally, clone or [download](https://github.com/araastat/FSI_Book/archive/master.zip) the 
+[Github repo](https://github.com/araastat/FSI_Book) hosting these notes, unzip it if necessary, and double-click on `FSI_Book.Rproj`. Assuming you have RStudio installed, this will open this project (more on _RStudio Projects_ later). You can then go to the console and enter the following code:
+
+```{r PS-312-1, eval = F}
+bookdown::render_book("index.Rmd") # to build these notes
+browseURL("_book/index.html") # to view it
+```
+
+
+<!--chapter:end:index1.Rmd-->
+
+## The `select` function
+
+
+```{r PS-312-2, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, comment = "")
+library(rio)
+library(tidyverse)
+
+```
+
+The `select` function selects variables (columns) from your dataset. We will look 
+at some nice selection methods using a dataset of all foreign aid disbursements from 
+Department of State between 2004 and 2017. 
+
+```{r PS-312-3 }
+library(rio)
+dos <- import('data/Department of State.csv') %>% as_tibble()
+ names(dos)
+
+```
+
+There are several groups of variables by name, and `dplyr` provides nice functions
+to extract them.
+
+```{r PS-312-4, echo=F}
+dos %>% select(starts_with("Award"))
+
+```
+```{r PS-312-5, echo=T}
+dos %>% select(ends_with("Value"))
+
+```
+```{r PS-312-6, echo=T}
+dos %>% select(contains("Transaction"))
+
+```
+
+There are several other helper functions that can grab variables based on 
+properities of their names. 
+
+- starts_with(): Starts with a prefix.
+- ends_with(): Ends with a suffix.
+- contains(): Contains a literal string.
+- matches(): Matches a regular expression.
+- num_range(): Matches a numerical range like x01, x02, x03.
+- one_of(): Matches variable names in a character vector.
+- everything(): Matches all variables.
+- last_col(): Select last variable, possibly with an offset.
+
+We can pipe these too. In the next bit, we are trying to get the variables that 
+representing start dates. We are using the `pull` function to grab the data out of the dataset
+in the form of an array, just so it's easier to manipulate. 
+
+```{r PS-312-7 }
+start_dates <-  dos %>% 
+  select(ends_with("Date")) %>% 
+  select(contains("Start")) %>% 
+  pull(1)
+  
+head(start_dates)
+```
+
+
+## Dates
+
+__Resource__: [RStudio cheatsheet](https://rawgit.com/rstudio/cheatsheets/master/lubridate.pdf)
+
+
+Dates are a first-class data type in R, though they are natively somewhat difficult to 
+manage. The package `lubridate` added several convenience functions to make this work
+much easier.
+
+```{r PS-312-8 }
+library(lubridate)
+start_dates <- as_date(start_dates) %>% head()
+start_dates
+year(start_dates)
+month(start_dates)
+day(start_dates)
+
+```
+```{r PS-312-9 }
+sort(start_dates)
+quarter(start_dates)
+days(start_dates) - days(as_date('2011-10-01')) # Days from start of fiscal year
+
+```
+So we see that we can do math with dates to identify intervals of time, in
+appropriate units. 
+
+# Joins
+
+We are often in the situation that pieces of data are resident in different tables, 
+and we need to put them together for analyses. Usually each table will have some type 
+of identifier variable that identifies the unit with which each observation is 
+associated. Joins use these identifiers to put datasets together while maintaining
+correspondence of the data with the actual units. 
+
+There are 4 primary kinds of joins:
+
+![](img/joins.png)
+
+Let's summarize what can happen with joins:
+
+```{r PS-312-10, echo=F}
+d <- tribble(
+  ~ Type, ~Rows, ~Columns,
+  'inner', 'same or decrease', 'increase',
+  'left', 'same as left dataset','increase',
+  'right', 'same as right dataset','increase',
+  'full','increase','increase')
+knitr::kable(d)
+
+```
+
+We'll play with two simulated datasets looking at staffing and real estate allocation at 
+DOS. The question we're asking is, what is the area avaiable per capita in each Bureau. 
+```{r PS-312-11 }
+staffing_data <- import('data/Staffing_by_Bureau.csv')
+real_estate <- import('data/DoS_Real_Estate_Allocation.csv')
+
+```
+```{r PS-312-12 }
+staffing_data %>% as_tibble()
+real_estate %>% as_tibble()
+
+```
+First we summarize the data by Bureau
+```{r PS-312-13, message=T}
+staff_summary <- staffing_data %>% 
+  group_by(Bureau) %>% 
+  tally(name = 'Pop')
+realestate_summary <- real_estate %>% 
+ group_by(Bureau) %>% summarize(Size = sum(Size))
+
+```
+```{r PS-312-14 }
+staff_summary %>% head(4)
+realestate_summary %>% head(4)
+
+```
+Then we join the two datasets together. They will join based on the Bureau variable, 
+which is common to both datasets. 
+
+```{r PS-312-15 }
+staff_summary %>% 
+  inner_join(realestate_summary, by = c("Bureau" = "Bureau"))
+
+```
+
+Once we have joined the datasets, we can now create a variable that computes the area per capita, and then we sort the rows of the data in order of descending area per capita. 
+```{r PS-312-16 }
+staff_summary %>% 
+  inner_join(realestate_summary, by = c("Bureau" = "Bureau")) %>% 
+  mutate(unit_area = Size/Pop) %>% 
+  arrange(unit_area)
+
+
+```
+
+# Data summaries
+
+The `dplyr` package gives us 5 verbs to operate on a single data frame:
+
+- `filter`: filter a dataset by rows
+- `select`: select columns of a dataset
+- `arrange`: arrange rows of a dataset by values of some variables
+- `group_by`: split a dataset by values of some variables, so that we can apply verbs to each split
+- `summarize`: compute various summaries from the data
+
+It also gives us verbs for joining 2 data frames:
+
+- `left_join`
+- `right_join`
+- `inner_join`
+- `outer_join`
+- `semi_join` : Keep rows of left dataset which correspond to rows in right dataset
+- `anti_join` : Keep rows of left dataset which __do not__ correspond to rows in right dataset
+- `bind_rows` : Stack two datasets on top of each other, provided they have the same number of columns
+- `bind_cols` : Put two datasets side by side, provided they have the same number or rows. 
+]
+
+
+```{r PS-312-17 }
+library(tidyverse)
+mtcars1 <- mtcars %>% rownames_to_column('cars') %>% as_tibble()
+mtcars1
+
+```
+
+We can compute different summaries over the variables in a dataset. 
+```{r PS-312-18 }
+mtcars1 %>% summarize(mpg = mean(mpg, na.rm=T), disp = mean(disp, na.rm=T), hp = mean(hp, na.rm=T))
+
+```
+
+## Scoped verbs
+
+All the `dplyr` verbs have scoped versions `*_all`, `*_at` and `*_if`.
+
+1. `*_all` : Act on all columns
+1.  `*_at`  : Act on specified columns
+1.  `*_if`  : Act on columns with specific property
+
+## Factors (categorical variables)
+
+`factor` types of variables are discrete or categorical variables, that only take
+a small set of values. Think number of cylinders in a car, race, sex. 
+We can covert a variable to a factor using `as.factor`. (There are also 
+`as.numeric` and `as.character`). 
+
+```{r PS-312-19 }
+dos %>% mutate_at(vars(ends_with("Date")), as_date) %>% 
+  summarise_if(is.Date, max)
+
+```
+
+Here, we notice that a couple of the values are `NA`. We would like to add the 
+`na.rm=T` option into the mean function. We can do that, as long as we put a `~` before
+it. The `.` is a place holder for each variable that will be interrogated here. 
+
+```{r PS-312-20 }
+dos %>% mutate_at(vars(ends_with("Date")), as_date) %>% 
+  summarize_at(vars(ends_with("Date")), ~max(., na.rm=T))
+
+```
+```{r PS-312-21 }
+mtcars1 <- mtcars1 %>% 
+  mutate_at(vars(cyl, vs, am, gear, carb), as.factor)
+str(mtcars1)
+
+```
+```{r PS-312-22 }
+mtcars1 %>% summarize_if(is.numeric, mean)
+
+```
+
+# Split-apply-combine
+
+![](img/split-apply-combine.png)
+
+Here, we compute summaries (means) by levels of cylinders. 
+```{r PS-312-23 }
+mtcars1 %>% 
+  group_by(cyl) %>% 
+  summarize(mpg_mean = mean(mpg))
+
+```
+We can still use scoped verbs if we want.
+```{r PS-312-24 }
+mtcars1 %>% 
+  group_by(cyl) %>% 
+  summarize_if(is.numeric, mean)
+
+```
+We can also do several summaries in one go. 
+```{r PS-312-25 }
+mtcars1 %>% 
+  group_by(cyl) %>% 
+  summarize_if(is.numeric, list('mean' = mean, 'median' = median))
+
+```
+
+Let's go back to the DOS dataset. We're going to see how much money was given to 
+each implementatoin organization over the years. 
+```{r PS-312-26 }
+dos %>% 
+  group_by(Implementing_Organization) %>% 
+  summarize(amt = sum(Award_Transaction_Value)) %>% 
+  arrange(desc(amt))
+
+```
+
+We can also split by organization type
+```{r PS-312-27 }
+dos %>% 
+  group_by(Implementing_Organization_Type) %>% 
+  summarize(amt = sum(Award_Transaction_Value)) %>% 
+  arrange(desc(amt))
+
+```
+If we want to look at time trends, we will also need to split by year, in addition to 
+the organization. We're using some `lubridate` code to make the years accessible to 
+the computer. 
+
+```{r PS-312-28 }
+dos_by_year <- dos %>% 
+  group_by(Implementing_Organization, year = year(as_date(Award_Start_Date))) %>% 
+  summarize(amt = sum(Award_Transaction_Value)) %>% 
+  filter(Implementing_Organization != '', !is.na(year)) 
+
+```
+We can also look at the overall trends by year. 
+```{r PS-312-29 }
+dos_by_year %>% 
+  group_by(year) %>% 
+  summarize(amt = sum(amt))
+```
+
+
+<!--chapter:end:Day2_Summaries.Rmd-->
+
+# Data visualization
+
+
+```{r PS-312-30, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = "",
+                      message = FALSE, warning = FALSE,
+                      out.height="400px")
+library(rio)
+library(tidyverse)
+
+
+```
+
+## ggplot2
+
+We'll be primarily using ggplot2 in this workshop. 
+
++ Makes pretty good formatting choices out of the box
++ Works like pipes!!
++ Is declarative (tell it what you want) without getting caught up in minutae
++ Strongly leverages data frames (good practice)
++ Fast enough
++ There are good templates if you want to change the look
+
+The `ggplot2` package is a very flexible and (to me) intuitive way of visualizing data.
+It is based on the concept of layering elements on a canvas.
+
+> This idea of layering graphics on a canvas is, to me, a nice way of building graphs
+
+
++ A `data.frame` object
++ _Aesthetic mappings_ (aes) to say what data is used for what purpose in the viz
+    + x- and y-direction
+    + shapes, colors, lines
++ A _geometry object_ (geom) to say what to draw
+    + You can "layer" geoms on each other to build plots
+
+> `ggplot` used pipes before pipes were a thing. 
+>
+>However, it uses the `+` symbol for
+piping rather than the `%>%` operator, since it pre-dates the `tidyverse`
+
+
+```{r PS-312-31, eval=T, echo=T}
+library(ggplot2)
+ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+
+```
+
++ A `data.frame` object: mtcars
++ Aesthetic mapping: 
+    - x-axis: wt
+    - y-axis: mpg
++ Geometry:
+    + geom_point: draw points
+    
+
+```{r PS-312-32, eval=T, echo=T}
+ggplot(mtcars, aes(x = wt, y = mpg)) + 
+  geom_point()+ 
+  geom_smooth()
+
+```
+
++ A `data.frame` object: mtcars
++ Aesthetic mapping: 
+    - x-axis: wt
+    - y-axis: mpg
++ Geometry:
+    + geom_point: draw points
+    + geom_smooth: Add a layer which draws a best-fitting line
+    
+Now we clean up the plot to make it presentable.
+
+```{r PS-312-33, eval=T, echo=F}
+ggplot(mtcars, aes(x = wt, y = mpg)) + 
+  geom_point()+ 
+  geom_smooth()+
+  labs(x = 'Weight', 
+       y = 'Miles per gallon', 
+       title = 'Fuel efficiency by weight',
+       caption = "Source: mtcars dataset")
+
+```
+
+## Single continuous variable
+
+### Histogram
+
+```{r PS-312-34 }
+dos <- import('data/Department of State.csv')
+dos %>% 
+  ggplot(aes(x = Award_Transaction_Value)) + geom_histogram()
+
+```
+
+Change the axis to the log scale for better visual
+
+```{r PS-312-35 }
+dos %>% 
+  ggplot(aes(x = Award_Transaction_Value)) + geom_histogram()+
+  scale_x_log10() # x-axis on log scale
+
+```
+
+### Density plot
+
+```{r PS-312-36 }
+dos %>% 
+  ggplot(aes(x = Award_Transaction_Value)) + geom_density()+
+  scale_x_log10()
+
+
+```
+
+# Bar plots
+
+```{r PS-312-37 }
+library(lubridate)
+dos %>% 
+  group_by(year = year(as_date(Award_Start_Date))) %>% 
+  summarize(amount = sum(Award_Transaction_Value)) %>% 
+  ggplot(aes(x = year, y = amount)) + # Note change in pipe operator
+    geom_bar(stat='identity')
+
+```
+
+## Exercise
+
+Using the `mtcars` dataset in R, create:
+
+1. A histogram of the fuel efficiences (`mpg`) in the data set
+2. A bar plot of frequencies of number of cylinders (`cyl`) in the car
+
+
+```{r PS-312-38, fig.size=3}
+ggplot(mtcars, aes(x = mpg)) + geom_histogram(binwidth=3)
+# ggplot(mtcars) + geom_histogram(aes(x = mpg), binwidth = 3)
+
+```
+
+```{r PS-312-39 }
+ggplot(mtcars, aes(x = factor(cyl))) + geom_bar()
+
+```
+
+## Two continuous variables
+
+### Adding a best fitting straight line
+
+```{r PS-312-40 }
+ggplot(mtcars, aes(x = hp, y = mpg))+
+  geom_point()+
+  geom_smooth(method = 'lm')
+
+```
+
+# Time series
+
+```{r PS-312-41, warning=F, message=FALSE}
+library(forecast)
+d <- data.frame(x = 1:length(gas), y = gas) # Australian monthly gas production
+ggplot(d, aes(x, y)) + geom_line()
+
+```
+
+### Exercise
+
+1. Create a scatter plot of sepal length and sepal width from the `iris` dataset, and 
+add a smooth line through it
+
+
+## Continuous variable iwth discrete variable
+
+### Boxplot
+
+```{r PS-312-42 }
+dos %>% 
+ggplot(aes(x = factor(year(as_date(Award_Start_Date))),
+                y = Award_Transaction_Value))+
+  geom_boxplot() +
+  scale_y_log10()+
+  labs(x = 'Year')
+
+```
+
+### Violin plot
+
+This is essetially a reflected density plot and gives a better sense of the data distribution
+
+```{r PS-312-43 }
+dos %>% 
+ggplot(aes(x = factor(year(as_date(Award_Start_Date))),
+                y = Award_Transaction_Value))+
+  geom_violin() +
+  scale_y_log10()+
+  labs(x = 'Year')
+
+```
+
+### Exercise
+
+1. Plot a boxplot of petal length by species using the `iris` dataset
+
+## Grouped visualizations
+
+We're going to plot the change in aid provided to each country over time. To do
+this we need summaries by time and location
+```{r PS-312-44 }
+grp_data <- dos %>% 
+  group_by(Recipient_Location, year = year(as_date(Award_Start_Date))) %>% 
+  summarize(amt = sum(Award_Transaction_Value)) %>% 
+  filter(str_detect(Recipient_Location, '^C'))
+ggplot(grp_data, aes(x = year, y = amt, color=Recipient_Location))+
+  geom_line()+
+  scale_y_log10()
+
+```
+```{r PS-312-45 }
+ggplot(grp_data, aes(x = year,  y = amt))+
+  geom_line()+
+  scale_y_log10()+
+  facet_wrap(~Recipient_Location)
+
+```
+```{r PS-312-46, eval=F}
+## dos %>% filter(str_detect(Recipient_Location, '^C')) %>%
+## ggplot(aes(x = year(as_date(Award_Start_Date)),
+##            y = Award_Transaction_Value,
+##            color = Recipient_Location,
+##            shape = Award_Transaction_Type))+
+##   geom_point()+
+##   labs(x = 'Year', color='Location')+
+##   scale_y_log10()
+## 
+
+```
+```{r PS-312-47, echo=F}
+dos %>% filter(str_detect(Recipient_Location, '^C')) %>%
+ggplot(aes(x = year(as_date(Award_Start_Date)), 
+           y = Award_Transaction_Value, 
+           color = Recipient_Location, 
+           shape = Award_Transaction_Type))+
+  geom_point()+ 
+  labs(x = 'Year', color='Location')+
+  scale_y_log10()
+
+
+```
+```{r PS-312-48, eval=F}
+## dos %>% filter(str_detect(Recipient_Location, '^C')) %>%
+## ggplot(aes(x = year(as_date(Award_Start_Date)),
+##            y = Award_Transaction_Value,
+##            color = Recipient_Location,
+##            shape = Award_Transaction_Type))+
+##   geom_jitter()+
+##   labs(x = 'Year', color='Location')+
+##   scale_y_log10()
+## 
+
+```
+```{r PS-312-49, eval=T, echo=F}
+dos %>% filter(str_detect(Recipient_Location, '^C')) %>%
+ggplot(aes(x = year(as_date(Award_Start_Date)), 
+           y = Award_Transaction_Value, 
+           color = Recipient_Location, 
+           shape = Award_Transaction_Type))+
+  geom_jitter()+ 
+  labs(x = 'Year', color='Location')+
+  scale_y_log10()
+
+
+```
+```{r PS-312-50 }
+schools <- rio::import('data/schools.rds')
+schools %>% filter(tophead=='Elementary schools', 
+                   head2=="Average hours in school day") %>% 
+  filter(!is.na(State), State != 'United States') %>% 
+  ggplot(aes(x = State, y = stats, ymin = stats - 2*se, 
+             ymax = stats + 2*se)) +
+  geom_pointrange()+
+  labs(y = 'Avg hours in school day')+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=45, hjust = 1))
+
+```
+
+# Maps
+
+```{r PS-312-51, echo = F, out.height="800px", fig.align='center'}
+library(choroplethr)
+data(df_pop_county)
+county_choropleth(df_pop_county,
+                  title="US 2012 County Population Estimates",
+                  legend = "Population")
+
+```
+
+We can also ingest SHP files to draw maps. We don't show the final version since 
+it took too long to render. 
+```{r PS-312-52, eval =F}
+library(sf)
+hrr_info <- st_read('~/Downloads/hrr_bdry-1/HRR_Bdry.SHP')
+head(hrr_info)
+ggplot(hrr_info)+geom_sf()
+ggsave('map.png')
+
+```
+
+## Stitching maps together.
+
+
+```{r PS-312-53, echo = T, eval=T}
+# install.packages('cowplot')
+library(cowplot)
+p1 <- ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+ geom_point() + facet_grid(. ~ Species) + stat_smooth(method = "lm") +
+ background_grid(major = 'y', minor = "none") +
+ panel_border() + theme(legend.position = "none")
+
+# plot B
+p2 <- ggplot(iris, aes(Sepal.Length, fill = Species)) +
+ geom_density(alpha = .7) + theme(legend.justification = "top")
+p2a <- p2 + theme(legend.position = "none")
+
+# plot C
+p3 <- ggplot(iris, aes(Sepal.Width, fill = Species)) +
+ geom_density(alpha = .7) + theme(legend.position = "none")
+
+# legend
+legend <- get_legend(p2)
+
+# align all plots vertically
+plots <- align_plots(p1, p2a, p3, align = 'v', axis = 'l')
+
+# put together bottom row and then everything
+bottom_row <- plot_grid(plots[[2]], plots[[3]], legend, labels = c("B", "C"), rel_widths = c(1, 1, .3), nrow = 1)
+plot_grid(plots[[1]], bottom_row, labels = c("A"), ncol = 1)
+
+
+```
+```{r PS-312-54, eval=F, fig.align='center', out.height="400px"}
+## library(ggplot2)
+## library(plotly)
+## p=ggplot(iris, aes(x=Sepal.Length,
+##                    y=Sepal.Width,
+##                    color=Species,
+##                    shape=Species)) +
+##     geom_point(size=6, alpha=0.6)
+## mytext=paste("Sepal Length = ", iris$Sepal.Length,
+##              "\n" , "Sepal Width = ", iris$Sepal.Width,
+##              "\n", "Row Number: ",rownames(iris),  sep="")
+## pp=plotly::plotly_build(p)
+## style( pp, text=mytext,
+##        hoverinfo = "text",
+##        traces = c(1, 2, 3) )
+
+```
+
+## Interactive graphics
+
+We won't put these in the notes, since they don't work well in printed form
+
+
+<!--chapter:end:Day2_Dataviz.Rmd-->
+

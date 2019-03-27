@@ -1,5 +1,11 @@
 # Describing data {#sec:description}
 
+```{r setup-dd, include=F}
+library(tidyverse)
+library(rio)
+```
+
+
 Data cleaning and munging is important, yet tedious work. Now that we're done
 with that, we can get to the fun part of exploring the data. 
 
@@ -21,7 +27,7 @@ an older version, most but not all things will work.
 
 We'll start with the in-build `mtcars` dataset. 
 
-```{r}
+```{r Data-Description-1}
 library(tidyverse)
 mtcars1 <- mtcars %>% rownames_to_column('cars') %>% as_tibble()
 mtcars1
@@ -30,7 +36,7 @@ mtcars1
 Let's get some summary statistics from this dataset. First, let's compute the average 
 mpg, displacement, and horsepower of these cars.
 
-```{r}
+```{r Data-Description-2}
 mtcars1 %>% summarize(mpg = mean(mpg, na.rm=T), disp = mean(disp, na.rm=T), hp = mean(hp, na.rm=T))
 ```
 
@@ -40,7 +46,7 @@ Most `dplyr` verbs also have scoped versions `*_all`, `*_at`, `*_if`, which can 
 upon all the columns, the `*_at` versions on specified columns (same way columns are specified in `select`) and the 
 `*_if` versions on columns with particular properties. So the above  code could be written as
 
-```{r}
+```{r Data-Description-3}
 mtcars1 %>% summarize_at(vars(mpg, disp, hp), mean, na.rm = T)
 ```
 
@@ -49,40 +55,40 @@ mtcars1 %>% summarize_at(vars(mpg, disp, hp), mean, na.rm = T)
 R has a data type called a `factor`, which is meant for categorical or discrete variables; things like sex, race, and, 
 in this data, `cyl`. We need to transform the column to this data type first. 
 
-```{r}
+```{r Data-Description-4}
 mtcars1 <- mtcars1 %>% 
   mutate(cyl = as.factor(cyl))
 ```
 
 There are a few others that might need this treatment.
 
-```{r}
+```{r Data-Description-5}
 mtcars1 <- mtcars1 %>% 
   mutate_at(vars(cyl, vs, am, gear, carb), as.factor)
 ```
 
 Let's see what we've done.
 
-```{r}
+```{r Data-Description-6}
 str(mtcars1)
 ```
 
 Now, let's compute averages of all the non-factor, or numeric, variables.
 
-```{r}
+```{r Data-Description-7}
 mtcars1 %>% summarize_if(is.numeric, mean)
 ```
 
 We can get a summary of all the variables using the function `summary`.
 
-```{r}
+```{r Data-Description-8}
 summary(mtcars1)
 ```
 
 However, this does not give us a tidy dataset. Some alternatives are the `skimr` package and 
 the `ezsummary` package. 
 
-```{r}
+```{r Data-Description-9}
 # install.packages('skimr')
 library(skimr)
 skim(mtcars1)
@@ -99,7 +105,7 @@ each piece, and then stitch the results back together.
 For example, in the mtcars data, we might want to know what the average mpg is by the number of cylinders. The
 way to do this is:
 
-```{r}
+```{r Data-Description-10}
 mtcars1 %>% 
   group_by(cyl) %>% 
   summarize(mpg_mean = mean(mpg))
@@ -108,7 +114,7 @@ mtcars1 %>%
 
 Once again, the scoped versions of `summarize` will also work in this pipe
 
-```{r}
+```{r Data-Description-11}
 mtcars1 %>% 
   group_by(cyl) %>% 
   summarize_if(is.numeric, mean)
@@ -116,7 +122,7 @@ mtcars1 %>%
 
 Let's go a bit further and compute the medians as well.
 
-```{r}
+```{r Data-Description-12}
 mtcars1 %>% 
   group_by(cyl) %>% 
   summarize_if(is.numeric, list('mean'= mean, 'median' = median))
@@ -125,21 +131,21 @@ mtcars1 %>%
 We can look at a second dataset showing individual violent incidents in Western Afrika
 between 2000 and 2017. We can get the number of incidents per country and year very easily using this paradigm.
 
-```{r}
+```{r Data-Description-13}
 west_africa <- import('data/2000-01-01-2019-01-01-Western_Africa.csv')
 west_africa %>% group_by(country, year) %>% tally()
 ```
 
 For display, we can make this a wide dataset
 
-```{r}
+```{r Data-Description-14}
 west_africa %>% group_by(country, year) %>% tally() %>% 
   spread(year, n)
 ```
 
 We'll save this dataset for visualization later.
 
-```{r}
+```{r Data-Description-15}
 west_africa %>% group_by(country, year) %>% tally() %>% 
   spread(year, n) %>% 
   saveRDS('data/west_africa.rds')
@@ -157,7 +163,7 @@ Let's look at these joins with an example. We have two simulated datasets lookin
 DOS real estate allocation and staffing. We will look at how much area on average each
 bureau has given the number of employees
 
-```{r}
+```{r Data-Description-16}
 staffing_data <- import('data/Staffing_by_Bureau.csv') %>% as_tibble()
 real_estate <- import('data/DoS_Real_Estate_Allocation.csv') %>% as_tibble()
 real_estate
@@ -167,7 +173,7 @@ The strategy is going to be to do a grouped summary of the staffing data to see 
 many people are in each Bureau, and then join that with the real estate data to 
 compute the average area per employee by Bureau.
 
-```{r, message=T}
+```{r Data-Description-17, message=T}
 staff_summary <- staffing_data %>% 
   group_by(Bureau) %>% 
   tally(name = 'Pop')

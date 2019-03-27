@@ -1,0 +1,134 @@
+---
+title: "PS 312: Programming with R"
+author: Abhijit Dasgupta, PhD<br>District Data Labs
+date: "March 25-27, 2019"
+output:
+  xaringan::moon_reader:
+    css: [default, './robot.css', './robot-fonts.css']
+    #css: [default, metropolis, metropolis-fonts]
+    nature:
+      ratio: '16:9'
+      highlightLanguage: R
+      countIncrementalSlides: false
+      highlightStyle: zenburn
+      highlightLines: true
+      slideNumberFormat: "%current%"
+
+---
+
+layout: true
+
+<div class="my-header">
+<span>PS 312, March 2019</span></div>
+
+---
+class:  middle, center
+
+```{r setup, include=F, message=F, warning=F}
+knitr::opts_chunk$set(echo = FALSE, message = F, warning = F, comment="")
+library(tidyverse)
+library(readxl)
+```
+
+# Introduction
+
+---
+
+# 
+
+.left-column[
+![](img/Abhijit_Headshot.jpg)
+]
+.right-column[
+- Experienced R user (20+ years)
+- Daily R user
+- Co-organizer of Statistical Programming DC meetup
+- Co-chair of Bioinformatics and Data Science Department, FAES Graduate School at NIH
+    - Teaches highly rated __Practical R__ and __Data Visualization with R__ courses
+
+- Chief Data Scientist at [Zansors](http://www.zansors.com), a healthcare analytics startup in Arlington, VA
+- Statistical consultant for NIH
+]
+
+---
+
+#
+
+.left-column[
+![](img/Abhijit_Headshot.jpg)
+]
+.right-column[
+- Present at R conferences
+  - DC R conference
+  - useR! conference
+- [Blogger](https://webbedfeet.netlify.com/posts/) about statistics and R
+- Active on Twitter with `#rstats`
+- Excited about continuing changes and improvements to the R ecosystem
+]
+
+---
+class: middle, center
+
+# Expectations
+
+---
+
+# We're not pointing or clicking
+
+- We will be writing code in this class
+    - Succint instructions to the computer to do things
+    - R will be our __language__ of choice in doing this
+- This is sort of old school
+    - No point-and-click when I started in the late 90s
+    - But it's very effective once you learn it
+
+---
+
+# We're not pointing or clicking
+
+- I don't expect you to learn all the details in 3 days
+  - But I'll give you resources to learn more
+  - And point to where you might get questions answered
+- It won't all be simple
+  - I want you to be able to __use__ R
+  - Sometimes that means learning some more advanced material
+  - I'll go slow with it, and try to get the mental model to you
+  
+---
+
+# A practical view
+
+- This will not be a geeky computer science class
+- This will be a modest refresher on statistics
+  - If you hated stats before, maybe I'll change your mind
+  - If you actually learned stats before, maybe I'll give you a fresh view
+- This will be about 
+  - learning good enough practices
+  - making analyses reproducible
+  - creating complete products
+    - raw data to reports
+
+---
+
+# A modern view
+
+- I'll keep things as current as I can
+  - R has evolved a lot in 20 years
+- Maybe some of it will even excite you
+  - Interactive graphics
+  - Reproducible and repeatable reports
+  - Mistake-free data-driven presentations
+  - Cutting edge analyses
+  - Supportive community
+  
+---
+
+# Workshop format
+
+- Mostly expository
+- Some hands-on
+- Use your post-its and stickers to get my attention
+- Use post-its for questions/comments
+- Ask questions if you're confused
+
+- 

@@ -1,0 +1,233 @@
+# Modeling
+
+```{r setup, include=FALSE, message = F, warning = F}
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F, comment="", cache=T)
+library(tidyverse)
+library(broom)
+library(readxl)
+
+```
+```{r echo=T}
+library(survival)
+data(pbc)
+str(pbc)
+
+```
+```{r echo=T}
+myLinearModel <- lm(chol ~ bili, data = pbc)
+
+```
+```{r echo=T}
+myLinearModel
+
+```
+```{r echo=T}
+summary(myLinearModel)
+
+```
+```{r echo=T}
+broom::tidy(myLinearModel)
+
+```
+```{r echo=T}
+broom::glance(myLinearModel)
+
+```
+```{r echo=T, eval=F}
+## # install.packages('ggfortify')
+## library(ggfortify)
+## autoplot(myLinearModel)
+
+```
+```{r echo=F, eval=T}
+# install.packages('ggfortify')
+library(ggfortify)
+autoplot(myLinearModel)
+
+```
+```{r echo=T, eval=F}
+## ggplot(pbc, aes(x = bili))+geom_density()
+
+```
+```{r echo=F, eval=T}
+ggplot(pbc, aes(x = bili))+geom_density()
+
+```
+```{r echo=T, eval=F}
+## ggplot(pbc, aes(x = log(bili)))+geom_density()
+
+```
+```{r echo=F, eval=T}
+ggplot(pbc, aes(x = log(bili)))+geom_density()
+
+```
+```{r echo=T}
+myLinearModel2 <- lm(chol~log(bili), data = pbc)
+summary(myLinearModel2)
+
+```
+```{r }
+autoplot(myLinearModel2)
+
+```
+```{r echo=T}
+autoplot(myLinearModel2, which=1)
+
+```
+```{r echo=T}
+d <- broom::augment(myLinearModel2)
+d
+
+```
+```{r echo=T, fig.height=5}
+ggplot(d, aes(x = .fitted, y = .resid))+geom_point()+ geom_smooth(se=F)+
+  labs(x = 'Fitted values', y = 'Residual values')
+
+```
+```{r echo=T}
+head(predict(myLinearModel2, newdata = pbc))
+
+```
+```{r echo=T}
+myLM3 <- lm(chol ~ log(bili) + sex, data = pbc)
+broom::tidy(myLM3)
+
+```
+```{r echo = T}
+myLR <- glm(spiders ~ albumin + bili + chol, data = pbc, family = binomial)
+myLR
+
+```
+```{r echo=T}
+broom::tidy(myLR)
+
+```
+```{r echo=T}
+broom::glance(myLR)
+
+```
+```{r echo=T}
+head(predict(myLR))
+
+```
+```{r echo=T}
+head(predict(myLR, type='response'))
+
+```
+## Model selection
+
+```{r echo=T}
+# install.packages('leaps')
+library(leaps)
+mtcars1 <- mtcars %>% mutate_at(vars(cyl, vs:carb), as.factor)
+all_subsets <- regsubsets(mpg~., data = mtcars1)
+all_subsets
+
+```
+```{r echo=T}
+ind <- which.max(summary(all_subsets)$adjr2)
+summary(all_subsets)$which[ind,]
+
+```
+
+## Many models
+```{r }
+mtcars <- as_tibble(mtcars)
+mtcars %>% select(mpg, disp:qsec)
+
+```
+```{r }
+mtcars %>% select(mpg, disp:qsec) %>% 
+  gather(variable, value, -mpg)
+
+```
+```{r }
+mtcars %>% select(mpg, disp:qsec) %>% 
+  gather(variable, value, -mpg) %>% 
+  group_by(variable) %>% 
+  lm(mpg~value, data=.)
+
+```
+```{r }
+mtcars %>% select(mpg, disp:qsec) %>% 
+  gather(variable, value, -mpg) %>% 
+  nest(-variable)
+
+```
+```{r }
+bl <- mtcars %>% select(mpg, disp:qsec) %>% 
+  gather(variable, value, -mpg) %>% 
+  nest(-variable)
+bl$data[[1]]
+
+```
+```{r }
+mtcars %>% select(mpg, disp:qsec) %>% 
+  gather(variable, value, -mpg) %>% 
+  nest(-variable) %>% 
+  mutate(models = map(data, ~lm(mpg~value, data=.)))
+
+```
+```{r }
+ mtcars %>% select(mpg, disp:qsec) %>% 
+  gather(variable, value, -mpg) %>% 
+  nest(-variable) %>% 
+  mutate(models = map(data, ~lm(mpg~value, data=.)),
+         outputs = map(models, ~tidy(.)))
+
+```
+```{r }
+ mtcars %>% select(mpg, disp:qsec) %>% 
+  gather(variable, value, -mpg) %>% 
+  nest(-variable) %>% 
+  mutate(models = map(data, ~lm(mpg~value, data=.)),
+         outputs = map(models, ~tidy(.))) %>% 
+  select(variable, outputs)
+
+```
+```{r }
+ mtcars %>% select(mpg, disp:qsec) %>% 
+  gather(variable, value, -mpg) %>% 
+  nest(-variable) %>% 
+  mutate(models = map(data, ~lm(mpg~value, data=.)),
+         outputs = map(models, ~tidy(.))) %>% 
+  select(variable, outputs) %>% 
+  unnest()
+
+```
+```{r }
+ mtcars %>% select(mpg, disp:qsec) %>% 
+  gather(variable, value, -mpg) %>% 
+  nest(-variable) %>% 
+  mutate(models = map(data, ~lm(mpg~value, data=.)),
+         outputs = map(models, ~tidy(.))) %>% 
+  select(variable, outputs) %>% 
+  unnest() %>% 
+  filter(term=='value')
+
+```
+```{r }
+ mtcars %>% select(mpg, disp:qsec) %>% 
+  gather(variable, value, -mpg) %>% 
+  nest(-variable) %>% 
+  mutate(models = map(data, ~lm(mpg~value, data=.)),
+         outputs = map(models, ~tidy(.))) %>% 
+  select(variable, outputs) %>% 
+  unnest() %>% 
+  filter(term=='value') %>% 
+  mutate_if(is.numeric, funs(round(., 3)))
+
+```
+
+# Predictive modeling
+
+```{r }
+library(tidyverse)
+library(caret)
+data(diamonds)
+set.seed(12356)
+diamonds_train <- diamonds %>% sample_frac(size = 0.8) # 80%
+diamonds_test <- anti_join(diamonds, diamonds_train)
+(nrow(diamonds) == nrow(diamonds_train) + nrow(diamonds_test))
+```
+
